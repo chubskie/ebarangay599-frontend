@@ -185,12 +185,6 @@ const Register: React.FC = () => {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     };
 
-    // Get current date for max attribute
-    const getCurrentDate = () => {
-        const today = new Date();
-        return today.toISOString().split('T')[0];
-    };
-
     const handleSendOtp = async () => {
         // Basic validation
         if (!formData.first_name || !formData.last_name || !formData.contact_number || !formData.password) {

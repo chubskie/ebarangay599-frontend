@@ -13,8 +13,7 @@ import {
     FaExclamationTriangle,
     FaCalendar,
     FaExclamationCircle,
-    FaIdCard,
-    FaUsers
+    FaIdCard
 } from 'react-icons/fa';
 
 const Dashboard: React.FC = () => {
