@@ -1,0 +1,667 @@
+import React, { useState } from 'react';
+import ResidentDashboardNav from '../components/ResidentDashboardNav';
+import { 
+    FaFileAlt,
+    FaCertificate,
+    FaBusinessTime,
+    FaMedal,
+    FaIdCard,
+    FaTimes,
+    FaCheck,
+    FaSpinner,
+    FaDownload,
+    FaEye
+} from 'react-icons/fa';
+
+interface DocumentType {
+    id: string;
+    name: string;
+    icon: any;
+    description: string;
+    fee: number;
+    processingTime: string;
+    requirements: string[];
+    color: string;
+}
+
+interface DocumentRequest {
+    id: string;
+    type: string;
+    status: 'pending' | 'processing' | 'ready' | 'completed';
+    requestDate: string;
+    completionDate?: string;
+    purpose: string;
+    fee: number;
+}
+
+const RequestDocument: React.FC = () => {
+    const [activeSection, setActiveSection] = useState('request');
+    const [selectedDocument, setSelectedDocument] = useState<DocumentType | null>(null);
+    const [showRequestModal, setShowRequestModal] = useState(false);
+    const [purpose, setPurpose] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Sample user data from Dashboard (this would normally come from props or context)
+    const userData = {
+        fullName: 'Luc Elric Trevecedo',
+        contactNumber: '0927 993 2190',
+        birthdate: 'April 2, 2002',
+        age: '23 years old',
+        sex: 'Male',
+        civilStatus: 'Single',
+        address: '0281 Narra Street Old Sta Mesa Manila Barangay 599',
+        residencyStatus: 'Owner',
+        periodOfResidency: '23 years and 6 months'
+    };
+
+    // Document requests history
+    const [documentRequests, setDocumentRequests] = useState<DocumentRequest[]>([
+        {
+            id: 'REQ-2025-001',
+            type: 'Barangay Clearance',
+            status: 'ready',
+            requestDate: 'Oct 10, 2025',
+            completionDate: 'Oct 12, 2025',
+            purpose: 'Employment Requirements',
+            fee: 50
+        },
+        {
+            id: 'REQ-2025-002',
+            type: 'Certificate of Indigency',
+            status: 'processing',
+            requestDate: 'Oct 12, 2025',
+            purpose: 'Medical Assistance',
+            fee: 30
+        }
+    ]);
+
+    const documentTypes: DocumentType[] = [
+        {
+            id: 'barangay-clearance',
+            name: 'Barangay Clearance',
+            icon: FaFileAlt,
+            description: 'Certificate of good moral character and standing in the community',
+            fee: 50,
+            processingTime: '3-5 business days',
+            requirements: ['Valid ID', 'Proof of Residency', 'Barangay ID (if available)'],
+            color: 'bg-blue-500'
+        },
+        {
+            id: 'certificate-indigency',
+            name: 'Certificate of Indigency',
+            icon: FaCertificate,
+            description: 'Certification for financial assistance and social services',
+            fee: 30,
+            processingTime: '2-3 business days',
+            requirements: ['Valid ID', 'Proof of Income (if any)', 'Supporting Documents'],
+            color: 'bg-green-500'
+        },
+        {
+            id: 'certificate-file-action',
+            name: 'Certificate to File Action',
+            icon: FaFileAlt,
+            description: 'Legal document for filing court cases or legal proceedings',
+            fee: 100,
+            processingTime: '5-7 business days',
+            requirements: ['Valid ID', 'Police Report (if applicable)', 'Incident Documentation'],
+            color: 'bg-red-500'
+        },
+        {
+            id: 'business-clearance',
+            name: 'Business Clearance',
+            icon: FaBusinessTime,
+            description: 'Permit for operating business within barangay jurisdiction',
+            fee: 200,
+            processingTime: '7-10 business days',
+            requirements: ['Business Registration', 'Tax Identification Number', 'Valid ID'],
+            color: 'bg-purple-500'
+        },
+        {
+            id: 'good-moral-certificate',
+            name: 'Good Moral Certificate',  
+            icon: FaMedal,
+            description: 'Character reference for employment, education, or other purposes',
+            fee: 40,
+            processingTime: '3-5 business days',
+            requirements: ['Valid ID', 'Purpose Letter', 'Character References'],
+            color: 'bg-yellow-500'
+        },
+        {
+            id: 'senior-citizen-id',
+            name: 'Senior Citizen ID',
+            icon: FaIdCard,
+            description: 'Identification card for senior citizens (60 years and above)',
+            fee: 0,
+            processingTime: '5-7 business days',
+            requirements: ['Birth Certificate', 'Valid ID', 'Recent Photo (2x2)'],
+            color: 'bg-gray-500'
+        }
+    ];
+
+    const handleRequestDocument = (documentType: DocumentType) => {
+        setSelectedDocument(documentType);
+        setShowRequestModal(true);
+    };
+
+    const handleSubmitRequest = async () => {
+        if (!purpose.trim()) {
+            alert('Please specify the purpose of your request.');
+            return;
+        }
+
+        setIsSubmitting(true);
+        
+        // Simulate API call
+        setTimeout(() => {
+            const newRequest: DocumentRequest = {
+                id: `REQ-2025-${String(documentRequests.length + 1).padStart(3, '0')}`,
+                type: selectedDocument?.name || '',
+                status: 'pending',
+                requestDate: new Date().toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                }),
+                purpose: purpose,
+                fee: selectedDocument?.fee || 0
+            };
+
+            setDocumentRequests([...documentRequests, newRequest]);
+            setShowRequestModal(false);
+            setSelectedDocument(null);
+            setPurpose('');
+            setIsSubmitting(false);
+            
+            alert('Document request submitted successfully!');
+        }, 2000);
+    };
+
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case 'pending': return 'text-yellow-600 bg-yellow-100';
+            case 'processing': return 'text-blue-600 bg-blue-100';
+            case 'ready': return 'text-green-600 bg-green-100';
+            case 'completed': return 'text-gray-600 bg-gray-100';
+            default: return 'text-gray-600 bg-gray-100';
+        }
+    };
+
+    const getStatusIcon = (status: string) => {
+        switch (status) {
+            case 'pending': return <FaSpinner className="w-4 h-4" />;
+            case 'processing': return <FaSpinner className="w-4 h-4 animate-spin" />;
+            case 'ready': return <FaCheck className="w-4 h-4" />;
+            case 'completed': return <FaCheck className="w-4 h-4" />;
+            default: return <FaSpinner className="w-4 h-4" />;
+        }
+    };
+
+    return (
+        <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+            <ResidentDashboardNav 
+                activeSection={activeSection} 
+                setActiveSection={setActiveSection} 
+            />
+
+            {/* Main Content */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', marginLeft: '280px' }}>
+                {/* Header */}
+                <header style={{ 
+                    backgroundColor: 'white', 
+                    padding: '1rem 2rem', 
+                    borderBottom: '1px solid #e5e7eb',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <FaFileAlt style={{ width: '1.25rem', height: '1.25rem', color: '#6b7280' }} />
+                        <span style={{ fontWeight: '500', color: '#1f2937' }}>Request New Document</span>
+                    </div>
+                </header>
+
+                {/* Content */}
+                <main style={{ flex: 1, padding: '2rem' }}>
+                    {/* Page Header */}
+                    <div style={{ marginBottom: '2rem' }}>
+                        <h1 style={{ 
+                            fontSize: '1.875rem', 
+                            fontWeight: 'bold', 
+                            color: '#1f2937', 
+                            marginBottom: '0.5rem' 
+                        }}>
+                            Document Request Services
+                        </h1>
+                        <p style={{ color: '#6b7280', fontSize: '1rem' }}>
+                            Request official documents and certificates from Barangay 599
+                        </p>
+                    </div>
+
+                    {/* Document Types Grid */}
+                    <div style={{ marginBottom: '3rem' }}>
+                        <h2 style={{ 
+                            fontSize: '1.5rem', 
+                            fontWeight: '600', 
+                            color: '#1f2937', 
+                            marginBottom: '1.5rem' 
+                        }}>
+                            Available Documents
+                        </h2>
+                        
+                        <div style={{ 
+                            display: 'grid', 
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
+                            gap: '1.5rem' 
+                        }}>
+                            {documentTypes.map((doc) => {
+                                const IconComponent = doc.icon;
+                                return (
+                                    <div
+                                        key={doc.id}
+                                        style={{
+                                            backgroundColor: 'white',
+                                            borderRadius: '0.75rem',
+                                            padding: '1.5rem',
+                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                                            border: '1px solid #e5e7eb',
+                                            transition: 'all 0.2s',
+                                            cursor: 'pointer'
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+                                            e.currentTarget.style.transform = 'translateY(-2px)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                                            e.currentTarget.style.transform = 'translateY(0)';
+                                        }}
+                                        onClick={() => handleRequestDocument(doc)}
+                                    >
+                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                                            <div style={{
+                                                width: '3rem',
+                                                height: '3rem',
+                                                borderRadius: '0.5rem',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                marginRight: '1rem',
+                                                backgroundColor: doc.color.replace('bg-', '').includes('blue') ? '#dbeafe' :
+                                                                 doc.color.replace('bg-', '').includes('green') ? '#dcfce7' :
+                                                                 doc.color.replace('bg-', '').includes('red') ? '#fee2e2' :
+                                                                 doc.color.replace('bg-', '').includes('purple') ? '#f3e8ff' :
+                                                                 doc.color.replace('bg-', '').includes('yellow') ? '#fef3c7' : '#f3f4f6'
+                                            }}>
+                                                <IconComponent style={{ 
+                                                    width: '1.5rem', 
+                                                    height: '1.5rem',
+                                                    color: doc.color.replace('bg-', '').includes('blue') ? '#3b82f6' :
+                                                           doc.color.replace('bg-', '').includes('green') ? '#10b981' :
+                                                           doc.color.replace('bg-', '').includes('red') ? '#ef4444' :
+                                                           doc.color.replace('bg-', '').includes('purple') ? '#8b5cf6' :
+                                                           doc.color.replace('bg-', '').includes('yellow') ? '#f59e0b' : '#6b7280'
+                                                }} />
+                                            </div>
+                                            <div>
+                                                <h3 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1f2937', marginBottom: '0.25rem' }}>
+                                                    {doc.name}
+                                                </h3>
+                                                <p style={{ fontSize: '0.875rem', color: '#10b981', fontWeight: '500' }}>
+                                                    ₱{doc.fee} • {doc.processingTime}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '1rem', lineHeight: '1.5' }}>
+                                            {doc.description}
+                                        </p>
+                                        
+                                        <div style={{ marginBottom: '1rem' }}>
+                                            <p style={{ fontSize: '0.75rem', fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>
+                                                Requirements:
+                                            </p>
+                                            <ul style={{ fontSize: '0.75rem', color: '#6b7280', paddingLeft: '1rem' }}>
+                                                {doc.requirements.map((req, index) => (
+                                                    <li key={index}>{req}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        
+                                        <button
+                                            style={{
+                                                width: '100%',
+                                                padding: '0.75rem',
+                                                backgroundColor: '#3b82f6',
+                                                color: 'white',
+                                                border: 'none',
+                                                borderRadius: '0.5rem',
+                                                fontSize: '0.875rem',
+                                                fontWeight: '500',
+                                                cursor: 'pointer',
+                                                transition: 'background-color 0.2s'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.backgroundColor = '#2563eb';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.backgroundColor = '#3b82f6';
+                                            }}
+                                        >
+                                            Request Document
+                                        </button>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    {/* Request History */}
+                    <div>
+                        <h2 style={{ 
+                            fontSize: '1.5rem', 
+                            fontWeight: '600', 
+                            color: '#1f2937', 
+                            marginBottom: '1.5rem' 
+                        }}>
+                            My Document Requests
+                        </h2>
+                        
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '0.75rem',
+                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                            overflow: 'hidden'
+                        }}>
+                            {documentRequests.length === 0 ? (
+                                <div style={{ padding: '3rem', textAlign: 'center' }}>
+                                    <FaFileAlt style={{ width: '3rem', height: '3rem', color: '#d1d5db', margin: '0 auto 1rem' }} />
+                                    <p style={{ color: '#6b7280', fontSize: '1rem' }}>No document requests yet</p>
+                                    <p style={{ color: '#9ca3af', fontSize: '0.875rem' }}>
+                                        Start by requesting a document from the available options above
+                                    </p>
+                                </div>
+                            ) : (
+                                <div style={{ overflow: 'auto' }}>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                        <thead>
+                                            <tr style={{ backgroundColor: '#f9fafb' }}>
+                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                                                    Request ID
+                                                </th>
+                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                                                    Document Type
+                                                </th>
+                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                                                    Purpose
+                                                </th>
+                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                                                    Status
+                                                </th>
+                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                                                    Fee
+                                                </th>
+                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                                                    Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {documentRequests.map((request) => (
+                                                <tr key={request.id} style={{ borderTop: '1px solid #e5e7eb' }}>
+                                                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#1f2937', fontFamily: 'monospace' }}>
+                                                        {request.id}
+                                                    </td>
+                                                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#1f2937' }}>
+                                                        {request.type}
+                                                    </td>
+                                                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#6b7280' }}>
+                                                        {request.purpose}
+                                                    </td>
+                                                    <td style={{ padding: '1rem' }}>
+                                                        <span style={{
+                                                            display: 'inline-flex',
+                                                            alignItems: 'center',
+                                                            gap: '0.5rem',
+                                                            padding: '0.25rem 0.75rem',
+                                                            borderRadius: '0.375rem',
+                                                            fontSize: '0.75rem',
+                                                            fontWeight: '500',
+                                                            textTransform: 'capitalize'
+                                                        }}
+                                                        className={getStatusColor(request.status)}>
+                                                            {getStatusIcon(request.status)}
+                                                            {request.status}
+                                                        </span>
+                                                    </td>
+                                                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#1f2937', fontWeight: '500' }}>
+                                                        ₱{request.fee}
+                                                    </td>
+                                                    <td style={{ padding: '1rem' }}>
+                                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                            <button
+                                                                style={{
+                                                                    padding: '0.5rem',
+                                                                    backgroundColor: '#f3f4f6',
+                                                                    border: 'none',
+                                                                    borderRadius: '0.375rem',
+                                                                    cursor: 'pointer',
+                                                                    color: '#6b7280'
+                                                                }}
+                                                                title="View Details"
+                                                            >
+                                                                <FaEye style={{ width: '0.875rem', height: '0.875rem' }} />
+                                                            </button>
+                                                            {request.status === 'ready' && (
+                                                                <button
+                                                                    style={{
+                                                                        padding: '0.5rem',
+                                                                        backgroundColor: '#10b981',
+                                                                        border: 'none',
+                                                                        borderRadius: '0.375rem',
+                                                                        cursor: 'pointer',
+                                                                        color: 'white'
+                                                                    }}
+                                                                    title="Download Document"
+                                                                >
+                                                                    <FaDownload style={{ width: '0.875rem', height: '0.875rem' }} />
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            {/* Request Modal */}
+            {showRequestModal && selectedDocument && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000
+                }}>
+                    <div style={{
+                        backgroundColor: 'white',
+                        borderRadius: '0.75rem',
+                        padding: '2rem',
+                        width: '90%',
+                        maxWidth: '600px',
+                        maxHeight: '80vh',
+                        overflow: 'auto',
+                        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+                    }}>
+                        {/* Modal Header */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#1f2937' }}>
+                                Request {selectedDocument.name}
+                            </h2>
+                            <button
+                                onClick={() => {
+                                    setShowRequestModal(false);
+                                    setSelectedDocument(null);
+                                    setPurpose('');
+                                }}
+                                style={{
+                                    backgroundColor: '#f3f4f6',
+                                    border: 'none',
+                                    borderRadius: '50%',
+                                    width: '32px',
+                                    height: '32px',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: '1.25rem',
+                                    color: '#6b7280'
+                                }}
+                            >
+                                <FaTimes />
+                            </button>
+                        </div>
+
+                        {/* Document Info */}
+                        <div style={{ 
+                            backgroundColor: '#f9fafb', 
+                            borderRadius: '0.5rem', 
+                            padding: '1rem', 
+                            marginBottom: '1.5rem' 
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                                <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>Processing Fee:</span>
+                                <span style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1f2937' }}>
+                                    ₱{selectedDocument.fee}
+                                </span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>Processing Time:</span>
+                                <span style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1f2937' }}>
+                                    {selectedDocument.processingTime}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* User Information Preview */}
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <h3 style={{ fontSize: '1rem', fontWeight: '600', color: '#1f2937', marginBottom: '1rem' }}>
+                                Your Information (Auto-filled from profile)
+                            </h3>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.875rem' }}>
+                                <div>
+                                    <span style={{ color: '#6b7280' }}>Full Name:</span>
+                                    <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.fullName}</p>
+                                </div>
+                                <div>
+                                    <span style={{ color: '#6b7280' }}>Contact Number:</span>
+                                    <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.contactNumber}</p>
+                                </div>
+                                <div>
+                                    <span style={{ color: '#6b7280' }}>Address:</span>
+                                    <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.address}</p>
+                                </div>
+                                <div>
+                                    <span style={{ color: '#6b7280' }}>Residency Period:</span>
+                                    <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.periodOfResidency}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Purpose Input */}
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <label style={{ 
+                                display: 'block', 
+                                fontSize: '0.875rem', 
+                                fontWeight: '500', 
+                                color: '#374151',
+                                marginBottom: '0.5rem'
+                            }}>
+                                Purpose of Request *
+                            </label>
+                            <textarea
+                                value={purpose}
+                                onChange={(e) => setPurpose(e.target.value)}
+                                placeholder="Please specify the purpose for requesting this document..."
+                                style={{
+                                    width: '100%',
+                                    minHeight: '100px',
+                                    padding: '0.75rem',
+                                    border: '2px solid #e5e7eb',
+                                    borderRadius: '0.5rem',
+                                    fontSize: '0.875rem',
+                                    outline: 'none',
+                                    resize: 'vertical',
+                                    transition: 'border-color 0.2s'
+                                }}
+                                onFocus={(e) => {
+                                    e.target.style.borderColor = '#3b82f6';
+                                }}
+                                onBlur={(e) => {
+                                    e.target.style.borderColor = '#e5e7eb';
+                                }}
+                            />
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+                            <button
+                                onClick={() => {
+                                    setShowRequestModal(false);
+                                    setSelectedDocument(null);
+                                    setPurpose('');
+                                }}
+                                disabled={isSubmitting}
+                                style={{
+                                    padding: '0.75rem 1.5rem',
+                                    backgroundColor: '#f3f4f6',
+                                    color: '#374151',
+                                    border: 'none',
+                                    borderRadius: '0.5rem',
+                                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '500',
+                                    opacity: isSubmitting ? 0.5 : 1
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleSubmitRequest}
+                                disabled={isSubmitting || !purpose.trim()}
+                                style={{
+                                    padding: '0.75rem 1.5rem',
+                                    backgroundColor: !purpose.trim() || isSubmitting ? '#9ca3af' : '#3b82f6',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '0.5rem',
+                                    cursor: !purpose.trim() || isSubmitting ? 'not-allowed' : 'pointer',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '500',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem'
+                                }}
+                            >
+                                {isSubmitting && <FaSpinner style={{ width: '1rem', height: '1rem', animation: 'spin 1s linear infinite' }} />}
+                                {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default RequestDocument;

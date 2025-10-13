@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import ResidentDashboardNav from '../components/ResidentDashboardNav';
 import { 
     FaUser,
-    FaCheckCircle,
     FaUsers
 } from 'react-icons/fa';
 
 const Dashboard: React.FC = () => {
-    const navigate = useNavigate();
     const [activeSection, setActiveSection] = useState('dashboard');
     const [showHouseholdMembers, setShowHouseholdMembers] = useState(false);
     const [showAddMember, setShowAddMember] = useState(false);

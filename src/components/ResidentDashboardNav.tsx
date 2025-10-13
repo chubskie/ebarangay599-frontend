@@ -30,16 +30,16 @@ const ResidentDashboardNav: React.FC<ResidentDashboardNavProps> = ({ activeSecti
     };
 
     const sidebarItems = [
-        { id: 'dashboard', icon: FaUser, label: 'Dashboard', active: true },
+        { id: 'dashboard', icon: FaUser, label: 'Dashboard', route: '/dashboard' },
         { id: 'home', icon: FaHome, label: 'Home', route: '/' },
         { id: 'announcements', icon: FaBullhorn, label: 'Announcements', route: '/announcements' },
         { id: 'events', icon: FaCalendarAlt, label: 'Events', route: '/events' },
         { id: 'about', icon: FaInfoCircle, label: 'About Us', route: '/about' },
         { id: 'contact', icon: FaInfoCircle, label: 'Contact Us', route: '/contact' },
-        { id: 'request', icon: FaFileAlt, label: 'Request New Document' },
-        { id: 'incident', icon: FaExclamationCircle, label: 'Report an Incident' },
-        { id: 'meeting', icon: FaCalendar, label: 'Schedule a Meeting' },
-        { id: 'barangay-id', icon: FaIdCard, label: 'My Barangay ID' }
+        { id: 'request', icon: FaFileAlt, label: 'Request New Document', route: '/request-document' },
+        { id: 'incident', icon: FaExclamationCircle, label: 'Report an Incident', route: '/report-incident' },
+        { id: 'meeting', icon: FaCalendar, label: 'Schedule a Meeting', route: '/schedule-meeting' },
+        { id: 'barangay-id', icon: FaIdCard, label: 'My Barangay ID', route: '/my-barangay-id' }
     ];
 
     return (
@@ -95,9 +95,8 @@ const ResidentDashboardNav: React.FC<ResidentDashboardNavProps> = ({ activeSecti
                             onClick={() => {
                                 if (item.route) {
                                     navigate(item.route);
-                                } else {
-                                    setActiveSection(item.id);
                                 }
+                                setActiveSection(item.id);
                             }}
                             style={{
                                 width: '100%',

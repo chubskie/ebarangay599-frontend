@@ -1,6 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
+import RequestDocument from './pages/RequestDocument';
+import ReportIncident from './pages/ReportIncident';
+import ScheduleMeeting from './pages/ScheduleMeeting';
+import MyBarangayID from './pages/MyBarangayID';
 import Announcements from './pages/Announcements';
 import Events from './pages/Events';
 import About from './pages/About';
@@ -14,6 +18,10 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/request-document" element={<RequestDocument />} />
+      <Route path="/report-incident" element={<ReportIncident />} />
+      <Route path="/schedule-meeting" element={<ScheduleMeeting />} />
+      <Route path="/my-barangay-id" element={<MyBarangayID />} />
       <Route path="/announcements" element={<Announcements />} />
       <Route path="/events" element={<Events />} />
       <Route path="/about" element={<About />} />
