@@ -8,5 +8,5 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
-  base: '/your-repo-name/',
+  base: '/ebarangay599-frontend/',
 })
