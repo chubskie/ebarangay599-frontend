@@ -1,68 +1,41 @@
+@import "tailwindcss";
+
+/* Custom CSS Variables for Brand Colors */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --barangay-blue-50: #eff6ff;
+  --barangay-blue-100: #dbeafe;
+  --barangay-blue-200: #bfdbfe;
+  --barangay-blue-300: #93c5fd;
+  --barangay-blue-400: #60a5fa;
+  --barangay-blue-500: #295ba0;
+  --barangay-blue-600: #05215e;
+  --barangay-blue-700: #001544;
+  --barangay-blue-800: #002866;
+  --barangay-blue-900: #003d88;
+  --barangay-accent-100: #b9cfdc;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+/* Custom Utility Classes */
+.bg-barangay-blue-600 { background-color: var(--barangay-blue-600); }
+.bg-barangay-blue-500 { background-color: var(--barangay-blue-500); }
+.bg-barangay-blue-700 { background-color: var(--barangay-blue-700); }
+.bg-barangay-accent-100 { background-color: var(--barangay-accent-100); }
+.text-barangay-blue-600 { color: var(--barangay-blue-600); }
+.text-barangay-blue-500 { color: var(--barangay-blue-500); }
+.hover\:bg-barangay-blue-700:hover { background-color: var(--barangay-blue-700); }
+.hover\:text-barangay-blue-600:hover { color: var(--barangay-blue-600); }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+/* Custom animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
   }
-  a:hover {
-    color: #747bff;
+  50% {
+    opacity: .5;
   }
-  button {
-    background-color: #f9f9f9;
-  }
+}
+
+/* Additional custom styles if needed */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
