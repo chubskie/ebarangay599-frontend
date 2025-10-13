@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Navigation from '../components/Navigation';
+
 import { 
     FaEye,
     FaEyeSlash,
@@ -22,7 +24,7 @@ const Register: React.FC = () => {
         address: '',
         contact_number: '',
         period_of_residency: '',
-        resident_tags: '',
+        resident_tags: ['none'], // Changed to array for multiple tags
         username: '',
         password: '',
         password_confirmation: '',
@@ -41,6 +43,34 @@ const Register: React.FC = () => {
     // Capitalize first letter of each word
     const capitalizeWords = (str: string) => {
         return str.replace(/\b\w/g, (char) => char.toUpperCase());
+    };
+
+    // Helper function to validate resident tag combinations
+    const validateResidentTags = (tags: string[]) => {
+        const hasMinor = tags.includes('minor');
+        const hasSenior = tags.includes('senior');
+        const hasNone = tags.includes('none');
+        
+        if (hasNone && tags.length > 1) {
+            return { valid: false, message: 'Cannot select "None" with other tags' };
+        }
+        if (hasMinor && hasSenior) {
+            return { valid: false, message: 'Cannot be both Minor and Senior' };
+        }
+        return { valid: true, message: '' };
+    };
+
+    // Handle resident tag changes with validation
+    const handleResidentTagChange = (selectedTags: string[]) => {
+        const validation = validateResidentTags(selectedTags);
+        if (validation.valid) {
+            setFormData(prev => ({
+                ...prev,
+                resident_tags: selectedTags
+            }));
+        } else {
+            alert(validation.message);
+        }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -197,6 +227,18 @@ const Register: React.FC = () => {
             return;
         }
 
+        // Validate resident tags
+        if (!formData.resident_tags || formData.resident_tags.length === 0) {
+            alert('Please select at least one resident tag.');
+            return;
+        }
+
+        const tagValidation = validateResidentTags(formData.resident_tags);
+        if (!tagValidation.valid) {
+            alert(tagValidation.message);
+            return;
+        }
+
         setSendingOtp(true);
         
         // Simulate API call
@@ -234,6 +276,7 @@ const Register: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-white">
+            <Navigation />
             {/* Header Section */}
             <div style={{ backgroundColor: '#05215e', textAlign: 'center', padding: '3rem 0' }}>
                 <Link 
@@ -586,35 +629,60 @@ const Register: React.FC = () => {
 
                         {/* Resident Tags */}
                         <div style={{ display: 'grid', gap: '0.5rem' }}>
-                            <label htmlFor="resident_tags" style={{ color: '#1f2937', fontWeight: '500' }}>Resident Tags *</label>
-                            <select
-                                id="resident_tags"
-                                name="resident_tags"
-                                value={formData.resident_tags}
-                                onChange={handleInputChange}
-                                required
-                                style={{
-                                    border: '1px solid #d1d5db',
-                                    borderRadius: '0.375rem',
-                                    padding: '0.5rem 0.75rem',
-                                    fontSize: '0.875rem',
-                                    color: 'black',
-                                    backgroundColor: 'white',
-                                    width: '100%',
-                                    boxSizing: 'border-box'
-                                }}
-                                onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
-                                onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
-                            >
-                                <option value="">Select Resident Tag</option>
-                                <option value="none">None</option>
-                                <option value="senior">Senior</option>
-                                <option value="pwd">PWD (Person with Disability)</option>
-                                <option value="minor">Minor</option>
-                                <option value="solo_parent">Solo Parent</option>
-                                <option value="first_job_seeker">First Job Seeker</option>
-                                <option value="unemployed">Unemployed</option>
-                            </select>
+                            <label style={{ color: '#1f2937', fontWeight: '500' }}>Resident Tags *</label>
+                            <div style={{
+                                border: '1px solid #d1d5db',
+                                borderRadius: '0.375rem',
+                                padding: '0.75rem',
+                                backgroundColor: 'white',
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                                gap: '0.5rem'
+                            }}>
+                                {[
+                                    { value: 'none', label: 'None' },
+                                    { value: 'senior', label: 'Senior' },
+                                    { value: 'pwd', label: 'PWD (Person with Disability)' },
+                                    { value: 'minor', label: 'Minor' },
+                                    { value: 'solo_parent', label: 'Solo Parent' },
+                                    { value: 'first_job_seeker', label: 'First Job Seeker' },
+                                    { value: 'unemployed', label: 'Unemployed' }
+                                ].map((tag) => (
+                                    <label key={tag.value} style={{ 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        gap: '0.5rem',
+                                        fontSize: '0.875rem',
+                                        color: '#374151',
+                                        cursor: 'pointer'
+                                    }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={formData.resident_tags.includes(tag.value)}
+                                            onChange={(e) => {
+                                                const newTags = e.target.checked 
+                                                    ? [...formData.resident_tags.filter(t => t !== 'none'), tag.value]
+                                                    : formData.resident_tags.filter(t => t !== tag.value);
+                                                
+                                                if (tag.value === 'none') {
+                                                    handleResidentTagChange(['none']);
+                                                } else {
+                                                    handleResidentTagChange(newTags.filter(t => t !== 'none').length === 0 ? ['none'] : newTags.filter(t => t !== 'none'));
+                                                }
+                                            }}
+                                            style={{ 
+                                                marginRight: '0.25rem',
+                                                width: '16px',
+                                                height: '16px'
+                                            }}
+                                        />
+                                        {tag.label}
+                                    </label>
+                                ))}
+                            </div>
+                            <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: 0 }}>
+                                Select all applicable tags. Note: Minor and Senior cannot be selected together.
+                            </p>
                         </div>
 
                         {/* Supporting Documents */}

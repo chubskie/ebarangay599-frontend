@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Navigation from '../components/Navigation';
+
 import { 
     FaBullhorn,
     FaEnvelope,
@@ -12,6 +14,8 @@ import {
 const Home: React.FC = () => {
     return (
         <div className="min-h-screen flex flex-col">
+            {/* Use Navigation Component */}
+            <Navigation />
             {/* Hero Section */}
             <section className="relative min-h-screen overflow-hidden bg-barangay-blue-600">
                 {/* Background Image with Overlay */}

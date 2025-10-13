@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Navigation from '../components/Navigation';
+
 import { 
     FaBullhorn,
     FaEnvelope,
@@ -12,6 +14,7 @@ import {
 const Announcements: React.FC = () => {
     return (
         <div className="min-h-screen flex flex-col">
+            <Navigation />
             {/* Hero Section */}
             <section className="py-24 bg-barangay-blue-600">
                 <div className="max-w-7xl mx-auto px-4" style={{ textAlign: 'center' }}>

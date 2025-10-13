@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Navigation from '../components/Navigation';
+
 import { 
     FaEye,
     FaEyeSlash,
@@ -71,6 +73,7 @@ const Login: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-white">
+            <Navigation />
             {/* Header Section */}
             <div style={{ backgroundColor: '#05215e', textAlign: 'center', padding: '3rem 0' }}>
                 <Link 

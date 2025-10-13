@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Navigation from '../components/Navigation';
+
 import { 
     FaStar,
     FaCheckCircle,
@@ -13,6 +15,7 @@ import {
 const About: React.FC = () => {
     return (
         <div className="min-h-screen flex flex-col">
+            <Navigation />
             {/* Hero Section */}
             <section className="py-24 bg-barangay-blue-600">
                 <div className="max-w-7xl mx-auto px-4" style={{ textAlign: 'center' }}>
@@ -62,16 +65,20 @@ const About: React.FC = () => {
                         
                         {/* Barangay Captain */}
                         <div className="text-center mb-12">
-                            <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gray-200 flex items-center justify-center">
+                            <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                                 <FaUser className="w-16 h-16 text-gray-400" />
                             </div>
-                            <h3 className="text-2xl font-bold mb-2 text-barangay-blue-600">
+                            <h3 className="text-2xl font-bold mb-2 text-gray-800">
                                 Kapitana Edith Alviso
                             </h3>
-                            <p className="text-lg text-gray-600 mb-4">Barangay Captain</p>
-                            <p className="text-gray-600 max-w-2xl mx-auto">
-                                Pinangungunahan ni Kapitana Edith Alviso ang Barangay 599 nang may dedikasyon at malasakit sa paglilingkod-bayan, nagsisikap siya nang walang humpay upang mapabuti ang buhay ng lahat ng residente at isulong ang kaunlaran ng komunidad.
-                            </p>
+                            <p className="text-lg text-gray-500 mb-4 font-medium">Barangay Captain</p>
+                            <div className="max-w-3xl mx-auto">
+                                <p className="text-gray-600 text-center leading-relaxed">
+                                    Pinangungunahan ni Kapitana Edith Alviso ang Barangay 599 nang may dedikasyon at 
+                                    malasakit sa paglilingkod-bayan, nagsisikap siya nang walang humpay upang mapabuti ang 
+                                    buhay ng lahat ng residente at isulong ang kaunlaran ng komunidad.
+                                </p>
+                            </div>
                         </div>
 
                         {/* Executive Officials */}
