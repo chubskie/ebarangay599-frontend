@@ -2,12 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo/barangay-599-logo.png" />
+    <link rel="icon" type="image/png" href="/ebarangay599-frontend/logo/barangay-599-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Barangay 599 - E-Barangay System</title>
     <meta name="description" content="Official E-Barangay System for Barangay 599, Zone 59, District VI, Sta. Mesa, Manila" />
-    <script type="module" crossorigin src="/assets/index-D8psDfvL.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BkHrIa6C.css">
+    
+    <!-- GitHub Pages SPA redirect script -->
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // MIT License
+      // https://github.com/rafgraph/spa-github-pages
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <script type="module" crossorigin src="/ebarangay599-frontend/assets/index-D8psDfvL.js"></script>
+    <link rel="stylesheet" crossorigin href="/ebarangay599-frontend/assets/index-BkHrIa6C.css">
   </head>
   <body>
     <div id="root"></div>
