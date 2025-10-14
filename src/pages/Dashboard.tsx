@@ -988,7 +988,7 @@ const Dashboard: React.FC = () => {
                                                         textDecoration: 'underline'
                                                     }}
                                                 >
-                                                    🏡 Create New Household (Become Head)
+                                                    Create New Household (Become Head)
                                                 </button>
                                                 <button 
                                                     onClick={() => setShowJoinHousehold(true)}
@@ -1002,7 +1002,7 @@ const Dashboard: React.FC = () => {
                                                         textDecoration: 'underline'
                                                     }}
                                                 >
-                                                    🔗 Join Existing Household (Enter Household ID)
+                                                    Join Existing Household (Enter Household ID)
                                                 </button>
                                                 <button 
                                                     onClick={() => setShowHouseholdInvitations(true)}
@@ -1016,7 +1016,7 @@ const Dashboard: React.FC = () => {
                                                         textDecoration: 'underline'
                                                     }}
                                                 >
-                                                    📧 View Household Invitations ({householdInvitations.length})
+                                                    View Household Invitations ({householdInvitations.length})
                                                 </button>
                                             </div>
                                         </div>

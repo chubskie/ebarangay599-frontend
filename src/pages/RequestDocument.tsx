@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import ResidentDashboardNav from '../components/ResidentDashboardNav';
 import { 
     FaFileAlt,
@@ -20,7 +20,6 @@ interface DocumentType {
     description: string;
     fee: number;
     processingTime: string;
-    requirements: string[];
     color: string;
 }
 
@@ -83,7 +82,6 @@ const RequestDocument: React.FC = () => {
             description: 'Certificate of good moral character and standing in the community',
             fee: 50,
             processingTime: '3-5 business days',
-            requirements: ['Valid ID', 'Proof of Residency', 'Barangay ID (if available)'],
             color: 'bg-blue-500'
         },
         {
@@ -93,7 +91,6 @@ const RequestDocument: React.FC = () => {
             description: 'Certification for financial assistance and social services',
             fee: 30,
             processingTime: '2-3 business days',
-            requirements: ['Valid ID', 'Proof of Income (if any)', 'Supporting Documents'],
             color: 'bg-green-500'
         },
         {
@@ -103,7 +100,6 @@ const RequestDocument: React.FC = () => {
             description: 'Legal document for filing court cases or legal proceedings',
             fee: 100,
             processingTime: '5-7 business days',
-            requirements: ['Valid ID', 'Police Report (if applicable)', 'Incident Documentation'],
             color: 'bg-red-500'
         },
         {
@@ -113,7 +109,6 @@ const RequestDocument: React.FC = () => {
             description: 'Permit for operating business within barangay jurisdiction',
             fee: 200,
             processingTime: '7-10 business days',
-            requirements: ['Business Registration', 'Tax Identification Number', 'Valid ID'],
             color: 'bg-purple-500'
         },
         {
@@ -123,7 +118,6 @@ const RequestDocument: React.FC = () => {
             description: 'Character reference for employment, education, or other purposes',
             fee: 40,
             processingTime: '3-5 business days',
-            requirements: ['Valid ID', 'Purpose Letter', 'Character References'],
             color: 'bg-yellow-500'
         },
         {
@@ -133,7 +127,6 @@ const RequestDocument: React.FC = () => {
             description: 'Identification card for senior citizens (60 years and above)',
             fee: 0,
             processingTime: '5-7 business days',
-            requirements: ['Birth Certificate', 'Valid ID', 'Recent Photo (2x2)'],
             color: 'bg-gray-500'
         }
     ];
@@ -315,18 +308,7 @@ const RequestDocument: React.FC = () => {
                                         <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '1rem', lineHeight: '1.5' }}>
                                             {doc.description}
                                         </p>
-                                        
-                                        <div style={{ marginBottom: '1rem' }}>
-                                            <p style={{ fontSize: '0.75rem', fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>
-                                                Requirements:
-                                            </p>
-                                            <ul style={{ fontSize: '0.75rem', color: '#6b7280', paddingLeft: '1rem' }}>
-                                                {doc.requirements.map((req, index) => (
-                                                    <li key={index}>{req}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                        
+
                                         <button
                                             style={{
                                                 width: '100%',
