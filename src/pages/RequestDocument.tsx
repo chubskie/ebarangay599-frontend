@@ -90,7 +90,7 @@ const RequestDocument: React.FC = () => {
             icon: FaFileAlt,
             description: 'Certificate of good moral character and standing in the community',
             fee: 50,
-            processingTime: '3-5 business days',
+            processingTime: '1 business day',
             color: 'bg-blue-500'
         },
         {
@@ -99,7 +99,7 @@ const RequestDocument: React.FC = () => {
             icon: FaCertificate,
             description: 'Certification for financial assistance and social services',
             fee: 30,
-            processingTime: '2-3 business days',
+            processingTime: '1 business day',
             color: 'bg-green-500'
         },
         {
@@ -108,7 +108,7 @@ const RequestDocument: React.FC = () => {
             icon: FaFileAlt,
             description: 'Legal document for filing court cases or legal proceedings',
             fee: 100,
-            processingTime: '5-7 business days',
+            processingTime: '1 business day',
             color: 'bg-red-500'
         },
         {
@@ -117,7 +117,7 @@ const RequestDocument: React.FC = () => {
             icon: FaBusinessTime,
             description: 'Permit for operating business within barangay jurisdiction',
             fee: 200,
-            processingTime: '7-10 business days',
+            processingTime: '1 business day',
             color: 'bg-purple-500'
         },
         {
@@ -126,7 +126,7 @@ const RequestDocument: React.FC = () => {
             icon: FaMedal,
             description: 'Character reference for employment, education, or other purposes',
             fee: 40,
-            processingTime: '3-5 business days',
+            processingTime: '1 business day',
             color: 'bg-yellow-500'
         },
         {
@@ -135,7 +135,7 @@ const RequestDocument: React.FC = () => {
             icon: FaIdCard,
             description: 'Identification card for senior citizens (60 years and above)',
             fee: 0,
-            processingTime: '5-7 business days',
+            processingTime: '1 business day',
             color: 'bg-gray-500'
         }
     ];
