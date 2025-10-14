@@ -1197,17 +1197,6 @@ const Dashboard: React.FC = () => {
                                         border: '1px solid #e5e7eb'
                                     }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                                            <div style={{
-                                                width: '16px',
-                                                height: '16px',
-                                                backgroundColor: '#f59e0b',
-                                                borderRadius: '50%',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center'
-                                            }}>
-                                                <span style={{ color: 'white', fontSize: '10px', fontWeight: 'bold' }}>⚠</span>
-                                            </div>
                                             <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#1f2937', margin: 0 }}>
                                                 Barangay Clearance
                                             </h4>
@@ -1226,17 +1215,6 @@ const Dashboard: React.FC = () => {
                                         border: '1px solid #e5e7eb'
                                     }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                                            <div style={{
-                                                width: '16px',
-                                                height: '16px',
-                                                backgroundColor: '#16a34a',
-                                                borderRadius: '50%',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center'
-                                            }}>
-                                                <span style={{ color: 'white', fontSize: '10px', fontWeight: 'bold' }}>✓</span>
-                                            </div>
                                             <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#1f2937', margin: 0 }}>
                                                 Business Permit
                                             </h4>
@@ -1255,17 +1233,6 @@ const Dashboard: React.FC = () => {
                                         border: '1px solid #e5e7eb'
                                     }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                                            <div style={{
-                                                width: '16px',
-                                                height: '16px',
-                                                backgroundColor: '#dc2626',
-                                                borderRadius: '50%',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center'
-                                            }}>
-                                                <span style={{ color: 'white', fontSize: '10px', fontWeight: 'bold' }}>✗</span>
-                                            </div>
                                             <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#1f2937', margin: 0 }}>
                                                 Certificate of Residency
                                             </h4>
@@ -1298,17 +1265,6 @@ const Dashboard: React.FC = () => {
                                         border: '1px solid #e5e7eb'
                                     }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                                            <div style={{
-                                                width: '16px',
-                                                height: '16px',
-                                                backgroundColor: '#3b82f6',
-                                                borderRadius: '50%',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center'
-                                            }}>
-                                                <span style={{ color: 'white', fontSize: '9px' }}>📅</span>
-                                            </div>
                                             <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#1f2937', margin: 0 }}>
                                                 Barangay Captain Meeting
                                             </h4>
@@ -1327,17 +1283,6 @@ const Dashboard: React.FC = () => {
                                         border: '1px solid #e5e7eb'
                                     }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                                            <div style={{
-                                                width: '16px',
-                                                height: '16px',
-                                                backgroundColor: '#16a34a',
-                                                borderRadius: '50%',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center'
-                                            }}>
-                                                <span style={{ color: 'white', fontSize: '10px', fontWeight: 'bold' }}>✓</span>
-                                            </div>
                                             <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#1f2937', margin: 0 }}>
                                                 Health Center Checkup
                                             </h4>
@@ -1370,17 +1315,6 @@ const Dashboard: React.FC = () => {
                                         border: '1px solid #e5e7eb'
                                     }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                                            <div style={{
-                                                width: '16px',
-                                                height: '16px',
-                                                backgroundColor: '#f59e0b',
-                                                borderRadius: '50%',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center'
-                                            }}>
-                                                <span style={{ color: 'white', fontSize: '10px', fontWeight: 'bold' }}>⚠</span>
-                                            </div>
                                             <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#1f2937', margin: 0 }}>
                                                 Noise Complaint
                                             </h4>
@@ -1399,17 +1333,6 @@ const Dashboard: React.FC = () => {
                                         border: '1px solid #e5e7eb'
                                     }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                                            <div style={{
-                                                width: '16px',
-                                                height: '16px',
-                                                backgroundColor: '#16a34a',
-                                                borderRadius: '50%',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center'
-                                            }}>
-                                                <span style={{ color: 'white', fontSize: '10px', fontWeight: 'bold' }}>✓</span>
-                                            </div>
                                             <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#1f2937', margin: 0 }}>
                                                 Stray Animals Report
                                             </h4>
@@ -1428,17 +1351,6 @@ const Dashboard: React.FC = () => {
                                         border: '1px solid #e5e7eb'
                                     }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                                            <div style={{
-                                                width: '16px',
-                                                height: '16px',
-                                                backgroundColor: '#3b82f6',
-                                                borderRadius: '50%',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center'
-                                            }}>
-                                                <span style={{ color: 'white', fontSize: '9px' }}>🔧</span>
-                                            </div>
                                             <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#1f2937', margin: 0 }}>
                                                 Broken Streetlight
                                             </h4>
@@ -1739,7 +1651,7 @@ const Dashboard: React.FC = () => {
 
                         <div style={{ backgroundColor: '#dcfce7', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1.5rem' }}>
                             <h3 style={{ fontSize: '0.875rem', fontWeight: '600', color: '#166534', marginBottom: '0.5rem' }}>
-                                ✅ As Household Head, you can:
+                                As Household Head, you can:
                             </h3>
                             <ul style={{ fontSize: '0.75rem', color: '#166534', paddingLeft: '1rem', margin: 0 }}>
                                 <li>Add and manage household members</li>
@@ -1862,7 +1774,7 @@ const Dashboard: React.FC = () => {
 
                         <div style={{ backgroundColor: '#fef3c7', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1.5rem' }}>
                             <h3 style={{ fontSize: '0.875rem', fontWeight: '600', color: '#92400e', marginBottom: '0.5rem' }}>
-                                ⚠️ Note:
+                                Note:
                             </h3>
                             <p style={{ fontSize: '0.75rem', color: '#92400e', margin: 0 }}>
                                 Your request will be sent to the household head for approval. You'll be notified once they respond.
@@ -1970,7 +1882,7 @@ const Dashboard: React.FC = () => {
 
                         <div style={{ backgroundColor: '#fee2e2', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1.5rem' }}>
                             <h3 style={{ fontSize: '0.875rem', fontWeight: '600', color: '#dc2626', marginBottom: '0.5rem' }}>
-                                ⚠️ This action cannot be undone
+                                This action cannot be undone
                             </h3>
                             <p style={{ fontSize: '0.75rem', color: '#dc2626', margin: 0 }}>
                                 You'll need to request to join a household again or create your own household.

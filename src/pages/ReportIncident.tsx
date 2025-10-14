@@ -5,19 +5,16 @@ import {
     FaTimes,
     FaCheck,
     FaSpinner,
-    FaEye,
     FaFileAlt,
     FaShieldAlt,
-    FaFire,
-    FaCarCrash,
-    FaUserTimes,
-    FaExclamationTriangle
+    FaExclamationTriangle,
+    FaClock
 } from 'react-icons/fa';
 
 interface IncidentReport {
     id: string;
     type: string;
-    status: 'submitted' | 'investigating' | 'resolved' | 'closed';
+    status: 'submitted' | 'investigating' | 'resolved' | 'closed' | 'in progress';
     reportDate: string;
     incidentDate: string;
     location: string;
@@ -37,9 +34,8 @@ const ReportIncident: React.FC = () => {
         incidentDate: '',
         incidentTime: '',
         location: '',
+        subject: '',
         description: '',
-        witnessName: '',
-        witnessContact: '',
         priority: 'medium',
         isAnonymous: false
     });
@@ -72,62 +68,48 @@ const ReportIncident: React.FC = () => {
             location: 'Corner of Narra and Molave St.',
             priority: 'low',
             description: 'Street light not working, causing safety concerns'
+        },
+        {
+            id: 'INC-2025-003',
+            type: 'Broken Streetlight',
+            status: 'in progress',
+            reportDate: 'Oct 05, 2025',
+            incidentDate: 'Oct 05, 2025',
+            location: 'Main Street Zone 59',
+            priority: 'medium',
+            description: 'Streetlight pole damaged and needs repair'
         }
     ]);
 
     const incidentTypes = [
         {
-            id: 'crime',
-            name: 'Crime/Security',
-            icon: FaShieldAlt,
-            description: 'Theft, robbery, vandalism, suspicious activities',
-            priority: 'high',
-            color: 'bg-red-500'
-        },
-        {
-            id: 'fire',
-            name: 'Fire Incident',
-            icon: FaFire,
-            description: 'Fire outbreaks, fire hazards, electrical issues',
-            priority: 'urgent',
-            color: 'bg-orange-500'
-        },
-        {
-            id: 'accident',
-            name: 'Accident',
-            icon: FaCarCrash,
-            description: 'Vehicle accidents, personal injuries, property damage',
-            priority: 'high',
-            color: 'bg-yellow-500'
-        },
-        {
-            id: 'public-safety',
-            name: 'Public Safety',
-            icon: FaExclamationTriangle,
-            description: 'Road hazards, broken infrastructure, dangerous conditions',
+            id: 'community-concern',
+            name: 'Community Concern',
+            icon: FaExclamationCircle,
+            description: 'Observations, community requests, and safety issues including flooding, garbage problems, animal problems, noise disturbances, and service interruptions like water and electricity outages',
             priority: 'medium',
             color: 'bg-blue-500'
         },
         {
-            id: 'noise',
-            name: 'Noise Disturbance',
-            icon: FaExclamationCircle,
-            description: 'Loud music, construction noise, public disturbance',
-            priority: 'low',
-            color: 'bg-purple-500'
+            id: 'blotter',
+            name: 'Blotter',
+            icon: FaShieldAlt,
+            description: 'Criminal complaints requiring investigation. You will be requested to appear at the barangay hall for further investigation',
+            priority: 'high',
+            color: 'bg-red-500'
         },
         {
-            id: 'community',
-            name: 'Community Issue',
-            icon: FaUserTimes,
-            description: 'Neighbor disputes, public nuisance, community concerns',
-            priority: 'low',
-            color: 'bg-gray-500'
+            id: 'vawc',
+            name: 'VAWC',
+            icon: FaExclamationTriangle,
+            description: 'Violence Against Women and Children cases. These reports are handled with strict confidentiality and urgency. You will be requested to appear at the barangay hall for further investigation',
+            priority: 'urgent',
+            color: 'bg-purple-500'
         }
     ];
 
     const handleSubmitReport = async () => {
-        if (!formData.incidentType || !formData.incidentDate || !formData.location || !formData.description) {
+        if (!formData.incidentType || !formData.incidentDate || !formData.location || !formData.subject || !formData.description) {
             alert('Please fill in all required fields.');
             return;
         }
@@ -162,9 +144,8 @@ const ReportIncident: React.FC = () => {
                 incidentDate: '',
                 incidentTime: '',
                 location: '',
+                subject: '',
                 description: '',
-                witnessName: '',
-                witnessContact: '',
                 priority: 'medium',
                 isAnonymous: false
             });
@@ -178,6 +159,7 @@ const ReportIncident: React.FC = () => {
         switch (status) {
             case 'submitted': return 'text-blue-600 bg-blue-100';
             case 'investigating': return 'text-yellow-600 bg-yellow-100';
+            case 'in progress': return 'text-blue-600 bg-blue-100';
             case 'resolved': return 'text-green-600 bg-green-100';
             case 'closed': return 'text-gray-600 bg-gray-100';
             default: return 'text-gray-600 bg-gray-100';
@@ -198,6 +180,7 @@ const ReportIncident: React.FC = () => {
         switch (status) {
             case 'submitted': return <FaFileAlt className="w-4 h-4" />;
             case 'investigating': return <FaSpinner className="w-4 h-4 animate-spin" />;
+            case 'in progress': return <FaClock className="w-4 h-4" />;
             case 'resolved': return <FaCheck className="w-4 h-4" />;
             case 'closed': return <FaCheck className="w-4 h-4" />;
             default: return <FaFileAlt className="w-4 h-4" />;
@@ -415,9 +398,6 @@ const ReportIncident: React.FC = () => {
                                                 <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
                                                     Report Date
                                                 </th>
-                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
-                                                    Actions
-                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -464,21 +444,6 @@ const ReportIncident: React.FC = () => {
                                                     </td>
                                                     <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#1f2937' }}>
                                                         {report.reportDate}
-                                                    </td>
-                                                    <td style={{ padding: '1rem' }}>
-                                                        <button
-                                                            style={{
-                                                                padding: '0.5rem',
-                                                                backgroundColor: '#f3f4f6',
-                                                                border: 'none',
-                                                                borderRadius: '0.375rem',
-                                                                cursor: 'pointer',
-                                                                color: '#6b7280'
-                                                            }}
-                                                            title="View Details"
-                                                        >
-                                                            <FaEye style={{ width: '0.875rem', height: '0.875rem' }} />
-                                                        </button>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -529,9 +494,8 @@ const ReportIncident: React.FC = () => {
                                         incidentDate: '',
                                         incidentTime: '',
                                         location: '',
+                                        subject: '',
                                         description: '',
-                                        witnessName: '',
-                                        witnessContact: '',
                                         priority: 'medium',
                                         isAnonymous: false
                                     });
@@ -618,6 +582,31 @@ const ReportIncident: React.FC = () => {
                             />
                         </div>
 
+                        {/* Subject */}
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
+                                Subject *
+                            </label>
+                            <input
+                                type="text"
+                                value={formData.subject}
+                                onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                                placeholder="Brief subject of the incident..."
+                                style={{
+                                    width: '100%',
+                                    padding: '0.75rem',
+                                    border: '2px solid #e5e7eb',
+                                    borderRadius: '0.5rem',
+                                    fontSize: '0.875rem',
+                                    outline: 'none',
+                                    transition: 'border-color 0.2s',
+                                    boxSizing: 'border-box'
+                                }}
+                                onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+                                onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
+                            />
+                        </div>
+
                         {/* Description */}
                         <div style={{ marginBottom: '1.5rem' }}>
                             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
@@ -638,48 +627,6 @@ const ReportIncident: React.FC = () => {
                                     resize: 'vertical'
                                 }}
                             />
-                        </div>
-
-                        {/* Witness Information */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
-                            <div>
-                                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
-                                    Witness Name (Optional)
-                                </label>
-                                <input
-                                    type="text"
-                                    value={formData.witnessName}
-                                    onChange={(e) => setFormData({...formData, witnessName: e.target.value})}
-                                    placeholder="Name of witness if any..."
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.75rem',
-                                        border: '2px solid #e5e7eb',
-                                        borderRadius: '0.5rem',
-                                        fontSize: '0.875rem',
-                                        outline: 'none'
-                                    }}
-                                />
-                            </div>
-                            <div>
-                                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
-                                    Witness Contact (Optional)
-                                </label>
-                                <input
-                                    type="text"
-                                    value={formData.witnessContact}
-                                    onChange={(e) => setFormData({...formData, witnessContact: e.target.value})}
-                                    placeholder="Contact number of witness..."
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.75rem',
-                                        border: '2px solid #e5e7eb',
-                                        borderRadius: '0.5rem',
-                                        fontSize: '0.875rem',
-                                        outline: 'none'
-                                    }}
-                                />
-                            </div>
                         </div>
 
                         {/* Anonymous Reporting */}
@@ -711,9 +658,8 @@ const ReportIncident: React.FC = () => {
                                         incidentDate: '',
                                         incidentTime: '',
                                         location: '',
+                                        subject: '',
                                         description: '',
-                                        witnessName: '',
-                                        witnessContact: '',
                                         priority: 'medium',
                                         isAnonymous: false
                                     });

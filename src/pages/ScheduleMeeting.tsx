@@ -3,22 +3,16 @@ import ResidentDashboardNav from '../components/ResidentDashboardNav';
 import { 
     FaCalendarAlt,
     FaClock,
-    FaUsers,
     FaMapMarkerAlt,
-    FaPhone,
     FaEnvelope,
-    FaFileAlt,
     FaEdit,
     FaTimes,
     FaCheck,
     FaSpinner,
-    FaBuilding,
     FaBan,
     FaCheckCircle,
     FaInfoCircle,
-    FaUserTie,
-    FaGavel,
-    FaHandshake
+    FaUserTie
 } from 'react-icons/fa';
 
 interface Meeting {
@@ -34,6 +28,19 @@ interface Meeting {
     notes?: string;
 }
 
+interface MeetingInvitation {
+    id: string;
+    title: string;
+    type: string;
+    date: string;
+    time: string;
+    location: string;
+    organizer: string;
+    purpose: string;
+    status: 'pending' | 'accepted' | 'declined';
+    invitedBy: string;
+}
+
 const ScheduleMeeting: React.FC = () => {
     const [activeSection, setActiveSection] = useState('meeting');
     const [showScheduleModal, setShowScheduleModal] = useState(false);
@@ -47,6 +54,7 @@ const ScheduleMeeting: React.FC = () => {
         preferredTime: '',
         alternativeDate: '',
         alternativeTime: '',
+        subject: '',
         purpose: '',
         attendees: '',
         urgency: 'normal',
@@ -89,6 +97,34 @@ const ScheduleMeeting: React.FC = () => {
         }
     ]);
 
+    // Meeting invitations
+    const [meetingInvitations, setMeetingInvitations] = useState<MeetingInvitation[]>([
+        {
+            id: 'INV-2025-001',
+            title: 'Community Development Planning',
+            type: 'Planning Meeting',
+            date: 'Oct 16, 2025',
+            time: '9:00 AM',
+            location: 'Barangay Hall - Conference Room',
+            organizer: 'Barangay Captain',
+            purpose: 'Discuss upcoming community development projects and budget allocation',
+            status: 'pending',
+            invitedBy: 'Barangay Captain Maria Santos'
+        },
+        {
+            id: 'INV-2025-002',
+            title: 'Youth Program Initiative',
+            type: 'Committee Meeting',
+            date: 'Oct 18, 2025',
+            time: '3:00 PM',
+            location: 'Barangay Hall - Multi-purpose Room',
+            organizer: 'Youth Affairs Committee',
+            purpose: 'Plan activities and programs for the youth in the community',
+            status: 'pending',
+            invitedBy: 'Kagawad Jennifer Cruz'
+        }
+    ]);
+
     const meetingTypes = [
         {
             id: 'consultation',
@@ -97,51 +133,11 @@ const ScheduleMeeting: React.FC = () => {
             description: 'Meet with barangay officials for guidance, information, or general concerns',
             duration: '30-45 minutes',
             color: 'bg-blue-500'
-        },
-        {
-            id: 'complaint',
-            name: 'File a Complaint',
-            icon: FaFileAlt,
-            description: 'Report issues, violations, or disputes that require official action',
-            duration: '45-60 minutes',
-            color: 'bg-red-500'
-        },
-        {
-            id: 'hearing',
-            name: 'Hearing/Mediation',
-            icon: FaGavel,
-            description: 'Attend scheduled hearings or mediation sessions for disputes',
-            duration: '1-2 hours',
-            color: 'bg-purple-500'
-        },
-        {
-            id: 'business',
-            name: 'Business Permit',
-            icon: FaBuilding,
-            description: 'Discuss business permit applications and requirements',
-            duration: '30-45 minutes',
-            color: 'bg-green-500'
-        },
-        {
-            id: 'community',
-            name: 'Community Project',
-            icon: FaUsers,
-            description: 'Discuss community initiatives, projects, or volunteer opportunities',
-            duration: '45-60 minutes',
-            color: 'bg-orange-500'
-        },
-        {
-            id: 'resolution',
-            name: 'Conflict Resolution',
-            icon: FaHandshake,
-            description: 'Resolve conflicts between residents or community issues',
-            duration: '1-2 hours',
-            color: 'bg-yellow-500'
         }
     ];
 
     const handleScheduleMeeting = async () => {
-        if (!formData.meetingType || !formData.preferredDate || !formData.preferredTime || !formData.purpose) {
+        if (!formData.meetingType || !formData.preferredDate || !formData.preferredTime || !formData.subject || !formData.purpose) {
             alert('Please fill in all required fields.');
             return;
         }
@@ -152,7 +148,7 @@ const ScheduleMeeting: React.FC = () => {
         setTimeout(() => {
             const newMeeting: Meeting = {
                 id: `MTG-2025-${String(meetings.length + 1).padStart(3, '0')}`,
-                title: formData.meetingType,
+                title: formData.subject,
                 type: formData.meetingType,
                 date: new Date(formData.preferredDate).toLocaleDateString('en-US', { 
                     year: 'numeric', 
@@ -178,6 +174,7 @@ const ScheduleMeeting: React.FC = () => {
                 preferredTime: '',
                 alternativeDate: '',
                 alternativeTime: '',
+                subject: '',
                 purpose: '',
                 attendees: '',
                 urgency: 'normal',
@@ -188,6 +185,34 @@ const ScheduleMeeting: React.FC = () => {
             
             alert('Meeting request submitted successfully! You will receive confirmation within 24 hours.');
         }, 2000);
+    };
+
+    // Handle invitation response
+    const handleInvitationResponse = (invitationId: string, response: 'accepted' | 'declined') => {
+        setMeetingInvitations(prev => 
+            prev.map(invitation => 
+                invitation.id === invitationId 
+                    ? { ...invitation, status: response }
+                    : invitation
+            )
+        );
+        
+        const invitation = meetingInvitations.find(inv => inv.id === invitationId);
+        if (invitation && response === 'accepted') {
+            // If accepted, add to meetings list
+            const newMeeting: Meeting = {
+                id: `MTG-${invitationId.replace('INV-', '')}`,
+                title: invitation.title,
+                type: invitation.type,
+                date: invitation.date,
+                time: invitation.time,
+                status: 'confirmed',
+                location: invitation.location,
+                attendees: [invitation.organizer],
+                purpose: invitation.purpose
+            };
+            setMeetings(prev => [...prev, newMeeting]);
+        }
     };
 
     const getStatusColor = (status: string) => {
@@ -260,7 +285,7 @@ const ScheduleMeeting: React.FC = () => {
                             color: '#1f2937', 
                             marginBottom: '0.5rem' 
                         }}>
-                            Meeting Scheduler
+                            Schedule a Meeting
                         </h1>
                         <p style={{ color: '#6b7280', fontSize: '1rem' }}>
                             Schedule meetings with Barangay 599 officials for consultations, hearings, and other matters
@@ -430,9 +455,6 @@ const ScheduleMeeting: React.FC = () => {
                                                 <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
                                                     Status
                                                 </th>
-                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
-                                                    Actions
-                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -485,37 +507,105 @@ const ScheduleMeeting: React.FC = () => {
                                                             {meeting.status}
                                                         </span>
                                                     </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Meeting Invitations */}
+                    <div style={{ marginTop: '2rem' }}>
+                        <h2 style={{ 
+                            fontSize: '1.5rem', 
+                            fontWeight: '600', 
+                            color: '#1f2937', 
+                            marginBottom: '1.5rem' 
+                        }}>
+                            Meeting Invitations
+                        </h2>
+                        
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '0.75rem',
+                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                            overflow: 'hidden'
+                        }}>
+                            {meetingInvitations.filter(inv => inv.status === 'pending').length === 0 ? (
+                                <div style={{ padding: '3rem', textAlign: 'center' }}>
+                                    <FaEnvelope style={{ width: '3rem', height: '3rem', color: '#d1d5db', margin: '0 auto 1rem' }} />
+                                    <p style={{ color: '#6b7280', fontSize: '1rem' }}>No pending invitations</p>
+                                    <p style={{ color: '#9ca3af', fontSize: '0.875rem' }}>
+                                        You'll see meeting invitations from barangay officials here
+                                    </p>
+                                </div>
+                            ) : (
+                                <div style={{ overflow: 'auto' }}>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                        <thead>
+                                            <tr style={{ backgroundColor: '#f9fafb' }}>
+                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                                                    Invitation ID
+                                                </th>
+                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                                                    Title
+                                                </th>
+                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                                                    Date & Time
+                                                </th>
+                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                                                    Invited By
+                                                </th>
+                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
+                                                    Response
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {meetingInvitations.filter(inv => inv.status === 'pending').map((invitation) => (
+                                                <tr key={invitation.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                                                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#374151' }}>
+                                                        {invitation.id}
+                                                    </td>
                                                     <td style={{ padding: '1rem' }}>
-                                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                            <button
-                                                                style={{
-                                                                    padding: '0.5rem',
-                                                                    backgroundColor: '#f3f4f6',
-                                                                    border: 'none',
-                                                                    borderRadius: '0.375rem',
-                                                                    cursor: 'pointer',
-                                                                    color: '#6b7280'
-                                                                }}
-                                                                title="View Details"
-                                                            >
-                                                                <FaFileAlt style={{ width: '0.875rem', height: '0.875rem' }} />
-                                                            </button>
-                                                            {meeting.status === 'pending' && (
-                                                                <button
-                                                                    style={{
-                                                                        padding: '0.5rem',
-                                                                        backgroundColor: '#fef3c7',
-                                                                        border: 'none',
-                                                                        borderRadius: '0.375rem',
-                                                                        cursor: 'pointer',
-                                                                        color: '#d97706'
-                                                                    }}
-                                                                    title="Reschedule"
-                                                                >
-                                                                    <FaEdit style={{ width: '0.875rem', height: '0.875rem' }} />
-                                                                </button>
-                                                            )}
+                                                        <div>
+                                                            <p style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1f2937', margin: '0 0 0.25rem 0' }}>
+                                                                {invitation.title}
+                                                            </p>
+                                                            <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: 0 }}>
+                                                                {invitation.type}
+                                                            </p>
                                                         </div>
+                                                    </td>
+                                                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#374151' }}>
+                                                        <div>
+                                                            <p style={{ margin: '0 0 0.25rem 0' }}>{invitation.date}</p>
+                                                            <p style={{ margin: 0, color: '#6b7280', fontSize: '0.75rem' }}>{invitation.time}</p>
+                                                        </div>
+                                                    </td>
+                                                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#374151' }}>
+                                                        {invitation.invitedBy}
+                                                    </td>
+                                                    <td style={{ padding: '1rem' }}>
+                                                        <select
+                                                            value={invitation.status}
+                                                            onChange={(e) => handleInvitationResponse(invitation.id, e.target.value as 'accepted' | 'declined')}
+                                                            style={{
+                                                                padding: '0.5rem',
+                                                                border: '2px solid #e5e7eb',
+                                                                borderRadius: '0.375rem',
+                                                                fontSize: '0.75rem',
+                                                                backgroundColor: 'white',
+                                                                cursor: 'pointer',
+                                                                outline: 'none'
+                                                            }}
+                                                        >
+                                                            <option value="pending">Select Response</option>
+                                                            <option value="accepted">Accept</option>
+                                                            <option value="declined">Decline</option>
+                                                        </select>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -571,7 +661,8 @@ const ScheduleMeeting: React.FC = () => {
                                         attendees: '',
                                         urgency: 'normal',
                                         meetingMode: 'in-person',
-                                        contactPreference: 'phone'
+                                        contactPreference: 'phone',
+                                        subject: ''
                                     });
                                 }}
                                 style={{
@@ -728,6 +819,31 @@ const ScheduleMeeting: React.FC = () => {
                             </div>
                         </div>
 
+                        {/* Subject */}
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
+                                Subject *
+                            </label>
+                            <input
+                                type="text"
+                                value={formData.subject}
+                                onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                                placeholder="Enter the subject of your meeting..."
+                                style={{
+                                    width: '100%',
+                                    padding: '0.75rem',
+                                    border: '2px solid #e5e7eb',
+                                    borderRadius: '0.5rem',
+                                    fontSize: '0.875rem',
+                                    outline: 'none',
+                                    transition: 'border-color 0.2s',
+                                    boxSizing: 'border-box'
+                                }}
+                                onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+                                onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
+                            />
+                        </div>
+
                         {/* Purpose */}
                         <div style={{ marginBottom: '1.5rem' }}>
                             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
@@ -771,37 +887,6 @@ const ScheduleMeeting: React.FC = () => {
                             />
                         </div>
 
-                        {/* Contact Preference */}
-                        <div style={{ marginBottom: '1.5rem' }}>
-                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
-                                Preferred Contact Method for Confirmation
-                            </label>
-                            <div style={{ display: 'flex', gap: '1rem' }}>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                                    <input
-                                        type="radio"
-                                        name="contactPreference"
-                                        value="phone"
-                                        checked={formData.contactPreference === 'phone'}
-                                        onChange={(e) => setFormData({...formData, contactPreference: e.target.value})}
-                                    />
-                                    <FaPhone style={{ width: '0.875rem', height: '0.875rem' }} />
-                                    <span style={{ fontSize: '0.875rem', color: '#374151' }}>Phone</span>
-                                </label>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                                    <input
-                                        type="radio"
-                                        name="contactPreference"
-                                        value="email"
-                                        checked={formData.contactPreference === 'email'}
-                                        onChange={(e) => setFormData({...formData, contactPreference: e.target.value})}
-                                    />
-                                    <FaEnvelope style={{ width: '0.875rem', height: '0.875rem' }} />
-                                    <span style={{ fontSize: '0.875rem', color: '#374151' }}>Email</span>
-                                </label>
-                            </div>
-                        </div>
-
                         {/* Action Buttons */}
                         <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
                             <button
@@ -818,7 +903,8 @@ const ScheduleMeeting: React.FC = () => {
                                         attendees: '',
                                         urgency: 'normal',
                                         meetingMode: 'in-person',
-                                        contactPreference: 'phone'
+                                        contactPreference: 'phone',
+                                        subject: ''
                                     });
                                 }}
                                 disabled={isSubmitting}

@@ -8,9 +8,7 @@ import {
     FaIdCard,
     FaTimes,
     FaCheck,
-    FaSpinner,
-    FaDownload,
-    FaEye
+    FaSpinner
 } from 'react-icons/fa';
 
 interface DocumentType {
@@ -26,7 +24,7 @@ interface DocumentType {
 interface DocumentRequest {
     id: string;
     type: string;
-    status: 'pending' | 'processing' | 'ready' | 'completed';
+    status: 'pending' | 'processing' | 'ready' | 'completed' | 'rejected';
     requestDate: string;
     completionDate?: string;
     purpose: string;
@@ -71,6 +69,14 @@ const RequestDocument: React.FC = () => {
             requestDate: 'Oct 12, 2025',
             purpose: 'Medical Assistance',
             fee: 30
+        },
+        {
+            id: 'REQ-2025-003',
+            type: 'Certificate of Residency',
+            status: 'rejected',
+            requestDate: 'Oct 01, 2025',
+            purpose: 'Legal Documentation',
+            fee: 75
         }
     ]);
 
@@ -175,6 +181,7 @@ const RequestDocument: React.FC = () => {
             case 'processing': return 'text-blue-600 bg-blue-100';
             case 'ready': return 'text-green-600 bg-green-100';
             case 'completed': return 'text-gray-600 bg-gray-100';
+            case 'rejected': return 'text-red-600 bg-red-100';
             default: return 'text-gray-600 bg-gray-100';
         }
     };
@@ -185,6 +192,7 @@ const RequestDocument: React.FC = () => {
             case 'processing': return <FaSpinner className="w-4 h-4 animate-spin" />;
             case 'ready': return <FaCheck className="w-4 h-4" />;
             case 'completed': return <FaCheck className="w-4 h-4" />;
+            case 'rejected': return <FaTimes className="w-4 h-4" />;
             default: return <FaSpinner className="w-4 h-4" />;
         }
     };
@@ -382,9 +390,6 @@ const RequestDocument: React.FC = () => {
                                                 <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
                                                     Fee
                                                 </th>
-                                                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
-                                                    Actions
-                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -417,38 +422,6 @@ const RequestDocument: React.FC = () => {
                                                     </td>
                                                     <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#1f2937', fontWeight: '500' }}>
                                                         ₱{request.fee}
-                                                    </td>
-                                                    <td style={{ padding: '1rem' }}>
-                                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                            <button
-                                                                style={{
-                                                                    padding: '0.5rem',
-                                                                    backgroundColor: '#f3f4f6',
-                                                                    border: 'none',
-                                                                    borderRadius: '0.375rem',
-                                                                    cursor: 'pointer',
-                                                                    color: '#6b7280'
-                                                                }}
-                                                                title="View Details"
-                                                            >
-                                                                <FaEye style={{ width: '0.875rem', height: '0.875rem' }} />
-                                                            </button>
-                                                            {request.status === 'ready' && (
-                                                                <button
-                                                                    style={{
-                                                                        padding: '0.5rem',
-                                                                        backgroundColor: '#10b981',
-                                                                        border: 'none',
-                                                                        borderRadius: '0.375rem',
-                                                                        cursor: 'pointer',
-                                                                        color: 'white'
-                                                                    }}
-                                                                    title="Download Document"
-                                                                >
-                                                                    <FaDownload style={{ width: '0.875rem', height: '0.875rem' }} />
-                                                                </button>
-                                                            )}
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))}
