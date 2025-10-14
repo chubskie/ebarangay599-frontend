@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import ResidentDashboardNav from '../components/ResidentDashboardNav';
 import { 
     FaIdCard,
-    FaDownload,
+    FaPrint,
     FaQrcode,
     FaUser,
     FaMapMarkerAlt,
@@ -31,13 +31,44 @@ const MyBarangayID: React.FC = () => {
     const [isRequestingID, setIsRequestingID] = useState(false);
     const idCardRef = useRef<HTMLDivElement>(null);
 
-    // Add CSS animation for spinner
+    // Add CSS animation for spinner and print styles
     React.useEffect(() => {
         const style = document.createElement('style');
         style.textContent = `
             @keyframes spin {
                 from { transform: rotate(0deg); }
                 to { transform: rotate(360deg); }
+            }
+            
+            @media print {
+                .print-only {
+                    display: block !important;
+                }
+                .no-print {
+                    display: none !important;
+                }
+                .printable-id-card {
+                    background: white !important;
+                    color: black !important;
+                    border: 2px solid #000 !important;
+                    border-radius: 10px !important;
+                    padding: 20px !important;
+                    margin: 20px !important;
+                    width: 350px !important;
+                    height: 220px !important;
+                    position: relative !important;
+                    page-break-inside: avoid !important;
+                }
+                .printable-id-card * {
+                    color: black !important;
+                }
+                .printable-id-card .decorative-element {
+                    display: none !important;
+                }
+                @page {
+                    size: A4;
+                    margin: 1in;
+                }
             }
         `;
         document.head.appendChild(style);
@@ -85,18 +116,127 @@ const MyBarangayID: React.FC = () => {
         }, 2000);
     };
 
-    const handleDownloadID = () => {
-        // Create a download link for the digital ID
+    const handlePrintID = () => {
+        // Create print styles for the ID card
+        const printStyles = `
+            @media print {
+                * {
+                    -webkit-print-color-adjust: exact !important;
+                    color-adjust: exact !important;
+                }
+                
+                body * {
+                    visibility: hidden;
+                }
+                
+                .printable-id-card, 
+                .printable-id-card *,
+                .printable-id-card .print-visible,
+                .printable-id-card .print-visible * {
+                    visibility: visible !important;
+                }
+                
+                .printable-id-card {
+                    position: absolute !important;
+                    left: 50% !important;
+                    top: 2in !important;
+                    transform: translateX(-50%) !important;
+                    width: 4in !important;
+                    height: 2.5in !important;
+                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%) !important;
+                    color: white !important;
+                    border: 2px solid #000 !important;
+                    border-radius: 0.5rem !important;
+                    padding: 1rem !important;
+                    font-family: Arial, sans-serif !important;
+                    box-shadow: none !important;
+                }
+                
+                .decorative-element {
+                    display: none !important;
+                }
+                
+                .print-header {
+                    text-align: center !important;
+                    margin-bottom: 0.5rem !important;
+                }
+                
+                .print-content {
+                    display: flex !important;
+                    gap: 0.5rem !important;
+                    align-items: flex-start !important;
+                }
+                
+                .print-photo {
+                    width: 60px !important;
+                    height: 75px !important;
+                    background: rgba(255, 255, 255, 0.3) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+                    border-radius: 0.25rem !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                }
+                
+                .print-info {
+                    flex: 1 !important;
+                }
+                
+                .print-qr {
+                    width: 50px !important;
+                    height: 50px !important;
+                    background: white !important;
+                    border-radius: 0.25rem !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                }
+                
+                .print-footer {
+                    margin-top: 0.5rem !important;
+                    display: flex !important;
+                    justify-content: space-between !important;
+                    align-items: center !important;
+                    background: rgba(255, 255, 255, 0.2) !important;
+                    padding: 0.25rem 0.5rem !important;
+                    border-radius: 0.25rem !important;
+                    font-size: 0.7rem !important;
+                }
+                
+                @page {
+                    size: A4;
+                    margin: 1in;
+                }
+            }
+        `;
+        
+        // Add print styles
+        const styleElement = document.createElement('style');
+        styleElement.textContent = printStyles;
+        document.head.appendChild(styleElement);
+        
+        // Add print class to the ID card
         const idElement = idCardRef.current;
         if (idElement) {
-            // In a real implementation, you would use html2canvas or similar library
-            // to convert the ID card to an image and then download it
-            alert('Digital ID card download started! Your ID card with QR code has been saved to your downloads folder.');
+            idElement.classList.add('printable-id-card');
         }
+        
+        // Print after a short delay to ensure styles are applied
+        setTimeout(() => {
+            window.print();
+            
+            // Clean up after printing
+            setTimeout(() => {
+                document.head.removeChild(styleElement);
+                if (idElement) {
+                    idElement.classList.remove('printable-id-card');
+                }
+            }, 1000);
+        }, 100);
     };
 
-    const handlePrintWarning = () => {
-        alert('Note: This is for digital viewing only. To get a physical ID card, please visit the Barangay office or use the "Request Physical ID" button.');
+    const handleViewOnly = () => {
+        alert('This is your digital ID for viewing and verification. Use the Print button to get a printable version.');
     };
 
     const handleRequestPhysicalID = async () => {
@@ -142,61 +282,18 @@ const MyBarangayID: React.FC = () => {
 
             {/* Main Content */}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', marginLeft: '280px' }}>
-                {/* Modern Header */}
-                <header style={{ 
-                    backgroundColor: 'white', 
-                    padding: '1.5rem 2rem', 
-                    borderBottom: '1px solid #e2e8f0',
-                    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+                {/* Header */}
+                <header style={{
+                    backgroundColor: 'white',
+                    padding: '1rem 2rem',
+                    borderBottom: '1px solid #e5e7eb',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
                 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                            <div style={{
-                                width: '2.5rem',
-                                height: '2.5rem',
-                                backgroundColor: '#3b82f6',
-                                borderRadius: '0.75rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}>
-                                <FaIdCard style={{ width: '1.25rem', height: '1.25rem', color: 'white' }} />
-                            </div>
-                            <div>
-                                <h1 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1e293b', margin: 0 }}>
-                                    My Barangay ID
-                                </h1>
-                                <p style={{ fontSize: '0.875rem', color: '#64748b', margin: 0 }}>
-                                    Digital identification and services
-                                </p>
-                            </div>
-                        </div>
-                        
-                        {/* Quick Actions */}
-                        <div style={{ display: 'flex', gap: '0.75rem' }}>
-                            <button
-                                onClick={() => setShowRequestIDModal(true)}
-                                style={{
-                                    padding: '0.75rem 1rem',
-                                    backgroundColor: '#16a34a',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '0.5rem',
-                                    cursor: 'pointer',
-                                    fontSize: '0.875rem',
-                                    fontWeight: '500',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '0.5rem',
-                                    transition: 'all 0.2s'
-                                }}
-                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#15803d'}
-                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#16a34a'}
-                            >
-                                <FaClipboardList style={{ width: '1rem', height: '1rem' }} />
-                                Request Physical ID
-                            </button>
-                        </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <FaIdCard style={{ width: '1.25rem', height: '1.25rem', color: '#6b7280' }} />
+                        <span style={{ fontWeight: '500', color: '#1f2937' }}>My Barangay ID</span>
                     </div>
                 </header>
 
@@ -288,7 +385,7 @@ const MyBarangayID: React.FC = () => {
                                         padding: '1.5rem',
                                         color: 'white',
                                         marginBottom: '1.5rem',
-                                        minHeight: '280px',
+                                        minHeight: '320px',
                                         position: 'relative',
                                         overflow: 'hidden',
                                         border: '2px solid #e2e8f0'
@@ -332,7 +429,7 @@ const MyBarangayID: React.FC = () => {
                                     <div style={{ 
                                         display: 'flex', 
                                         gap: '1rem', 
-                                        alignItems: 'center', 
+                                        alignItems: 'flex-start', 
                                         marginBottom: '1rem',
                                         position: 'relative',
                                         zIndex: 1
@@ -363,6 +460,36 @@ const MyBarangayID: React.FC = () => {
                                             <p style={{ fontSize: '0.625rem', opacity: 0.8, margin: 0, lineHeight: 1.3 }}>
                                                 {userData.address}
                                             </p>
+                                        </div>
+
+                                        {/* QR Code - Positioned in top right */}
+                                        <div style={{
+                                            width: '60px',
+                                            height: '60px',
+                                            backgroundColor: 'white',
+                                            borderRadius: '0.5rem',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.2s',
+                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                                            position: 'relative'
+                                        }}
+                                        onClick={() => setShowQRModal(true)}
+                                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                        >
+                                            {/* QR Code */}
+                                            <img 
+                                                src={`https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=BRG599-ID-${userData.idNumber}`}
+                                                alt="QR Code"
+                                                style={{
+                                                    width: '50px',
+                                                    height: '50px',
+                                                    borderRadius: '0.25rem'
+                                                }}
+                                            />
                                         </div>
                                     </div>
 
@@ -396,34 +523,53 @@ const MyBarangayID: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    {/* QR Code */}
-                                    <div style={{
+                                    {/* Print-only additional info */}
+                                    <div style={{ 
+                                        display: 'none',
                                         position: 'absolute',
-                                        bottom: '1rem',
-                                        right: '1rem',
-                                        width: '50px',
-                                        height: '50px',
-                                        backgroundColor: 'white',
-                                        borderRadius: '0.5rem',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.2s',
-                                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                                    }}
-                                    onClick={() => setShowQRModal(true)}
-                                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                    >
-                                        <FaQrcode style={{ width: '1.5rem', height: '1.5rem', color: '#1e293b' }} />
+                                        bottom: '0.5rem',
+                                        left: '1.5rem',
+                                        fontSize: '0.5rem',
+                                        opacity: 0.7
+                                    }} className="print-only">
+                                        Issued: {userData.dateIssued} | For verification, scan QR code
                                     </div>
                                 </div>
 
                                 {/* Action Buttons */}
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem' }}>
                                     <button
-                                        onClick={handleDownloadID}
+                                        onClick={handlePrintID}
+                                        style={{
+                                            padding: '0.875rem 1rem',
+                                            background: 'linear-gradient(135deg, #16a34a, #15803d)',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '0.75rem',
+                                            cursor: 'pointer',
+                                            fontSize: '0.875rem',
+                                            fontWeight: '600',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '0.5rem',
+                                            transition: 'all 0.2s',
+                                            boxShadow: '0 4px 6px -1px rgba(22, 163, 74, 0.3)'
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.transform = 'translateY(-2px)';
+                                            e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(22, 163, 74, 0.4)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.transform = 'translateY(0)';
+                                            e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(22, 163, 74, 0.3)';
+                                        }}
+                                    >
+                                        <FaPrint style={{ width: '1rem', height: '1rem' }} />
+                                        Print ID
+                                    </button>
+                                    <button
+                                        onClick={() => setShowRequestIDModal(true)}
                                         style={{
                                             padding: '0.875rem 1rem',
                                             background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
@@ -449,11 +595,11 @@ const MyBarangayID: React.FC = () => {
                                             e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(59, 130, 246, 0.3)';
                                         }}
                                     >
-                                        <FaDownload style={{ width: '1rem', height: '1rem' }} />
-                                        Download
+                                        <FaClipboardList style={{ width: '1rem', height: '1rem' }} />
+                                        Request Physical ID
                                     </button>
                                     <button
-                                        onClick={handlePrintWarning}
+                                        onClick={handleViewOnly}
                                         style={{
                                             padding: '0.875rem 1rem',
                                             backgroundColor: '#f1f5f9',
@@ -479,7 +625,7 @@ const MyBarangayID: React.FC = () => {
                                         }}
                                     >
                                         <FaEye style={{ width: '1rem', height: '1rem' }} />
-                                        View Only
+                                        View Details
                                     </button>
                                 </div>
                                 
@@ -500,7 +646,7 @@ const MyBarangayID: React.FC = () => {
                                         gap: '0.5rem'
                                     }}>
                                         <FaInfoCircle style={{ width: '0.75rem', height: '0.75rem' }} />
-                                        This is a digital version for verification. For physical ID, use "Request Physical ID" above.
+                                        You can print this digital ID with QR code for temporary use. For official physical ID, use the "Request Physical ID" button.
                                     </p>
                                 </div>
                             </div>
@@ -565,11 +711,29 @@ const MyBarangayID: React.FC = () => {
                                     </div>
                                     <div>
                                         <label style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                            ID Number
+                                            Barangay ID Number
                                         </label>
-                                        <p style={{ fontSize: '0.875rem', color: '#1f2937', marginTop: '0.25rem', fontFamily: 'monospace' }}>
-                                            {userData.idNumber}
-                                        </p>
+                                        <div style={{ 
+                                            marginTop: '0.25rem',
+                                            padding: '0.75rem',
+                                            backgroundColor: '#f1f5f9',
+                                            border: '1px solid #e2e8f0',
+                                            borderRadius: '0.5rem',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '0.5rem'
+                                        }}>
+                                            <FaIdCard style={{ width: '0.875rem', height: '0.875rem', color: '#2563eb' }} />
+                                            <p style={{ 
+                                                fontSize: '0.875rem', 
+                                                color: '#1e293b', 
+                                                fontFamily: 'monospace',
+                                                fontWeight: '600',
+                                                margin: 0
+                                            }}>
+                                                {userData.idNumber}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -1005,16 +1169,27 @@ const MyBarangayID: React.FC = () => {
                         <div style={{
                             width: '200px',
                             height: '200px',
-                            background: 'linear-gradient(145deg, #f8fafc, #e2e8f0)',
+                            background: 'white',
                             borderRadius: '1rem',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             margin: '0 auto 1.5rem',
                             border: '2px solid #e2e8f0',
-                            position: 'relative'
+                            position: 'relative',
+                            padding: '10px'
                         }}>
-                            <FaQrcode style={{ width: '6rem', height: '6rem', color: '#64748b' }} />
+                            {/* QR Code */}
+                            <img 
+                                src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=BRG599-ID-${userData.idNumber}&format=png&margin=10`}
+                                alt="QR Code"
+                                style={{
+                                    width: '180px',
+                                    height: '180px',
+                                    border: '1px solid #e2e8f0',
+                                    borderRadius: '0.5rem'
+                                }}
+                            />
                             
                             {/* QR Code Info */}
                             <div style={{
