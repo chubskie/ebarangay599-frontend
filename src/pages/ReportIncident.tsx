@@ -31,8 +31,6 @@ const ReportIncident: React.FC = () => {
     // Form data
     const [formData, setFormData] = useState({
         incidentType: '',
-        incidentDate: '',
-        incidentTime: '',
         location: '',
         subject: '',
         description: '',
@@ -109,7 +107,7 @@ const ReportIncident: React.FC = () => {
     ];
 
     const handleSubmitReport = async () => {
-        if (!formData.incidentType || !formData.incidentDate || !formData.location || !formData.subject || !formData.description) {
+        if (!formData.incidentType || !formData.location || !formData.subject || !formData.description) {
             alert('Please fill in all required fields.');
             return;
         }
@@ -127,7 +125,7 @@ const ReportIncident: React.FC = () => {
                     month: 'short', 
                     day: 'numeric' 
                 }),
-                incidentDate: new Date(formData.incidentDate).toLocaleDateString('en-US', { 
+                incidentDate: new Date().toLocaleDateString('en-US', { 
                     year: 'numeric', 
                     month: 'short', 
                     day: 'numeric' 
@@ -141,8 +139,6 @@ const ReportIncident: React.FC = () => {
             setShowReportModal(false);
             setFormData({
                 incidentType: '',
-                incidentDate: '',
-                incidentTime: '',
                 location: '',
                 subject: '',
                 description: '',
@@ -491,8 +487,6 @@ const ReportIncident: React.FC = () => {
                                     setSelectedIncidentType('');
                                     setFormData({
                                         incidentType: '',
-                                        incidentDate: '',
-                                        incidentTime: '',
                                         location: '',
                                         subject: '',
                                         description: '',
@@ -516,49 +510,6 @@ const ReportIncident: React.FC = () => {
                             >
                                 <FaTimes />
                             </button>
-                        </div>
-
-                        {/* Form */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
-                            {/* Incident Date */}
-                            <div>
-                                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
-                                    Incident Date *
-                                </label>
-                                <input
-                                    type="date"
-                                    value={formData.incidentDate}
-                                    onChange={(e) => setFormData({...formData, incidentDate: e.target.value})}
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.75rem',
-                                        border: '2px solid #e5e7eb',
-                                        borderRadius: '0.5rem',
-                                        fontSize: '0.875rem',
-                                        outline: 'none'
-                                    }}
-                                />
-                            </div>
-
-                            {/* Incident Time */}
-                            <div>
-                                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
-                                    Incident Time
-                                </label>
-                                <input
-                                    type="time"
-                                    value={formData.incidentTime}
-                                    onChange={(e) => setFormData({...formData, incidentTime: e.target.value})}
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.75rem',
-                                        border: '2px solid #e5e7eb',
-                                        borderRadius: '0.5rem',
-                                        fontSize: '0.875rem',
-                                        outline: 'none'
-                                    }}
-                                />
-                            </div>
                         </div>
 
                         {/* Location */}
@@ -628,25 +579,6 @@ const ReportIncident: React.FC = () => {
                                 }}
                             />
                         </div>
-
-                        {/* Anonymous Reporting */}
-                        <div style={{ marginBottom: '1.5rem' }}>
-                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                                <input
-                                    type="checkbox"
-                                    checked={formData.isAnonymous}
-                                    onChange={(e) => setFormData({...formData, isAnonymous: e.target.checked})}
-                                    style={{ width: '1rem', height: '1rem' }}
-                                />
-                                <span style={{ fontSize: '0.875rem', color: '#374151' }}>
-                                    Submit this report anonymously
-                                </span>
-                            </label>
-                            <p style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem', marginLeft: '1.5rem' }}>
-                                Your contact information will not be shared with anyone if checked
-                            </p>
-                        </div>
-
                         {/* Action Buttons */}
                         <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
                             <button
@@ -655,8 +587,6 @@ const ReportIncident: React.FC = () => {
                                     setSelectedIncidentType('');
                                     setFormData({
                                         incidentType: '',
-                                        incidentDate: '',
-                                        incidentTime: '',
                                         location: '',
                                         subject: '',
                                         description: '',
@@ -681,14 +611,14 @@ const ReportIncident: React.FC = () => {
                             </button>
                             <button
                                 onClick={handleSubmitReport}
-                                disabled={isSubmitting || !formData.incidentDate || !formData.location || !formData.description}
+                                disabled={isSubmitting || !formData.subject || !formData.location || !formData.description}
                                 style={{
                                     padding: '0.75rem 1.5rem',
-                                    backgroundColor: (!formData.incidentDate || !formData.location || !formData.description || isSubmitting) ? '#9ca3af' : '#dc2626',
+                                    backgroundColor: (!formData.subject || !formData.location || !formData.description || isSubmitting) ? '#9ca3af' : '#dc2626',
                                     color: 'white',
                                     border: 'none',
                                     borderRadius: '0.5rem',
-                                    cursor: (!formData.incidentDate || !formData.location || !formData.description || isSubmitting) ? 'not-allowed' : 'pointer',
+                                    cursor: (!formData.subject || !formData.location || !formData.description || isSubmitting) ? 'not-allowed' : 'pointer',
                                     fontSize: '0.875rem',
                                     fontWeight: '500',
                                     display: 'flex',

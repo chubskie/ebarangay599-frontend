@@ -38,7 +38,7 @@ const ResidentDashboardNav: React.FC<ResidentDashboardNavProps> = ({ activeSecti
         { id: 'contact', icon: FaInfoCircle, label: 'Contact Us', route: '/contact' },
         { id: 'request', icon: FaFileAlt, label: 'Request New Document', route: '/request-document' },
         { id: 'incident', icon: FaExclamationCircle, label: 'Report an Incident', route: '/report-incident' },
-        { id: 'meeting', icon: FaCalendar, label: 'Schedule a Meeting', route: '/schedule-meeting' },
+        { id: 'appointment', icon: FaCalendar, label: 'Schedule an Appointment', route: '/schedule-an-appointment' },
         { id: 'barangay-id', icon: FaIdCard, label: 'My Barangay ID', route: '/my-barangay-id' }
     ];
 

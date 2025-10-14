@@ -35,8 +35,11 @@ const RequestDocument: React.FC = () => {
     const [activeSection, setActiveSection] = useState('request');
     const [selectedDocument, setSelectedDocument] = useState<DocumentType | null>(null);
     const [showRequestModal, setShowRequestModal] = useState(false);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [purpose, setPurpose] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState<'now' | 'later' | null>(null);
+    const [proofOfPayment, setProofOfPayment] = useState<File | null>(null);
 
     // Sample user data from Dashboard (this would normally come from props or context)
     const userData = {
@@ -171,7 +174,16 @@ const RequestDocument: React.FC = () => {
             setPurpose('');
             setIsSubmitting(false);
             
-            alert('Document request submitted successfully!');
+            // Reset payment states
+            setPaymentMethod(null);
+            setProofOfPayment(null);
+            setShowPaymentModal(false);
+            
+            if (paymentMethod === 'now') {
+                alert('Document request submitted with payment proof! We will verify your payment and process your request.');
+            } else {
+                alert('Document request submitted! Please pay the processing fee at the Barangay Hall.');
+            }
         }, 2000);
     };
 
@@ -568,7 +580,7 @@ const RequestDocument: React.FC = () => {
                             />
                         </div>
 
-                        {/* Action Buttons */}
+                        {/* Action Buttons - Payment Options */}
                         <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
                             <button
                                 onClick={() => {
@@ -592,7 +604,36 @@ const RequestDocument: React.FC = () => {
                                 Cancel
                             </button>
                             <button
-                                onClick={handleSubmitRequest}
+                                onClick={() => {
+                                    if (!purpose.trim()) {
+                                        alert('Please specify the purpose for requesting this document.');
+                                        return;
+                                    }
+                                    setPaymentMethod('later');
+                                    handleSubmitRequest();
+                                }}
+                                disabled={isSubmitting || !purpose.trim()}
+                                style={{
+                                    padding: '0.75rem 1.5rem',
+                                    backgroundColor: !purpose.trim() || isSubmitting ? '#9ca3af' : '#6b7280',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '0.5rem',
+                                    cursor: !purpose.trim() || isSubmitting ? 'not-allowed' : 'pointer',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '500'
+                                }}
+                            >
+                                Pay Later (at Barangay Hall)
+                            </button>
+                            <button
+                                onClick={() => {
+                                    if (!purpose.trim()) {
+                                        alert('Please specify the purpose for requesting this document.');
+                                        return;
+                                    }
+                                    setShowPaymentModal(true);
+                                }}
                                 disabled={isSubmitting || !purpose.trim()}
                                 style={{
                                     padding: '0.75rem 1.5rem',
@@ -602,6 +643,169 @@ const RequestDocument: React.FC = () => {
                                     borderRadius: '0.5rem',
                                     cursor: !purpose.trim() || isSubmitting ? 'not-allowed' : 'pointer',
                                     fontSize: '0.875rem',
+                                    fontWeight: '500'
+                                }}
+                            >
+                                Pay Now (Online)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Payment Modal */}
+            {showPaymentModal && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000
+                }}>
+                    <div style={{
+                        backgroundColor: 'white',
+                        borderRadius: '0.75rem',
+                        padding: '2rem',
+                        width: '90%',
+                        maxWidth: '500px',
+                        maxHeight: '90vh',
+                        overflow: 'auto',
+                        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+                    }}>
+                        {/* Payment Modal Header */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#1f2937' }}>
+                                Payment Information
+                            </h2>
+                            <button
+                                onClick={() => {
+                                    setShowPaymentModal(false);
+                                    setProofOfPayment(null);
+                                }}
+                                style={{
+                                    backgroundColor: '#f3f4f6',
+                                    border: 'none',
+                                    borderRadius: '50%',
+                                    width: '32px',
+                                    height: '32px',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                <FaTimes style={{ width: '1rem', height: '1rem', color: '#6b7280' }} />
+                            </button>
+                        </div>
+
+                        {/* Document and Fee Info */}
+                        <div style={{ backgroundColor: '#f8fafc', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1.5rem' }}>
+                            <p style={{ fontSize: '1rem', fontWeight: '600', color: '#1f2937', margin: '0 0 0.5rem 0' }}>
+                                {selectedDocument?.name}
+                            </p>
+                            <p style={{ fontSize: '1.25rem', fontWeight: '700', color: '#3b82f6', margin: 0 }}>
+                                Processing Fee: ₱{selectedDocument?.fee}
+                            </p>
+                        </div>
+
+                        {/* Payment Instructions */}
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1f2937', marginBottom: '1rem' }}>
+                                Send Payment To:
+                            </h3>
+                            <div style={{ backgroundColor: '#eff6ff', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1rem' }}>
+                                <p style={{ fontSize: '1rem', fontWeight: '600', color: '#1f2937', margin: '0 0 0.5rem 0' }}>
+                                    Barangay Treasurer: Kimberly Advincula
+                                </p>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                    <div>
+                                        <p style={{ fontSize: '0.875rem', fontWeight: '500', color: '#374151', margin: '0 0 0.25rem 0' }}>
+                                            GCash Number:
+                                        </p>
+                                        <p style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1f2937', margin: 0 }}>
+                                            09XX XXX XXXX
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p style={{ fontSize: '0.875rem', fontWeight: '500', color: '#374151', margin: '0 0 0.25rem 0' }}>
+                                            Maya Number:
+                                        </p>
+                                        <p style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1f2937', margin: 0 }}>
+                                            09XX XXX XXXX
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Upload Proof of Payment */}
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
+                                Upload Proof of Payment *
+                            </label>
+                            <input
+                                type="file"
+                                accept="image/*,.pdf"
+                                onChange={(e) => setProofOfPayment(e.target.files?.[0] || null)}
+                                style={{
+                                    width: '100%',
+                                    padding: '0.75rem',
+                                    border: '2px solid #e5e7eb',
+                                    borderRadius: '0.5rem',
+                                    fontSize: '0.875rem',
+                                    cursor: 'pointer'
+                                }}
+                            />
+                            <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: '0.5rem 0 0 0' }}>
+                                Accepted formats: JPG, PNG, PDF (Max 5MB)
+                            </p>
+                        </div>
+
+                        {/* Payment Action Buttons */}
+                        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+                            <button
+                                onClick={() => {
+                                    setShowPaymentModal(false);
+                                    setProofOfPayment(null);
+                                }}
+                                disabled={isSubmitting}
+                                style={{
+                                    padding: '0.75rem 1.5rem',
+                                    backgroundColor: '#f3f4f6',
+                                    color: '#374151',
+                                    border: 'none',
+                                    borderRadius: '0.5rem',
+                                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '500'
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={() => {
+                                    if (!proofOfPayment) {
+                                        alert('Please upload proof of payment.');
+                                        return;
+                                    }
+                                    setPaymentMethod('now');
+                                    setShowPaymentModal(false);
+                                    handleSubmitRequest();
+                                }}
+                                disabled={isSubmitting || !proofOfPayment}
+                                style={{
+                                    padding: '0.75rem 1.5rem',
+                                    backgroundColor: !proofOfPayment || isSubmitting ? '#9ca3af' : '#10b981',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '0.5rem',
+                                    cursor: !proofOfPayment || isSubmitting ? 'not-allowed' : 'pointer',
+                                    fontSize: '0.875rem',
                                     fontWeight: '500',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -609,7 +813,7 @@ const RequestDocument: React.FC = () => {
                                 }}
                             >
                                 {isSubmitting && <FaSpinner style={{ width: '1rem', height: '1rem', animation: 'spin 1s linear infinite' }} />}
-                                {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                                {isSubmitting ? 'Submitting...' : 'Submit with Payment'}
                             </button>
                         </div>
                     </div>

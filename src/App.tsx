@@ -3,7 +3,7 @@ import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import RequestDocument from './pages/RequestDocument';
 import ReportIncident from './pages/ReportIncident';
-import ScheduleMeeting from './pages/ScheduleMeeting';
+import ScheduleAnAppointment from './pages/ScheduleAnAppointment';
 import MyBarangayID from './pages/MyBarangayID';
 import Announcements from './pages/Announcements';
 import Events from './pages/Events';
@@ -20,7 +20,7 @@ function App() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/request-document" element={<RequestDocument />} />
       <Route path="/report-incident" element={<ReportIncident />} />
-      <Route path="/schedule-meeting" element={<ScheduleMeeting />} />
+      <Route path="/schedule-an-appointment" element={<ScheduleAnAppointment />} />
       <Route path="/my-barangay-id" element={<MyBarangayID />} />
       <Route path="/announcements" element={<Announcements />} />
       <Route path="/events" element={<Events />} />
