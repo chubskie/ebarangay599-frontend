@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ResidentDashboardNav from '../components/ResidentDashboardNav';
+import ResidentDashboardNav from '../../components/ResidentDashboardNav';
 import {
   FaExclamationCircle,
   FaTimes,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ResidentDashboardNav from '../components/ResidentDashboardNav';
+import ResidentDashboardNav from '../../components/ResidentDashboardNav';
 import { 
     FaUser,
     FaUsers

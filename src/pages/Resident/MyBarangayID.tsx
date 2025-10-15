@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import ResidentDashboardNav from '../components/ResidentDashboardNav';
+import ResidentDashboardNav from '../../components/ResidentDashboardNav';
 import { 
     FaIdCard,
     FaPrint,

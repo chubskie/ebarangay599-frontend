@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
-import ChairwomanDashboard from './pages/ChairwomanDashboard';
-import RequestDocument from './pages/RequestDocument';
-import ReportIncident from './pages/ReportIncident';
-import ScheduleAnAppointment from './pages/ScheduleAnAppointment';
-import MyBarangayID from './pages/MyBarangayID';
+import Dashboard from './pages/Resident/Dashboard';
+import ChairwomanDashboard from './pages/Chairperson/ChairwomanDashboard';
+import RequestDocument from './pages/Resident/RequestDocument';
+import ReportIncident from './pages/Resident/ReportIncident';
+import ScheduleAnAppointment from './pages/Resident/ScheduleAnAppointment';
+import MyBarangayID from './pages/Resident/MyBarangayID';
 import Announcements from './pages/Announcements';
 import Events from './pages/Events';
 import About from './pages/About';
