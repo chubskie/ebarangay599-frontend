@@ -97,7 +97,10 @@ const Navigation: React.FC = () => {
           <div className="flex items-center space-x-4">
             {isLoggedIn ? (
               <Link
-                to="/dashboard"
+                to={(() => {
+                  const userRole = localStorage.getItem('userRole');
+                  return userRole === 'chairwoman' ? '/chairwoman-dashboard' : '/dashboard';
+                })()}
                 className="text-white px-4 py-2 rounded-md text-sm font-medium bg-green-600 hover:bg-green-700 transition-colors"
               >
                 Dashboard

@@ -79,7 +79,7 @@ const MyBarangayID: React.FC = () => {
     
     // Sample user data
     const userData = {
-        idNumber: 'BRG599-2025-001234',
+        idNumber: '9f47a2d3-8a4b-4d1f-9e9f-1b6a04f0b3c8', //uuid format
         fullName: 'Luc Elric Trevecedo',
         address: '0281 Narra Street Old Sta Mesa Manila',
         barangay: 'Barangay 599',

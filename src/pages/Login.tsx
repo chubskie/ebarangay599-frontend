@@ -66,9 +66,20 @@ const Login: React.FC = () => {
         
         // Set login status
         localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('username', formData.username);
         
-        // Navigate to dashboard
-        navigate('/dashboard');
+        // Determine user role and route accordingly
+        if (formData.username.toLowerCase() === 'resident1234') {
+            localStorage.setItem('userRole', 'resident');
+            navigate('/dashboard');
+        } else if (formData.username.toLowerCase() === 'chairwoman1234') {
+            localStorage.setItem('userRole', 'chairwoman');
+            navigate('/chairwoman-dashboard');
+        } else {
+            // Default to resident dashboard for other users
+            localStorage.setItem('userRole', 'resident');
+            navigate('/dashboard');
+        }
     };
 
     return (

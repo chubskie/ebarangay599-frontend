@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ResidentDashboardNav from '../components/ResidentDashboardNav';
 import { 
     FaUser,
@@ -6,7 +7,26 @@ import {
 } from 'react-icons/fa';
 
 const Dashboard: React.FC = () => {
+    const navigate = useNavigate();
     const [activeSection, setActiveSection] = useState('dashboard');
+    
+    // Role protection - redirect if chairwoman tries to access resident dashboard
+    useEffect(() => {
+        const userRole = localStorage.getItem('userRole');
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        
+        if (!isLoggedIn) {
+            navigate('/login');
+            return;
+        }
+        
+        // If chairwoman tries to access resident dashboard, redirect to chairwoman dashboard
+        if (userRole === 'chairwoman') {
+            navigate('/chairwoman-dashboard');
+            return;
+        }
+    }, [navigate]);
+    
     const [showHouseholdMembers, setShowHouseholdMembers] = useState(false);
     const [showAddMember, setShowAddMember] = useState(false);
     const [newMemberInput, setNewMemberInput] = useState('');
@@ -25,6 +45,7 @@ const Dashboard: React.FC = () => {
     
     // Profile data with edit state and status tracking
     const [profileData, setProfileData] = useState({
+        uuid: '9f47a2d3-8a4b-4d1f-9e9f-1b6a04f0b3c8',
         username: 'ltrevecedo123',
         fullName: 'Luc Elric Trevecedo',
         contactNumber: '0927 993 2190',
@@ -278,6 +299,12 @@ const Dashboard: React.FC = () => {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                 {/* 1. Resident Image - Already shown above */}
                                 
+                                {/* 1. Resident UUID */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <span style={{ color: '#374151', fontWeight: '500' }}>Resident UUID:</span>
+                                    <span style={{ color: '#1f2937', fontWeight: '600' }}>{profileData.uuid}</span>
+                                </div>    
+
                                 {/* 2. Username */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <span style={{ color: '#374151', fontWeight: '500' }}>Username:</span>
