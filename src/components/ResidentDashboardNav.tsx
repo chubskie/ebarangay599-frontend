@@ -81,7 +81,7 @@ const ResidentDashboardNav: React.FC<ResidentDashboardNavProps> = ({ activeSecti
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em'
             }}>
-                Platform
+                Resident Portal
             </div>
 
             {/* Navigation Items */}

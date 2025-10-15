@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Dashboard from './pages/Resident/Dashboard';
 import ChairwomanDashboard from './pages/Chairperson/ChairwomanDashboard';
+import ResidentManagement from './pages/Chairperson/ResidentManagement';
 import RequestDocument from './pages/Resident/RequestDocument';
 import ReportIncident from './pages/Resident/ReportIncident';
 import ScheduleAnAppointment from './pages/Resident/ScheduleAnAppointment';
@@ -20,6 +21,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/chairwoman-dashboard" element={<ChairwomanDashboard />} />
+      <Route path="/resident-management" element={<ResidentManagement />} />
       <Route path="/request-document" element={<RequestDocument />} />
       <Route path="/report-incident" element={<ReportIncident />} />
       <Route path="/schedule-an-appointment" element={<ScheduleAnAppointment />} />

@@ -48,7 +48,7 @@ const ChairwomanDashboardNav: React.FC<ChairwomanDashboardNavProps> = ({
         { id: 'events', icon: FaCalendarAlt, label: 'Events', route: '/events' },
         { id: 'about', icon: FaInfoCircle, label: 'About Us', route: '/about' },
         { id: 'contact', icon: FaPhone, label: 'Contact Us', route: '/contact' },
-        { id: 'resident-management', icon: FaUsers, label: 'Resident Management' },
+        { id: 'resident-management', icon: FaUsers, label: 'Resident Management', route: '/resident-management' },
         { id: 'access-management', icon: FaKey, label: 'Barangay Access Management' },
         { id: 'incident-reports', icon: FaExclamationTriangle, label: 'Incident Reports Management' },
         { id: 'clearance-permits', icon: FaFileAlt, label: 'Create Clearance and Permits' },
@@ -101,7 +101,7 @@ const ChairwomanDashboardNav: React.FC<ChairwomanDashboardNavProps> = ({
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em'
             }}>
-                Chairwoman Portal
+                Chairperson Portal
             </div>
 
             {/* Navigation Items */}
