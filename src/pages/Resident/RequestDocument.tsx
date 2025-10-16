@@ -19,6 +19,7 @@ interface DocumentType {
     fee: number;
     processingTime: string;
     color: string;
+    requiredFields: string[];
 }
 
 interface DocumentRequest {
@@ -43,12 +44,23 @@ const RequestDocument: React.FC = () => {
 
     // Sample user data from Dashboard (this would normally come from props or context)
     const userData = {
+        uuid: '9f47a2d3-8a4b-4d1f-9e9f-1b6a04f0b3c8',
+        username: 'ltrevecedo123',
         fullName: 'Luc Elric Trevecedo',
         contactNumber: '0927 993 2190',
+        emergencyContact: 'Not provided',
         birthdate: 'April 2, 2002',
+        birthplace: 'Not provided',
         age: '23 years old',
         sex: 'Male',
+        weight: 'Not provided',
+        height: 'Not provided',
+        votersPrecinctNo: 'Not provided',
+        businessName: 'Not provided',
+        ssnNo: 'Not provided',
+        tinNo: 'Not provided',
         civilStatus: 'Single',
+        residentTags: 'None',
         address: '0281 Narra Street Old Sta Mesa Manila Barangay 599',
         residencyStatus: 'Owner',
         periodOfResidency: '23 years and 6 months'
@@ -91,7 +103,8 @@ const RequestDocument: React.FC = () => {
             description: 'Certificate of good moral character and standing in the community',
             fee: 50,
             processingTime: '1 business day',
-            color: 'bg-blue-500'
+            color: 'bg-blue-500',
+            requiredFields: ['fullName', 'contactNumber', 'birthdate', 'age', 'sex', 'civilStatus', 'purpose']
         },
         {
             id: 'certificate-indigency',
@@ -100,7 +113,8 @@ const RequestDocument: React.FC = () => {
             description: 'Certification for financial assistance and social services',
             fee: 30,
             processingTime: '1 business day',
-            color: 'bg-green-500'
+            color: 'bg-green-500',
+            requiredFields: ['fullName', 'contactNumber', 'birthdate', 'age', 'sex', 'civilStatus', 'tinNo', 'purpose']
         },
         {
             id: 'certificate-file-action',
@@ -109,7 +123,8 @@ const RequestDocument: React.FC = () => {
             description: 'Legal document for filing court cases or legal proceedings',
             fee: 100,
             processingTime: '1 business day',
-            color: 'bg-red-500'
+            color: 'bg-red-500',
+            requiredFields: ['fullName', 'contactNumber', 'birthdate', 'age', 'sex', 'civilStatus', 'weight', 'height', 'purpose']
         },
         {
             id: 'business-clearance',
@@ -118,7 +133,8 @@ const RequestDocument: React.FC = () => {
             description: 'Permit for operating business within barangay jurisdiction',
             fee: 200,
             processingTime: '1 business day',
-            color: 'bg-purple-500'
+            color: 'bg-purple-500',
+            requiredFields: ['fullName', 'contactNumber', 'birthdate', 'age', 'sex', 'civilStatus', 'businessName', 'purpose']
         },
         {
             id: 'good-moral-certificate',
@@ -127,7 +143,8 @@ const RequestDocument: React.FC = () => {
             description: 'Character reference for employment, education, or other purposes',
             fee: 40,
             processingTime: '1 business day',
-            color: 'bg-yellow-500'
+            color: 'bg-yellow-500',
+            requiredFields: ['fullName', 'contactNumber', 'birthdate', 'age', 'sex', 'civilStatus', 'purpose']
         },
         {
             id: 'senior-citizen-id',
@@ -136,7 +153,8 @@ const RequestDocument: React.FC = () => {
             description: 'Identification card for senior citizens (60 years and above)',
             fee: 0,
             processingTime: '1 business day',
-            color: 'bg-gray-500'
+            color: 'bg-gray-500',
+            requiredFields: ['fullName', 'contactNumber', 'birthdate', 'birthplace', 'age', 'sex', 'civilStatus', 'weight', 'height', 'emergencyContact', 'ssnNo', 'purpose']
         }
     ];
 
@@ -523,25 +541,111 @@ const RequestDocument: React.FC = () => {
                         {/* User Information Preview */}
                         <div style={{ marginBottom: '1.5rem' }}>
                             <h3 style={{ fontSize: '1rem', fontWeight: '600', color: '#1f2937', marginBottom: '1rem' }}>
-                                Your Information (Auto-filled from profile)
+                                Required Information for this Document
                             </h3>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.875rem' }}>
-                                <div>
-                                    <span style={{ color: '#6b7280' }}>Full Name:</span>
-                                    <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.fullName}</p>
-                                </div>
-                                <div>
-                                    <span style={{ color: '#6b7280' }}>Contact Number:</span>
-                                    <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.contactNumber}</p>
-                                </div>
-                                <div>
-                                    <span style={{ color: '#6b7280' }}>Address:</span>
-                                    <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.address}</p>
-                                </div>
-                                <div>
-                                    <span style={{ color: '#6b7280' }}>Residency Period:</span>
-                                    <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.periodOfResidency}</p>
-                                </div>
+                                {selectedDocument.requiredFields.includes('uuid') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Resident UUID:</span>
+                                        <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.uuid}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('username') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Username:</span>
+                                        <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.username}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('fullName') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Full Name:</span>
+                                        <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.fullName}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('contactNumber') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Contact Number:</span>
+                                        <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.contactNumber}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('emergencyContact') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Emergency Contact:</span>
+                                        <p style={{ color: userData.emergencyContact !== 'Not provided' ? '#1f2937' : '#9ca3af', fontWeight: '500', margin: '0.25rem 0', fontStyle: userData.emergencyContact !== 'Not provided' ? 'normal' : 'italic' }}>{userData.emergencyContact}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('birthdate') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Birthdate:</span>
+                                        <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.birthdate}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('birthplace') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Birthplace:</span>
+                                        <p style={{ color: userData.birthplace !== 'Not provided' ? '#1f2937' : '#9ca3af', fontWeight: '500', margin: '0.25rem 0', fontStyle: userData.birthplace !== 'Not provided' ? 'normal' : 'italic' }}>{userData.birthplace}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('age') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Age:</span>
+                                        <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.age}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('sex') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Sex:</span>
+                                        <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.sex}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('weight') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Weight:</span>
+                                        <p style={{ color: userData.weight !== 'Not provided' ? '#1f2937' : '#9ca3af', fontWeight: '500', margin: '0.25rem 0', fontStyle: userData.weight !== 'Not provided' ? 'normal' : 'italic' }}>{userData.weight}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('height') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Height:</span>
+                                        <p style={{ color: userData.height !== 'Not provided' ? '#1f2937' : '#9ca3af', fontWeight: '500', margin: '0.25rem 0', fontStyle: userData.height !== 'Not provided' ? 'normal' : 'italic' }}>{userData.height}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('votersPrecinctNo') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Voters Precinct No:</span>
+                                        <p style={{ color: userData.votersPrecinctNo !== 'Not provided' ? '#1f2937' : '#9ca3af', fontWeight: '500', margin: '0.25rem 0', fontStyle: userData.votersPrecinctNo !== 'Not provided' ? 'normal' : 'italic' }}>{userData.votersPrecinctNo}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('businessName') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Business Name:</span>
+                                        <p style={{ color: userData.businessName !== 'Not provided' ? '#1f2937' : '#9ca3af', fontWeight: '500', margin: '0.25rem 0', fontStyle: userData.businessName !== 'Not provided' ? 'normal' : 'italic' }}>{userData.businessName}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('ssnNo') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>SSN No:</span>
+                                        <p style={{ color: userData.ssnNo !== 'Not provided' ? '#1f2937' : '#9ca3af', fontWeight: '500', margin: '0.25rem 0', fontStyle: userData.ssnNo !== 'Not provided' ? 'normal' : 'italic' }}>{userData.ssnNo}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('tinNo') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>TIN No:</span>
+                                        <p style={{ color: userData.tinNo !== 'Not provided' ? '#1f2937' : '#9ca3af', fontWeight: '500', margin: '0.25rem 0', fontStyle: userData.tinNo !== 'Not provided' ? 'normal' : 'italic' }}>{userData.tinNo}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('civilStatus') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Civil Status:</span>
+                                        <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.civilStatus}</p>
+                                    </div>
+                                )}
+                                {selectedDocument.requiredFields.includes('residentTags') && (
+                                    <div>
+                                        <span style={{ color: '#6b7280' }}>Resident Tags:</span>
+                                        <p style={{ color: '#1f2937', fontWeight: '500', margin: '0.25rem 0' }}>{userData.residentTags}</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
 

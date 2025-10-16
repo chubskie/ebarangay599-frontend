@@ -48,14 +48,15 @@ const ResidentManagement: React.FC = () => {
     const [selectedResident, setSelectedResident] = useState<Resident | null>(null);
     const [showProofsModal, setShowProofsModal] = useState(false);
     const [residents, setResidents] = useState<Resident[]>([]);
+    const [residentImage, setResidentImage] = useState<string | null>(null);
+    const [imageFile, setImageFile] = useState<File | null>(null);
 
     // Filters
     const [ageFilter, setAgeFilter] = useState('all');
     const [genderFilter, setGenderFilter] = useState('all');
     const [civilStatusFilter, setCivilStatusFilter] = useState('all');
-    const [incomeFilter, setIncomeFilter] = useState('all');
     const [voterFilter, setVoterFilter] = useState('all');
-    const [pwdFilter, setPwdFilter] = useState('all');
+    const [residentTagFilter, setResidentTagFilter] = useState('all');
 
     // Role protection
     useEffect(() => {
@@ -96,7 +97,7 @@ const ResidentManagement: React.FC = () => {
                 religion: 'Roman Catholic',
                 voter: 'yes',
                 pwd: 'no',
-                residentTags: [],
+                residentTags: ['First Job Seeker'],
                 status: 'pending',
                 proofs: {
                     validId: '/images/sample-id-1.jpg',
@@ -108,8 +109,8 @@ const ResidentManagement: React.FC = () => {
             {
                 id: 2,
                 uuid: '8e36b1c2-7b3a-3c2e-8d8e-0a5b93e9a2b7',
-                username: 'jmamimg456',
-                fullName: 'jewel nicole Mamimg',
+                username: 'jbatalla420',
+                fullName: 'Jewell Asia Batalla',
                 contactNumber: '0915 234 5678',
                 emergencyContact: '0916 345 6789',
                 birthdate: 'June 15, 2001',
@@ -130,7 +131,7 @@ const ResidentManagement: React.FC = () => {
                 religion: 'Roman Catholic',
                 voter: 'yes',
                 pwd: 'no',
-                residentTags: ['Taxpayer'],
+                residentTags: [],
                 status: 'approved',
                 proofs: {
                     validId: '/images/sample-id-2.jpg',
@@ -144,8 +145,8 @@ const ResidentManagement: React.FC = () => {
                 username: 'lmatias789',
                 fullName: 'Liam Matias',
                 contactNumber: '0918 765 4321',
-                birthdate: 'March 22, 2004',
-                age: 21,
+                birthdate: 'March 22, 2010',
+                age: 15,
                 sex: 'Male',
                 homeAddress: 'AA106 El Pueblo',
                 gender: 'Male',
@@ -153,9 +154,9 @@ const ResidentManagement: React.FC = () => {
                 occupation: 'Student',
                 incomeRange: 'None',
                 religion: 'Protestant',
-                voter: 'yes',
+                voter: 'no',
                 pwd: 'no',
-                residentTags: [],
+                residentTags: ['Minor'],
                 status: 'pending',
                 proofs: {
                     validId: '/images/sample-id-3.jpg',
@@ -186,7 +187,7 @@ const ResidentManagement: React.FC = () => {
                 religion: 'Roman Catholic',
                 voter: 'yes',
                 pwd: 'no',
-                residentTags: ['Professional', 'Taxpayer'],
+                residentTags: [],
                 status: 'approved',
                 proofs: {
                     validId: '/images/sample-id-4.jpg',
@@ -202,9 +203,9 @@ const ResidentManagement: React.FC = () => {
                 fullName: 'Juan Dela Cruz',
                 contactNumber: '0921 123 4567',
                 emergencyContact: '0922 234 5678',
-                birthdate: 'November 5, 1980',
+                birthdate: 'November 5, 1960',
                 birthplace: 'Zambales',
-                age: 45,
+                age: 65,
                 sex: 'Male',
                 weight: '75kg',
                 height: '175cm',
@@ -219,7 +220,7 @@ const ResidentManagement: React.FC = () => {
                 religion: 'Roman Catholic',
                 voter: 'yes',
                 pwd: 'yes',
-                residentTags: ['Business Owner', 'PWD', 'Senior Citizen'],
+                residentTags: ['Senior', 'PWD'],
                 status: 'pending',
                 proofs: {
                     validId: '/images/sample-id-5.jpg',
@@ -233,9 +234,9 @@ const ResidentManagement: React.FC = () => {
                 username: 'areyes987',
                 fullName: 'Ana Reyes',
                 contactNumber: '0923 345 6789',
-                birthdate: 'August 18, 1997',
+                birthdate: 'August 18, 1990',
                 birthplace: 'Olongapo City',
-                age: 28,
+                age: 35,
                 sex: 'Female',
                 weight: '55kg',
                 height: '162cm',
@@ -244,12 +245,12 @@ const ResidentManagement: React.FC = () => {
                 homeAddress: 'D102 East Bajac-Bajac',
                 gender: 'Female',
                 civilStatus: 'Single',
-                occupation: 'Nurse',
-                incomeRange: 'Middle Class',
+                occupation: 'Unemployed',
+                incomeRange: 'None',
                 religion: 'Iglesia ni Cristo',
                 voter: 'yes',
                 pwd: 'no',
-                residentTags: ['Healthcare Worker'],
+                residentTags: ['Solo Parent', 'Unemployed'],
                 status: 'approved',
                 proofs: {
                     validId: '/images/sample-id-6.jpg',
@@ -264,8 +265,8 @@ const ResidentManagement: React.FC = () => {
                 username: 'pgarcia234',
                 fullName: 'Pedro Garcia',
                 contactNumber: '0924 456 7890',
-                birthdate: 'December 25, 1973',
-                age: 52,
+                birthdate: 'December 25, 1963',
+                age: 61,
                 sex: 'Male',
                 votersPrecinctNo: '0599E',
                 homeAddress: 'E401 New Kababae',
@@ -276,7 +277,7 @@ const ResidentManagement: React.FC = () => {
                 religion: 'Roman Catholic',
                 voter: 'yes',
                 pwd: 'yes',
-                residentTags: ['Senior Citizen', 'PWD'],
+                residentTags: ['Senior', 'PWD'],
                 status: 'rejected',
                 proofs: {
                     validId: '/images/sample-id-7.jpg'
@@ -289,8 +290,8 @@ const ResidentManagement: React.FC = () => {
                 username: 'smendoza567',
                 fullName: 'Sofia Mendoza',
                 contactNumber: '0925 567 8901',
-                birthdate: 'May 30, 2006',
-                age: 19,
+                birthdate: 'May 30, 2012',
+                age: 13,
                 sex: 'Female',
                 homeAddress: 'F205 Barretto',
                 gender: 'Female',
@@ -300,7 +301,7 @@ const ResidentManagement: React.FC = () => {
                 religion: 'Born Again',
                 voter: 'no',
                 pwd: 'no',
-                residentTags: [],
+                residentTags: ['Minor'],
                 status: 'pending',
                 proofs: {
                     validId: '/images/sample-id-8.jpg',
@@ -332,7 +333,7 @@ const ResidentManagement: React.FC = () => {
                 religion: 'Roman Catholic',
                 voter: 'yes',
                 pwd: 'no',
-                residentTags: ['Professional', 'Taxpayer'],
+                residentTags: [],
                 status: 'approved',
                 proofs: {
                     validId: '/images/sample-id-9.jpg',
@@ -364,7 +365,7 @@ const ResidentManagement: React.FC = () => {
                 religion: 'Roman Catholic',
                 voter: 'yes',
                 pwd: 'no',
-                residentTags: ['Professional', 'Taxpayer'],
+                residentTags: [],
                 status: 'pending',
                 proofs: {
                     validId: '/images/sample-id-10.jpg',
@@ -413,12 +414,14 @@ const ResidentManagement: React.FC = () => {
         
         const matchesGender = genderFilter === 'all' || resident.gender.toLowerCase() === genderFilter.toLowerCase();
         const matchesCivilStatus = civilStatusFilter === 'all' || resident.civilStatus.toLowerCase() === civilStatusFilter.toLowerCase();
-        const matchesIncome = incomeFilter === 'all' || resident.incomeRange === incomeFilter;
         const matchesVoter = voterFilter === 'all' || resident.voter === voterFilter;
-        const matchesPwd = pwdFilter === 'all' || resident.pwd === pwdFilter;
+        
+        const matchesResidentTag = residentTagFilter === 'all' || 
+                                   (residentTagFilter === 'none' && resident.residentTags.length === 0) ||
+                                   resident.residentTags.includes(residentTagFilter);
 
         return matchesSearch && matchesAge && matchesGender && matchesCivilStatus && 
-               matchesIncome && matchesVoter && matchesPwd;
+               matchesVoter && matchesResidentTag;
     });
 
     // Pagination
@@ -431,9 +434,8 @@ const ResidentManagement: React.FC = () => {
         setAgeFilter('all');
         setGenderFilter('all');
         setCivilStatusFilter('all');
-        setIncomeFilter('all');
         setVoterFilter('all');
-        setPwdFilter('all');
+        setResidentTagFilter('all');
         setSearchTerm('');
         setCurrentPage(1);
     };
@@ -577,40 +579,6 @@ const ResidentManagement: React.FC = () => {
                                 </select>
                             </div>
 
-                            {/* Income Range Filter */}
-                            <div>
-                                <label style={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    gap: '0.5rem', 
-                                    fontSize: '0.875rem', 
-                                    fontWeight: '500', 
-                                    color: '#374151',
-                                    marginBottom: '0.5rem'
-                                }}>
-                                    💰 Income Range
-                                </label>
-                                <select
-                                    value={incomeFilter}
-                                    onChange={(e) => setIncomeFilter(e.target.value)}
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.625rem',
-                                        border: '1px solid #d1d5db',
-                                        borderRadius: '0.5rem',
-                                        fontSize: '0.875rem',
-                                        backgroundColor: 'white',
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    <option value="all">All Income Ranges</option>
-                                    <option value="None">None</option>
-                                    <option value="Lower Middle Class">Lower Middle Class</option>
-                                    <option value="Middle Class">Middle Class</option>
-                                    <option value="Upper Middle Class">Upper Middle Class</option>
-                                </select>
-                            </div>
-
                             {/* Voter Filter */}
                             <div>
                                 <label style={{ 
@@ -643,22 +611,20 @@ const ResidentManagement: React.FC = () => {
                                 </select>
                             </div>
 
-                            {/* PWD Filter */}
+                            {/* Resident Tags Filter */}
                             <div>
-                                <label style={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    gap: '0.5rem', 
-                                    fontSize: '0.875rem', 
-                                    fontWeight: '500', 
+                                <label style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '500',
                                     color: '#374151',
                                     marginBottom: '0.5rem'
                                 }}>
-                                    ♿ PWD
+                                    🏷️ Resident Tags
                                 </label>
                                 <select
-                                    value={pwdFilter}
-                                    onChange={(e) => setPwdFilter(e.target.value)}
+                                    value={residentTagFilter}
+                                    onChange={(e) => setResidentTagFilter(e.target.value)}
                                     style={{
                                         width: '100%',
                                         padding: '0.625rem',
@@ -669,9 +635,14 @@ const ResidentManagement: React.FC = () => {
                                         cursor: 'pointer'
                                     }}
                                 >
-                                    <option value="all">All PWD</option>
-                                    <option value="yes">Yes</option>
-                                    <option value="no">No</option>
+                                    <option value="all">All Tags</option>
+                                    <option value="none">None</option>
+                                    <option value="Senior">Senior</option>
+                                    <option value="PWD">PWD</option>
+                                    <option value="Minor">Minor</option>
+                                    <option value="Solo Parent">Solo Parent</option>
+                                    <option value="First Job Seeker">First Job Seeker</option>
+                                    <option value="Unemployed">Unemployed</option>
                                 </select>
                             </div>
                         </div>
@@ -814,6 +785,12 @@ const ResidentManagement: React.FC = () => {
                                             textAlign: 'left', 
                                             fontWeight: '600',
                                             color: '#2563eb'
+                                        }}>Age</th>
+                                        <th style={{ 
+                                            padding: '0.75rem', 
+                                            textAlign: 'left', 
+                                            fontWeight: '600',
+                                            color: '#2563eb'
                                         }}>Sex</th>
                                         <th style={{ 
                                             padding: '0.75rem', 
@@ -858,6 +835,7 @@ const ResidentManagement: React.FC = () => {
                                                 <td style={{ padding: '0.75rem', color: '#1f2937' }}>{resident.fullName}</td>
                                                 <td style={{ padding: '0.75rem', color: '#1f2937' }}>{resident.contactNumber}</td>
                                                 <td style={{ padding: '0.75rem', color: '#1f2937' }}>{resident.birthdate}</td>
+                                                <td style={{ padding: '0.75rem', color: '#1f2937' }}>{resident.age}</td>
                                                 <td style={{ padding: '0.75rem', color: '#1f2937' }}>{resident.sex}</td>
                                                 <td style={{ padding: '0.75rem', color: '#1f2937' }}>{resident.civilStatus}</td>
                                                 <td style={{ padding: '0.75rem', color: '#1f2937' }}>
@@ -896,44 +874,6 @@ const ResidentManagement: React.FC = () => {
                                                         >
                                                             <FaEye />
                                                         </button>
-                                                        {resident.status === 'pending' && (
-                                                            <>
-                                                                <button
-                                                                    onClick={() => handleApprove(resident.id)}
-                                                                    title="Approve"
-                                                                    style={{
-                                                                        padding: '0.5rem',
-                                                                        backgroundColor: '#22c55e',
-                                                                        color: 'white',
-                                                                        border: 'none',
-                                                                        borderRadius: '0.375rem',
-                                                                        cursor: 'pointer',
-                                                                        display: 'flex',
-                                                                        alignItems: 'center',
-                                                                        justifyContent: 'center'
-                                                                    }}
-                                                                >
-                                                                    <FaCheck />
-                                                                </button>
-                                                                <button
-                                                                    onClick={() => handleReject(resident.id)}
-                                                                    title="Reject"
-                                                                    style={{
-                                                                        padding: '0.5rem',
-                                                                        backgroundColor: '#ef4444',
-                                                                        color: 'white',
-                                                                        border: 'none',
-                                                                        borderRadius: '0.375rem',
-                                                                        cursor: 'pointer',
-                                                                        display: 'flex',
-                                                                        alignItems: 'center',
-                                                                        justifyContent: 'center'
-                                                                    }}
-                                                                >
-                                                                    <FaTimes />
-                                                                </button>
-                                                            </>
-                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1111,6 +1051,138 @@ const ResidentManagement: React.FC = () => {
                             >
                                 ×
                             </button>
+                        </div>
+
+                        {/* Resident Image Section */}
+                        <div style={{ marginBottom: '2rem' }}>
+                            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1f2937', marginBottom: '1.5rem', textAlign: 'center' }}>
+                                Resident Photo
+                            </h3>
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: '1.5rem'
+                            }}>
+                                {/* Image Preview */}
+                                <div style={{
+                                    position: 'relative',
+                                    width: '200px',
+                                    height: '200px',
+                                    borderRadius: '0.75rem',
+                                    backgroundColor: '#f3f4f6',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    overflow: 'hidden',
+                                    border: '1px solid #e5e7eb',
+                                    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+                                }}>
+                                    {residentImage ? (
+                                        <>
+                                            <img 
+                                                src={residentImage} 
+                                                alt="Resident" 
+                                                style={{ 
+                                                    width: '100%', 
+                                                    height: '100%', 
+                                                    objectFit: 'cover' 
+                                                }} 
+                                            />
+                                            {/* Remove button overlay */}
+                                            <button
+                                                onClick={() => {
+                                                    setResidentImage(null);
+                                                    setImageFile(null);
+                                                }}
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: '0.5rem',
+                                                    right: '0.5rem',
+                                                    width: '32px',
+                                                    height: '32px',
+                                                    backgroundColor: 'rgba(239, 68, 68, 0.95)',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    cursor: 'pointer',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    fontSize: '0.875rem',
+                                                    transition: 'all 0.2s',
+                                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.95)';
+                                                    e.currentTarget.style.transform = 'scale(1.05)';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.95)';
+                                                    e.currentTarget.style.transform = 'scale(1)';
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <div style={{ textAlign: 'center', color: '#9ca3af' }}>
+                                            <FaFileImage style={{ width: '3.5rem', height: '3.5rem', marginBottom: '0.75rem', opacity: 0.5 }} />
+                                            <p style={{ fontSize: '0.875rem', fontWeight: '500', margin: 0 }}>No photo uploaded</p>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Upload Button */}
+                                <label style={{
+                                    padding: '0.75rem 2rem',
+                                    backgroundColor: '#3b82f6',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '0.5rem',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    transition: 'all 0.2s',
+                                    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#2563eb';
+                                    e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                                    e.currentTarget.style.transform = 'translateY(-1px)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#3b82f6';
+                                    e.currentTarget.style.boxShadow = '0 1px 3px 0 rgba(0, 0, 0, 0.1)';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                }}>
+                                    <FaFileImage />
+                                    {residentImage ? 'Change Photo' : 'Upload Photo'}
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                setImageFile(file);
+                                                const reader = new FileReader();
+                                                reader.onloadend = () => {
+                                                    setResidentImage(reader.result as string);
+                                                };
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }}
+                                        style={{ display: 'none' }}
+                                    />
+                                </label>
+
+                                <p style={{ fontSize: '0.75rem', color: '#9ca3af', margin: 0, textAlign: 'center' }}>
+                                    Recommended: Square image, JPG or PNG, max 5MB
+                                </p>
+                            </div>
                         </div>
 
                         {/* Resident Details */}
@@ -1395,7 +1467,398 @@ const ResidentManagement: React.FC = () => {
                                     )}
                                 </div>
 
-                                {/* Add remaining fields similarly... for brevity showing key ones */}
+                                {/* Birthplace */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Birthplace</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.birthplace && selectedResident.birthplace !== 'Not provided' ? '#1f2937' : '#9ca3af', fontStyle: selectedResident.birthplace && selectedResident.birthplace !== 'Not provided' ? 'normal' : 'italic' }}>
+                                            {selectedResident.birthplace || 'Not provided'}
+                                        </div>
+                                    </div>
+                                    {selectedResident.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => alert('Declined Birthplace')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#ef4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                            <button
+                                                onClick={() => alert('Approved Birthplace')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaCheck />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Age */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Age</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: '#1f2937' }}>{selectedResident.age} years old</div>
+                                    </div>
+                                    {selectedResident.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => alert('Declined Age')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#ef4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                            <button
+                                                onClick={() => alert('Approved Age')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaCheck />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Sex */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Sex</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: '#1f2937' }}>{selectedResident.gender}</div>
+                                    </div>
+                                    {selectedResident.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => alert('Declined Sex')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#ef4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                            <button
+                                                onClick={() => alert('Approved Sex')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaCheck />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Weight */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Weight</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.weight && selectedResident.weight !== 'Not provided' ? '#1f2937' : '#9ca3af', fontStyle: selectedResident.weight && selectedResident.weight !== 'Not provided' ? 'normal' : 'italic' }}>
+                                            {selectedResident.weight || 'Not provided'}
+                                        </div>
+                                    </div>
+                                    {selectedResident.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => alert('Declined Weight')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#ef4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                            <button
+                                                onClick={() => alert('Approved Weight')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaCheck />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Height */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Height</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.height && selectedResident.height !== 'Not provided' ? '#1f2937' : '#9ca3af', fontStyle: selectedResident.height && selectedResident.height !== 'Not provided' ? 'normal' : 'italic' }}>
+                                            {selectedResident.height || 'Not provided'}
+                                        </div>
+                                    </div>
+                                    {selectedResident.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => alert('Declined Height')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#ef4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                            <button
+                                                onClick={() => alert('Approved Height')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaCheck />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Voters Precinct No */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Voters Precinct No</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.votersPrecinctNo && selectedResident.votersPrecinctNo !== 'Not provided' ? '#1f2937' : '#9ca3af', fontStyle: selectedResident.votersPrecinctNo && selectedResident.votersPrecinctNo !== 'Not provided' ? 'normal' : 'italic' }}>
+                                            {selectedResident.votersPrecinctNo || 'Not provided'}
+                                        </div>
+                                    </div>
+                                    {selectedResident.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => alert('Declined Voters Precinct No')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#ef4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                            <button
+                                                onClick={() => alert('Approved Voters Precinct No')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaCheck />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Business Name */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Business Name</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.businessName && selectedResident.businessName !== 'Not provided' ? '#1f2937' : '#9ca3af', fontStyle: selectedResident.businessName && selectedResident.businessName !== 'Not provided' ? 'normal' : 'italic' }}>
+                                            {selectedResident.businessName || 'Not provided'}
+                                        </div>
+                                    </div>
+                                    {selectedResident.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => alert('Declined Business Name')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#ef4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                            <button
+                                                onClick={() => alert('Approved Business Name')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaCheck />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* SSN No */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>SSN No</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.ssnNo && selectedResident.ssnNo !== 'Not provided' ? '#1f2937' : '#9ca3af', fontStyle: selectedResident.ssnNo && selectedResident.ssnNo !== 'Not provided' ? 'normal' : 'italic' }}>
+                                            {selectedResident.ssnNo || 'Not provided'}
+                                        </div>
+                                    </div>
+                                    {selectedResident.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => alert('Declined SSN No')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#ef4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                            <button
+                                                onClick={() => alert('Approved SSN No')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaCheck />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* TIN No */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>TIN No</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.tinNo && selectedResident.tinNo !== 'Not provided' ? '#1f2937' : '#9ca3af', fontStyle: selectedResident.tinNo && selectedResident.tinNo !== 'Not provided' ? 'normal' : 'italic' }}>
+                                            {selectedResident.tinNo || 'Not provided'}
+                                        </div>
+                                    </div>
+                                    {selectedResident.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => alert('Declined TIN No')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#ef4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                            <button
+                                                onClick={() => alert('Approved TIN No')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaCheck />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
                                 {/* Civil Status */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
                                     <div style={{ flex: 1 }}>
@@ -1453,15 +1916,80 @@ const ResidentManagement: React.FC = () => {
                                 </div>
 
                                 {/* Resident Tags */}
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
                                     <div style={{ flex: 1 }}>
-                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Resident Tags</div>
-                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.residentTags.length > 0 ? '#1f2937' : '#9ca3af', fontStyle: selectedResident.residentTags.length > 0 ? 'normal' : 'italic' }}>
-                                            {selectedResident.residentTags.length > 0 ? selectedResident.residentTags.join(', ') : 'Not provided'}
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.5rem' }}>Resident Tags *</div>
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#1f2937', cursor: 'pointer' }}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={selectedResident.residentTags.length === 0}
+                                                    readOnly
+                                                    style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                                                />
+                                                None
+                                            </label>
+                                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#1f2937', cursor: 'pointer' }}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={selectedResident.residentTags.includes('Senior')}
+                                                    readOnly
+                                                    style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                                                />
+                                                Senior
+                                            </label>
+                                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#1f2937', cursor: 'pointer' }}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={selectedResident.residentTags.includes('Minor')}
+                                                    readOnly
+                                                    style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                                                />
+                                                Minor
+                                            </label>
+                                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#1f2937', cursor: 'pointer' }}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={selectedResident.residentTags.includes('Solo Parent')}
+                                                    readOnly
+                                                    style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                                                />
+                                                Solo Parent
+                                            </label>
+                                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#1f2937', cursor: 'pointer' }}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={selectedResident.residentTags.includes('First Job Seeker')}
+                                                    readOnly
+                                                    style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                                                />
+                                                First Job Seeker
+                                            </label>
+                                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#1f2937', cursor: 'pointer' }}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={selectedResident.residentTags.includes('Unemployed')}
+                                                    readOnly
+                                                    style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                                                />
+                                                Unemployed
+                                            </label>
+                                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#1f2937', cursor: 'pointer' }}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={selectedResident.residentTags.includes('PWD')}
+                                                    readOnly
+                                                    style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                                                />
+                                                PWD (Person with Disability)
+                                            </label>
+                                        </div>
+                                        <div style={{ fontSize: '0.75rem', color: '#6b7280', fontStyle: 'italic' }}>
+                                            Select all applicable tags. Note: Minor and Senior cannot be selected together.
                                         </div>
                                     </div>
                                     {selectedResident.status === 'pending' && (
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                        <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '1rem' }}>
                                             <button
                                                 onClick={() => alert('Declined Resident Tags')}
                                                 style={{
