@@ -12,7 +12,6 @@ import {
     FaEnvelope,
     FaBullhorn as FaMegaphone,
     FaExchangeAlt,
-    FaRunning,
     FaFlag,
     FaCalendarPlus,
     FaIdCard,
@@ -54,8 +53,7 @@ const ChairwomanDashboardNav: React.FC<ChairwomanDashboardNavProps> = ({
         { id: 'clearance-permits', icon: FaFileAlt, label: 'Create Clearance and Permits', route: '/create-clearance-permits' },
         { id: 'compose-message', icon: FaEnvelope, label: 'Compose a Message', route: '/compose-message' },
         { id: 'create-announcement', icon: FaMegaphone, label: 'Announcements & Events', route: '/create-announcement-events' },
-        { id: 'transactions', icon: FaExchangeAlt, label: 'Barangay Transactions (Read Only)' },
-        { id: 'sk-activities', icon: FaRunning, label: 'SK Activities and Events' },
+        { id: 'transactions', icon: FaExchangeAlt, label: 'Barangay Transactions', route: '/barangay-transactions' },
         { id: 'report-incident', icon: FaFlag, label: 'Report an Incident', route: '/report-incident' },
         { id: 'schedule-meeting', icon: FaCalendarPlus, label: 'Schedule a Meeting' },
         { id: 'my-barangay-id', icon: FaIdCard, label: 'My Barangay ID', route: '/my-barangay-id' }
