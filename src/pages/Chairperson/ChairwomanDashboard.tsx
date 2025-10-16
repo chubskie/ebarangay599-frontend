@@ -4,7 +4,6 @@ import ChairwomanDashboardNav from '../../components/ChairwomanDashboardNav';
 import { 
     FaChartBar,
     FaChartPie,
-    FaUserTie,
     FaPrint,
     FaDownload
 } from 'react-icons/fa';
@@ -775,19 +774,29 @@ const ChairwomanDashboard: React.FC = () => {
 
     const renderDashboard = () => (
         <div>
-            {/* Simple Header */}
+            {/* Header */}
             <header style={{ 
                 backgroundColor: 'white', 
-                padding: '1rem 2rem', 
+                padding: '1.5rem 2rem', 
                 borderBottom: '1px solid #e5e7eb',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between'
+                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
             }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <FaUserTie style={{ width: '1.25rem', height: '1.25rem', color: '#6b7280' }} />
-                    <span style={{ fontWeight: '500', color: '#1f2937' }}>Barangay Chairperson</span>
-                </div>
+                <h1 style={{ 
+                    fontSize: '1.5rem', 
+                    fontWeight: '600', 
+                    color: '#1f2937',
+                    margin: 0 
+                }}>
+                    Chairwoman Dashboard
+                </h1>
+                <p style={{ 
+                    fontSize: '0.875rem', 
+                    color: '#6b7280',
+                    marginTop: '0.25rem',
+                    marginBottom: 0
+                }}>
+                    Overview of barangay statistics and reports
+                </p>
             </header>
 
             {/* Profile Summary */}

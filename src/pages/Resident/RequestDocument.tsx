@@ -7,7 +7,6 @@ import {
     FaMedal,
     FaIdCard,
     FaTimes,
-    FaCheck,
     FaSpinner
 } from 'react-icons/fa';
 
@@ -25,7 +24,7 @@ interface DocumentType {
 interface DocumentRequest {
     id: string;
     type: string;
-    status: 'pending' | 'processing' | 'ready' | 'completed' | 'rejected';
+    status: 'None' | 'For Pickup' | 'In Progress' | 'Rejected';
     requestDate: string;
     completionDate?: string;
     purpose: string;
@@ -41,6 +40,10 @@ const RequestDocument: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState<'now' | 'later' | null>(null);
     const [proofOfPayment, setProofOfPayment] = useState<File | null>(null);
+    const [sortField, setSortField] = useState<'date' | null>(null);
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    const [statusFilter, setStatusFilter] = useState<'All' | 'None' | 'In Progress' | 'For Pickup' | 'Rejected'>('All');
+    const [documentTypeFilter, setDocumentTypeFilter] = useState<string>('All');
 
     // Sample user data from Dashboard (this would normally come from props or context)
     const userData = {
@@ -71,7 +74,7 @@ const RequestDocument: React.FC = () => {
         {
             id: 'REQ-2025-001',
             type: 'Barangay Clearance',
-            status: 'ready',
+            status: 'For Pickup',
             requestDate: 'Oct 10, 2025',
             completionDate: 'Oct 12, 2025',
             purpose: 'Employment Requirements',
@@ -80,7 +83,7 @@ const RequestDocument: React.FC = () => {
         {
             id: 'REQ-2025-002',
             type: 'Certificate of Indigency',
-            status: 'processing',
+            status: 'In Progress',
             requestDate: 'Oct 12, 2025',
             purpose: 'Medical Assistance',
             fee: 30
@@ -88,10 +91,18 @@ const RequestDocument: React.FC = () => {
         {
             id: 'REQ-2025-003',
             type: 'Certificate of Residency',
-            status: 'rejected',
+            status: 'Rejected',
             requestDate: 'Oct 01, 2025',
             purpose: 'Legal Documentation',
             fee: 75
+        },
+        {
+            id: 'REQ-2025-004',
+            type: 'Good Moral Certificate',
+            status: 'None',
+            requestDate: 'Oct 14, 2025',
+            purpose: 'School Requirements',
+            fee: 40
         }
     ]);
 
@@ -176,7 +187,7 @@ const RequestDocument: React.FC = () => {
             const newRequest: DocumentRequest = {
                 id: `REQ-2025-${String(documentRequests.length + 1).padStart(3, '0')}`,
                 type: selectedDocument?.name || '',
-                status: 'pending',
+                status: 'In Progress',
                 requestDate: new Date().toLocaleDateString('en-US', { 
                     year: 'numeric', 
                     month: 'short', 
@@ -205,25 +216,36 @@ const RequestDocument: React.FC = () => {
         }, 2000);
     };
 
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case 'pending': return 'text-yellow-600 bg-yellow-100';
-            case 'processing': return 'text-blue-600 bg-blue-100';
-            case 'ready': return 'text-green-600 bg-green-100';
-            case 'completed': return 'text-gray-600 bg-gray-100';
-            case 'rejected': return 'text-red-600 bg-red-100';
-            default: return 'text-gray-600 bg-gray-100';
-        }
-    };
+    // Filter requests by status
+    const filteredByStatus = statusFilter === 'All' 
+        ? documentRequests 
+        : documentRequests.filter(req => req.status === statusFilter);
 
-    const getStatusIcon = (status: string) => {
-        switch (status) {
-            case 'pending': return <FaSpinner className="w-4 h-4" />;
-            case 'processing': return <FaSpinner className="w-4 h-4 animate-spin" />;
-            case 'ready': return <FaCheck className="w-4 h-4" />;
-            case 'completed': return <FaCheck className="w-4 h-4" />;
-            case 'rejected': return <FaTimes className="w-4 h-4" />;
-            default: return <FaSpinner className="w-4 h-4" />;
+    // Filter by document type
+    const filteredByDocumentType = documentTypeFilter === 'All'
+        ? filteredByStatus
+        : filteredByStatus.filter(req => req.type === documentTypeFilter);
+
+    // Sort requests
+    const sortedRequests = [...filteredByDocumentType].sort((a, b) => {
+        if (!sortField) return 0;
+
+        if (sortField === 'date') {
+            const dateA = new Date(a.requestDate).getTime();
+            const dateB = new Date(b.requestDate).getTime();
+            return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
+        }
+
+        return 0;
+    });
+
+    // Handle sort
+    const handleSort = (field: 'date') => {
+        if (sortField === field) {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortField(field);
+            setSortDirection('asc');
         }
     };
 
@@ -377,14 +399,66 @@ const RequestDocument: React.FC = () => {
 
                     {/* Request History */}
                     <div>
-                        <h2 style={{ 
-                            fontSize: '1.5rem', 
-                            fontWeight: '600', 
-                            color: '#1f2937', 
-                            marginBottom: '1.5rem' 
-                        }}>
-                            My Document Requests
-                        </h2>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+                            <h2 style={{ 
+                                fontSize: '1.5rem', 
+                                fontWeight: '600', 
+                                color: '#1f2937',
+                                margin: 0
+                            }}>
+                                My Document Requests
+                            </h2>
+                            
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>Status:</span>
+                                    <select
+                                        value={statusFilter}
+                                        onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
+                                        style={{
+                                            padding: '0.5rem 2rem 0.5rem 0.75rem',
+                                            fontSize: '0.875rem',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '0.375rem',
+                                            outline: 'none',
+                                            cursor: 'pointer',
+                                            backgroundColor: 'white'
+                                        }}
+                                    >
+                                        <option value="All">All Status</option>
+                                        <option value="None">None</option>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="For Pickup">For Pickup</option>
+                                        <option value="Rejected">Rejected</option>
+                                    </select>
+                                </div>
+
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>Document Type:</span>
+                                    <select
+                                        value={documentTypeFilter}
+                                        onChange={(e) => setDocumentTypeFilter(e.target.value)}
+                                        style={{
+                                            padding: '0.5rem 2rem 0.5rem 0.75rem',
+                                            fontSize: '0.875rem',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '0.375rem',
+                                            outline: 'none',
+                                            cursor: 'pointer',
+                                            backgroundColor: 'white'
+                                        }}
+                                    >
+                                        <option value="All">All Documents</option>
+                                        <option value="Barangay Clearance">Barangay Clearance</option>
+                                        <option value="Certificate of Indigency">Certificate of Indigency</option>
+                                        <option value="Certificate of Residency">Certificate of Residency</option>
+                                        <option value="Good Moral Certificate">Good Moral Certificate</option>
+                                        <option value="Business Permit">Business Permit</option>
+                                        <option value="Community Tax Certificate">Community Tax Certificate</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         
                         <div style={{
                             backgroundColor: 'white',
@@ -392,7 +466,7 @@ const RequestDocument: React.FC = () => {
                             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
                             overflow: 'hidden'
                         }}>
-                            {documentRequests.length === 0 ? (
+                            {sortedRequests.length === 0 ? (
                                 <div style={{ padding: '3rem', textAlign: 'center' }}>
                                     <FaFileAlt style={{ width: '3rem', height: '3rem', color: '#d1d5db', margin: '0 auto 1rem' }} />
                                     <p style={{ color: '#6b7280', fontSize: '1rem' }}>No document requests yet</p>
@@ -414,6 +488,20 @@ const RequestDocument: React.FC = () => {
                                                 <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
                                                     Purpose
                                                 </th>
+                                                <th 
+                                                    onClick={() => handleSort('date')}
+                                                    style={{ 
+                                                        padding: '1rem', 
+                                                        textAlign: 'left', 
+                                                        fontSize: '0.875rem', 
+                                                        fontWeight: '600', 
+                                                        color: '#374151',
+                                                        cursor: 'pointer',
+                                                        userSelect: 'none'
+                                                    }}
+                                                >
+                                                    Request Date {sortField === 'date' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                                </th>
                                                 <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>
                                                     Status
                                                 </th>
@@ -423,7 +511,7 @@ const RequestDocument: React.FC = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {documentRequests.map((request) => (
+                                            {sortedRequests.map((request) => (
                                                 <tr key={request.id} style={{ borderTop: '1px solid #e5e7eb' }}>
                                                     <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#1f2937', fontFamily: 'monospace' }}>
                                                         {request.id}
@@ -434,19 +522,30 @@ const RequestDocument: React.FC = () => {
                                                     <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#6b7280' }}>
                                                         {request.purpose}
                                                     </td>
+                                                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#1f2937' }}>
+                                                        {request.requestDate}
+                                                    </td>
                                                     <td style={{ padding: '1rem' }}>
                                                         <span style={{
                                                             display: 'inline-flex',
                                                             alignItems: 'center',
-                                                            gap: '0.5rem',
-                                                            padding: '0.25rem 0.75rem',
+                                                            padding: '0.375rem 0.75rem',
                                                             borderRadius: '0.375rem',
                                                             fontSize: '0.75rem',
-                                                            fontWeight: '500',
-                                                            textTransform: 'capitalize'
-                                                        }}
-                                                        className={getStatusColor(request.status)}>
-                                                            {getStatusIcon(request.status)}
+                                                            fontWeight: '600',
+                                                            backgroundColor: 
+                                                                request.status === 'None' ? '#f3f4f6' :
+                                                                request.status === 'In Progress' ? '#dbeafe' :
+                                                                request.status === 'For Pickup' ? '#d1fae5' :
+                                                                request.status === 'Rejected' ? '#fee2e2' :
+                                                                '#f3f4f6',
+                                                            color:
+                                                                request.status === 'None' ? '#6b7280' :
+                                                                request.status === 'In Progress' ? '#1e40af' :
+                                                                request.status === 'For Pickup' ? '#065f46' :
+                                                                request.status === 'Rejected' ? '#991b1b' :
+                                                                '#6b7280'
+                                                        }}>
                                                             {request.status}
                                                         </span>
                                                     </td>

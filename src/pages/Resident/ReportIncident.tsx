@@ -4,11 +4,9 @@ import {
   FaExclamationCircle,
   FaTimes,
   FaCheck,
-  FaSpinner,
   FaFileAlt,
   FaClock,
   FaChevronRight,
-  FaUserShield,
 } from 'react-icons/fa';
 
 interface IncidentReport {
@@ -16,8 +14,7 @@ interface IncidentReport {
   type: string;
   subject: string;
   details?: string;               // Incident narrative
-  assigned?: string[];            // Assigned barangay officials (Kagawad, Tanod, etc.)
-  status: 'submitted' | 'investigating' | 'resolved' | 'closed' | 'in progress';
+  status: 'None' | 'In Progress' | 'Resolved';
   reportDate: string;
   location: string;
 }
@@ -27,6 +24,10 @@ const ReportIncident: React.FC = () => {
   const [showReportModal, setShowReportModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [sortField, setSortField] = useState<'date' | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [incidentTypeFilter, setIncidentTypeFilter] = useState<'All' | string>('All');
+  const [statusFilter, setStatusFilter] = useState<'All' | 'None' | 'In Progress' | 'Resolved'>('All');
 
   const toggleExpanded = (id: string) =>
     setExpanded(prev => ({ ...prev, [id]: !prev[id] }));
@@ -41,32 +42,29 @@ const ReportIncident: React.FC = () => {
 
   const [incidentReports, setIncidentReports] = useState<IncidentReport[]>([
     {
-      id: 'INC-2025-001',
+      id: 'C-2025-001',
       type: 'Community Concern',
       subject: 'Noise Complaint at Block 5',
       details: 'Loud music past midnight for three consecutive nights.',
-      assigned: ['Barangay Kagawad – J. Santos'],
-      status: 'investigating',
+      status: 'In Progress',
       reportDate: 'Oct 10, 2025',
       location: 'Block 5, Zone 59',
     },
     {
-      id: 'INC-2025-002',
+      id: 'C-2025-002',
       type: 'Blotter',
       subject: 'Minor Theft Incident',
       details: 'Bicycle reported missing outside Narra St. sari-sari store.',
-      assigned: ['Barangay Tanod – R. Cruz'],
-      status: 'resolved',
+      status: 'Resolved',
       reportDate: 'Oct 08, 2025',
       location: 'Narra Street',
     },
     {
-      id: 'INC-2025-003',
+      id: 'C-2025-003',
       type: 'VAWC',
       subject: 'Domestic Dispute Report',
       details: 'Repeated shouting and disturbance reported by neighbors.',
-      assigned: ['VAWC Desk Officer – M. Dela Peña', 'Barangay Kagawad – P. Reyes'],
-      status: 'in progress',
+      status: 'In Progress',
       reportDate: 'Oct 05, 2025',
       location: 'Molave St.',
     },
@@ -82,12 +80,11 @@ const ReportIncident: React.FC = () => {
     setIsSubmitting(true);
     setTimeout(() => {
       const newReport: IncidentReport = {
-        id: `INC-2025-${String(incidentReports.length + 1).padStart(3, '0')}`,
+        id: `C-2025-${String(incidentReports.length + 1).padStart(3, '0')}`,
         type: formData.incidentType,
         subject: formData.subject,
         details: formData.details,
-        assigned: [], // starts unassigned
-        status: 'submitted',
+        status: 'None',
         reportDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
         location: formData.location,
       };
@@ -101,23 +98,52 @@ const ReportIncident: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'submitted':     return '#2563eb';
-      case 'investigating': return '#f59e0b';
-      case 'in progress':   return '#3b82f6';
-      case 'resolved':      return '#10b981';
-      case 'closed':        return '#6b7280';
-      default:              return '#9ca3af';
+      case 'None':        return '#9ca3af';
+      case 'In Progress': return '#3b82f6';
+      case 'Resolved':    return '#10b981';
+      default:            return '#9ca3af';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'submitted':     return <FaFileAlt style={{ width: '0.9rem', height: '0.9rem' }} />;
-      case 'investigating': return <FaSpinner style={{ width: '0.9rem', height: '0.9rem' }} className="animate-spin" />;
-      case 'in progress':   return <FaClock style={{ width: '0.9rem', height: '0.9rem' }} />;
-      case 'resolved':      return <FaCheck style={{ width: '0.9rem', height: '0.9rem' }} />;
-      case 'closed':        return <FaCheck style={{ width: '0.9rem', height: '0.9rem' }} />;
-      default:              return <FaFileAlt style={{ width: '0.9rem', height: '0.9rem' }} />;
+      case 'None':        return <FaFileAlt style={{ width: '0.9rem', height: '0.9rem' }} />;
+      case 'In Progress': return <FaClock style={{ width: '0.9rem', height: '0.9rem' }} />;
+      case 'Resolved':    return <FaCheck style={{ width: '0.9rem', height: '0.9rem' }} />;
+      default:            return <FaFileAlt style={{ width: '0.9rem', height: '0.9rem' }} />;
+    }
+  };
+
+  // Filter by incident type
+  const filteredByType = incidentTypeFilter === 'All'
+    ? incidentReports
+    : incidentReports.filter(r => r.type === incidentTypeFilter);
+
+  // Filter by status
+  const filteredByStatus = statusFilter === 'All'
+    ? filteredByType
+    : filteredByType.filter(r => r.status === statusFilter);
+
+  // Sort reports
+  const sortedReports = [...filteredByStatus].sort((a, b) => {
+    if (!sortField) return 0;
+
+    if (sortField === 'date') {
+      const dateA = new Date(a.reportDate).getTime();
+      const dateB = new Date(b.reportDate).getTime();
+      return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
+    }
+
+    return 0;
+  });
+
+  // Handle sort
+  const handleSort = (field: 'date') => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
     }
   };
 
@@ -161,11 +187,68 @@ const ReportIncident: React.FC = () => {
               border: 'none',
               cursor: 'pointer',
               fontWeight: 600,
-              marginBottom: '2rem',
+              marginBottom: '1rem',
             }}
           >
             + Submit New Report
           </button>
+
+          {/* Filters */}
+          <div style={{ 
+            backgroundColor: 'white',
+            padding: '1.5rem',
+            borderRadius: '0.5rem',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+            marginBottom: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1rem'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>Incident Type:</span>
+              <select
+                value={incidentTypeFilter}
+                onChange={(e) => setIncidentTypeFilter(e.target.value)}
+                style={{
+                  padding: '0.5rem 2rem 0.5rem 0.75rem',
+                  fontSize: '0.875rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '0.375rem',
+                  outline: 'none',
+                  cursor: 'pointer',
+                  backgroundColor: 'white'
+                }}
+              >
+                <option value="All">All Types</option>
+                <option value="Community Concern">Community Concern</option>
+                <option value="Blotter">Blotter</option>
+                <option value="VAWC">VAWC</option>
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>Status:</span>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
+                style={{
+                  padding: '0.5rem 2rem 0.5rem 0.75rem',
+                  fontSize: '0.875rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '0.375rem',
+                  outline: 'none',
+                  cursor: 'pointer',
+                  backgroundColor: 'white'
+                }}
+              >
+                <option value="All">All Status</option>
+                <option value="None">None</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+              </select>
+            </div>
+          </div>
 
           {/* Card/Table */}
           <div
@@ -176,7 +259,7 @@ const ReportIncident: React.FC = () => {
               overflow: 'hidden',
             }}
           >
-            {incidentReports.length === 0 ? (
+            {sortedReports.length === 0 ? (
               <div style={{ padding: '3rem', textAlign: 'center' }}>
                 <FaExclamationCircle style={{ width: '3rem', height: '3rem', color: '#d1d5db' }} />
                 <p style={{ color: '#6b7280', marginTop: '1rem' }}>No incident reports found</p>
@@ -185,25 +268,69 @@ const ReportIncident: React.FC = () => {
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ backgroundColor: '#f9fafb' }}>
-                    {['Report ID', 'Incident Type', 'Subject', 'Location', 'Status', 'Report Date'].map((h) => (
-                      <th
-                        key={h}
-                        style={{
-                          padding: '1rem',
-                          textAlign: 'left',
-                          fontWeight: 600,
-                          fontSize: '0.875rem',
-                          color: '#374151',
-                        }}
-                      >
-                        {h}
-                      </th>
-                    ))}
+                    <th style={{
+                      padding: '1rem',
+                      textAlign: 'left',
+                      fontWeight: 600,
+                      fontSize: '0.875rem',
+                      color: '#374151',
+                    }}>
+                      Complaint ID
+                    </th>
+                    <th style={{
+                      padding: '1rem',
+                      textAlign: 'left',
+                      fontWeight: 600,
+                      fontSize: '0.875rem',
+                      color: '#374151',
+                    }}>
+                      Incident Type
+                    </th>
+                    <th style={{
+                      padding: '1rem',
+                      textAlign: 'left',
+                      fontWeight: 600,
+                      fontSize: '0.875rem',
+                      color: '#374151',
+                    }}>
+                      Subject
+                    </th>
+                    <th style={{
+                      padding: '1rem',
+                      textAlign: 'left',
+                      fontWeight: 600,
+                      fontSize: '0.875rem',
+                      color: '#374151',
+                    }}>
+                      Location
+                    </th>
+                    <th style={{
+                      padding: '1rem',
+                      textAlign: 'left',
+                      fontWeight: 600,
+                      fontSize: '0.875rem',
+                      color: '#374151',
+                    }}>
+                      Status
+                    </th>
+                    <th 
+                      onClick={() => handleSort('date')}
+                      style={{
+                        padding: '1rem',
+                        textAlign: 'left',
+                        fontWeight: 600,
+                        fontSize: '0.875rem',
+                        color: '#374151',
+                        cursor: 'pointer',
+                        userSelect: 'none'
+                      }}>
+                      Report Date {sortField === 'date' && (sortDirection === 'asc' ? '↑' : '↓')}
+                    </th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {incidentReports.map((r) => {
+                  {sortedReports.map((r) => {
                     const isOpen = !!expanded[r.id];
                     return (
                       <React.Fragment key={r.id}>
@@ -292,37 +419,6 @@ const ReportIncident: React.FC = () => {
                                 <div style={{ color: '#374151', lineHeight: 1.6 }}>
                                   <span style={{ color: '#6b7280', fontSize: '0.85rem' }}>Incident Details:</span>
                                   <div style={{ marginTop: '0.25rem' }}>{r.details || '—'}</div>
-                                </div>
-
-                                {/* Assigned officials */}
-                                <div style={{ marginTop: '0.75rem', color: '#374151' }}>
-                                  <span style={{ color: '#6b7280', fontSize: '0.85rem' }}>
-                                    Assigned Barangay Official(s):
-                                  </span>
-                                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.35rem' }}>
-                                    {r.assigned && r.assigned.length > 0 ? (
-                                      r.assigned.map((name) => (
-                                        <span
-                                          key={name}
-                                          style={{
-                                            display: 'inline-flex',
-                                            alignItems: 'center',
-                                            gap: '0.35rem',
-                                            padding: '0.25rem 0.5rem',
-                                            borderRadius: '999px',
-                                            backgroundColor: '#e5e7eb',
-                                            color: '#374151',
-                                            fontSize: '0.8rem',
-                                          }}
-                                        >
-                                          <FaUserShield style={{ width: '0.8rem' }} />
-                                          {name}
-                                        </span>
-                                      ))
-                                    ) : (
-                                      <span style={{ color: '#6b7280', fontSize: '0.9rem' }}>Unassigned yet</span>
-                                    )}
-                                  </div>
                                 </div>
                               </div>
                             </div>

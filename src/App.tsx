@@ -3,6 +3,11 @@ import Home from './pages/Home';
 import Dashboard from './pages/Resident/Dashboard';
 import ChairwomanDashboard from './pages/Chairperson/ChairwomanDashboard';
 import ResidentManagement from './pages/Chairperson/ResidentManagement';
+import BarangayAccessManagement from './pages/Chairperson/BarangayAcessManagement';
+import IncidentReportsManagement from './pages/Chairperson/IncidentReportsManagement';
+import CreateClearancePermits from './pages/Chairperson/CreateClearancePermits';
+import ComposeMessage from './pages/Chairperson/ComposeMessage';
+import CreateAnnouncementEvents from './pages/Chairperson/CreateAnnouncementEvents';
 import RequestDocument from './pages/Resident/RequestDocument';
 import ReportIncident from './pages/Resident/ReportIncident';
 import ScheduleAnAppointment from './pages/Resident/ScheduleAnAppointment';
@@ -22,6 +27,11 @@ function App() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/chairwoman-dashboard" element={<ChairwomanDashboard />} />
       <Route path="/resident-management" element={<ResidentManagement />} />
+      <Route path="/barangay-access-management" element={<BarangayAccessManagement />} />
+      <Route path="/incident-reports-management" element={<IncidentReportsManagement />} />
+      <Route path="/create-clearance-permits" element={<CreateClearancePermits />} />
+      <Route path="/compose-message" element={<ComposeMessage />} />
+      <Route path="/create-announcement-events" element={<CreateAnnouncementEvents />} />
       <Route path="/request-document" element={<RequestDocument />} />
       <Route path="/report-incident" element={<ReportIncident />} />
       <Route path="/schedule-an-appointment" element={<ScheduleAnAppointment />} />

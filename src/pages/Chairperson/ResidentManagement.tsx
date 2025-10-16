@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChairwomanDashboardNav from '../../components/ChairwomanDashboardNav';
-import { FaUsers, FaSearch, FaRedo, FaEye, FaCheck, FaTimes, FaFileImage } from 'react-icons/fa';
+import { FaSearch, FaRedo, FaEye, FaCheck, FaTimes, FaFileImage } from 'react-icons/fa';
 
 // Sample resident data
 interface Resident {
@@ -451,16 +451,26 @@ const ResidentManagement: React.FC = () => {
                 {/* Header */}
                 <header style={{ 
                     backgroundColor: 'white', 
-                    padding: '1rem 2rem', 
+                    padding: '1.5rem 2rem', 
                     borderBottom: '1px solid #e5e7eb',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
                 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <FaUsers style={{ width: '1.25rem', height: '1.25rem', color: '#6b7280' }} />
-                        <span style={{ fontWeight: '500', color: '#1f2937' }}>Resident Management</span>
-                    </div>
+                    <h1 style={{ 
+                        fontSize: '1.5rem', 
+                        fontWeight: '600', 
+                        color: '#1f2937',
+                        margin: 0 
+                    }}>
+                        Resident Management
+                    </h1>
+                    <p style={{ 
+                        fontSize: '0.875rem', 
+                        color: '#6b7280',
+                        marginTop: '0.25rem',
+                        marginBottom: 0
+                    }}>
+                        Manage residents and their registration requests
+                    </p>
                 </header>
 
                 {/* Main Content */}
