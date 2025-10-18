@@ -691,6 +691,33 @@ const Register: React.FC = () => {
                                 Supporting Documents (Optional)
                             </h3>
                             
+                            {/* Document Requirements Note */}
+                            <div style={{
+                                backgroundColor: '#f0f9ff',
+                                border: '1px solid #bae6fd',
+                                borderRadius: '0.5rem',
+                                padding: '1rem',
+                                marginBottom: '1.5rem'
+                            }}>
+                                <p style={{ fontSize: '0.875rem', color: '#0c4a6e', fontWeight: '600', marginBottom: '0.5rem', marginTop: 0 }}>
+                                    📋 Acceptable Documents for Verification:
+                                </p>
+                                <div style={{ fontSize: '0.8125rem', color: '#075985', lineHeight: '1.6' }}>
+                                    <p style={{ margin: '0.25rem 0' }}>
+                                        <strong>For Name, Birthdate, Age:</strong> Birth Certificate, Baptismal Certificate, Government-issued ID
+                                    </p>
+                                    <p style={{ margin: '0.25rem 0' }}>
+                                        <strong>For Address:</strong> Government-issued ID, Electric/Water/Internet Bill, Rental Contract, Land Title, Deed of Sale, Real Property Tax Receipt, Tax Declaration
+                                    </p>
+                                    <p style={{ margin: '0.25rem 0' }}>
+                                        <strong>For Contact Number:</strong> OTP verification required
+                                    </p>
+                                    <p style={{ margin: '0.25rem 0 0 0' }}>
+                                        <strong>For Civil Status (if Married/Widowed):</strong> Marriage Certificate, Death Certificate
+                                    </p>
+                                </div>
+                            </div>
+                            
                             {/* File Upload Area */}
                             <div
                                 style={{
