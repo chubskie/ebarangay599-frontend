@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChairwomanDashboardNav from '../../components/ChairwomanDashboardNav';
-import { FaBullhorn, FaCalendarAlt, FaCheckCircle } from 'react-icons/fa';
+import { FaBullhorn, FaCalendarAlt, FaCheckCircle, FaStar } from 'react-icons/fa';
 
 const CreateAnnouncementEvents: React.FC = () => {
     const navigate = useNavigate();
@@ -11,7 +11,8 @@ const CreateAnnouncementEvents: React.FC = () => {
     // Form data
     const [formData, setFormData] = useState({
         title: '',
-        subject: ''
+        subject: '',
+        isImportant: false
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,7 +42,7 @@ const CreateAnnouncementEvents: React.FC = () => {
             setIsSubmitting(false);
             setShowSuccessModal(true);
             // Reset form
-            setFormData({ title: '', subject: '' });
+            setFormData({ title: '', subject: '', isImportant: false });
         }, 1500);
     };
 
@@ -309,6 +310,76 @@ const CreateAnnouncementEvents: React.FC = () => {
                             </div>
                         </div>
 
+                        {/* Mark as Important */}
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <button
+                                type="button"
+                                onClick={() => setFormData({ ...formData, isImportant: !formData.isImportant })}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.75rem',
+                                    padding: '1rem',
+                                    width: '100%',
+                                    backgroundColor: formData.isImportant ? '#fef3c7' : '#f9fafb',
+                                    border: formData.isImportant ? '2px solid #f59e0b' : '2px solid #e5e7eb',
+                                    borderRadius: '0.5rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                    textAlign: 'left'
+                                }}
+                                onMouseEnter={(e) => {
+                                    if (!formData.isImportant) {
+                                        e.currentTarget.style.borderColor = '#d1d5db';
+                                        e.currentTarget.style.backgroundColor = '#f3f4f6';
+                                    }
+                                }}
+                                onMouseLeave={(e) => {
+                                    if (!formData.isImportant) {
+                                        e.currentTarget.style.borderColor = '#e5e7eb';
+                                        e.currentTarget.style.backgroundColor = '#f9fafb';
+                                    }
+                                }}
+                            >
+                                <div style={{
+                                    width: '1.25rem',
+                                    height: '1.25rem',
+                                    borderRadius: '0.25rem',
+                                    border: formData.isImportant ? '2px solid #f59e0b' : '2px solid #d1d5db',
+                                    backgroundColor: formData.isImportant ? '#f59e0b' : 'white',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    flexShrink: 0,
+                                    transition: 'all 0.2s'
+                                }}>
+                                    {formData.isImportant && (
+                                        <FaStar style={{ fontSize: '0.75rem', color: 'white' }} />
+                                    )}
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <div style={{
+                                        fontSize: '0.875rem',
+                                        fontWeight: '600',
+                                        color: formData.isImportant ? '#92400e' : '#1f2937',
+                                        marginBottom: '0.25rem'
+                                    }}>
+                                        Mark as Important
+                                    </div>
+                                    <div style={{
+                                        fontSize: '0.75rem',
+                                        color: formData.isImportant ? '#92400e' : '#6b7280',
+                                        lineHeight: '1.4'
+                                    }}>
+                                        Important {postType === 'announcement' ? 'announcements' : 'events'} will be displayed prominently on the front page
+                                    </div>
+                                </div>
+                                {formData.isImportant && (
+                                    <FaStar style={{ fontSize: '1.25rem', color: '#f59e0b', flexShrink: 0 }} />
+                                )}
+                            </button>
+                        </div>
+
                         {/* Action Buttons */}
                         <div style={{
                             display: 'flex',
@@ -345,7 +416,7 @@ const CreateAnnouncementEvents: React.FC = () => {
                             </button>
 
                             <button
-                                onClick={() => setFormData({ title: '', subject: '' })}
+                                onClick={() => setFormData({ title: '', subject: '', isImportant: false })}
                                 disabled={isSubmitting}
                                 style={{
                                     padding: '0.75rem 1.5rem',

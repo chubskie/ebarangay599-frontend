@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChairwomanDashboardNav from '../../components/ChairwomanDashboardNav';
-import { FaSearch, FaCalendarAlt, FaSort } from 'react-icons/fa';
+import { FaSearch, FaSort } from 'react-icons/fa';
 
-type AppointmentStatus = 'Pending' | 'Accepted' | 'Declined' | 'Completed' | 'Cancelled';
+type AppointmentStatus = '' | 'Accepted' | 'Declined';
 
 interface Appointment {
   id: number;
@@ -59,7 +59,7 @@ const ManageAppointments: React.FC = () => {
       subject: 'Budget Planning Meeting',
       appointmentWith: 'Barangay Treasurer',
       dateTime: '2025-10-12T14:00',
-      status: 'Completed',
+      status: 'Accepted',
       purpose: 'Review proposed community project budget and finalize allocation for Q4 initiatives.',
       contactNumber: '0915 234 5678',
     },
@@ -71,7 +71,7 @@ const ManageAppointments: React.FC = () => {
       subject: 'Community Event Planning',
       appointmentWith: 'Barangay Chairperson',
       dateTime: '2025-10-20T15:00',
-      status: 'Pending',
+      status: '',
       purpose: 'Coordinate upcoming barangay fiesta activities and volunteer assignments.',
       contactNumber: '0916 345 6789',
     },
@@ -83,7 +83,7 @@ const ManageAppointments: React.FC = () => {
       subject: 'Infrastructure Concerns',
       appointmentWith: 'Barangay Kagawad 1',
       dateTime: '2025-10-18T09:00',
-      status: 'Pending',
+      status: '',
       purpose: 'Discuss road repairs and drainage issues in the community.',
       contactNumber: '0917 456 7890',
     },
@@ -141,11 +141,9 @@ const ManageAppointments: React.FC = () => {
   // Get status style
   const getStatusStyle = (status: AppointmentStatus) => {
     const styles = {
-      'Pending': { bg: '#fef3c7', color: '#92400e', border: '#fcd34d' },
+      '': { bg: '#f3f4f6', color: '#6b7280', border: '#d1d5db' },
       'Accepted': { bg: '#d1fae5', color: '#065f46', border: '#6ee7b7' },
       'Declined': { bg: '#fee2e2', color: '#991b1b', border: '#fca5a5' },
-      'Completed': { bg: '#dbeafe', color: '#1e40af', border: '#93c5fd' },
-      'Cancelled': { bg: '#f3f4f6', color: '#374151', border: '#d1d5db' },
     };
     return styles[status];
   };
@@ -154,35 +152,34 @@ const ManageAppointments: React.FC = () => {
     <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
       <ChairwomanDashboardNav activeSection={activeSection} setActiveSection={setActiveSection} />
 
-      <div style={{ flex: 1, marginLeft: '280px', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ marginLeft: '280px', flex: 1 }}>
         {/* Header */}
-        <header
-          style={{
-            backgroundColor: 'white',
-            padding: '1rem 2rem',
-            borderBottom: '1px solid #e5e7eb',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <FaCalendarAlt style={{ width: '1.1rem', height: '1.1rem', color: '#6b7280' }} />
-            <span style={{ fontWeight: 500, color: '#1f2937' }}>Manage Appointments</span>
-          </div>
+        <header style={{ 
+          backgroundColor: 'white', 
+          padding: '1.5rem 2rem', 
+          borderBottom: '1px solid #e5e7eb',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+        }}>
+          <h1 style={{ 
+            fontSize: '1.5rem', 
+            fontWeight: '600', 
+            color: '#1f2937',
+            margin: 0 
+          }}>
+            Manage Appointments
+          </h1>
+          <p style={{ 
+            fontSize: '0.875rem', 
+            color: '#6b7280',
+            marginTop: '0.25rem',
+            marginBottom: 0
+          }}>
+            Review and manage appointment requests from residents. Accept or decline based on availability.
+          </p>
         </header>
 
         {/* Main Content */}
-        <main style={{ flex: 1, padding: '2rem' }}>
-          <div style={{ marginBottom: '1.5rem' }}>
-            <h1 style={{ fontSize: '1.875rem', fontWeight: 700, color: '#1f2937', marginBottom: '0.5rem' }}>
-              Manage Appointments
-            </h1>
-            <p style={{ color: '#6b7280' }}>
-              Review and manage appointment requests from residents. Accept or decline based on availability.
-            </p>
-          </div>
-
+        <main style={{ padding: '2rem' }}>
           {/* Filters and Search */}
           <div style={{
             backgroundColor: 'white',
@@ -237,11 +234,9 @@ const ManageAppointments: React.FC = () => {
                   }}
                 >
                   <option value="All">All Status</option>
-                  <option value="Pending">Pending</option>
+                  <option value="">Awaiting Response</option>
                   <option value="Accepted">Accepted</option>
                   <option value="Declined">Declined</option>
-                  <option value="Completed">Completed</option>
-                  <option value="Cancelled">Cancelled</option>
                 </select>
               </div>
 
@@ -378,11 +373,9 @@ const ManageAppointments: React.FC = () => {
                               minWidth: '120px'
                             }}
                           >
-                            <option value="Pending">Pending</option>
+                            <option value="">Select Response</option>
                             <option value="Accepted">Accepted</option>
                             <option value="Declined">Declined</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Cancelled">Cancelled</option>
                           </select>
                         </td>
                       </tr>

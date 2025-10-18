@@ -185,25 +185,79 @@ const ComposeMessage: React.FC = () => {
                                 color: '#374151',
                                 marginBottom: '0.5rem'
                             }}>
-                                Contact Number (Optional - leave blank to send to selected residents)
+                                Contact Number
                             </label>
-                            <input
-                                type="text"
-                                placeholder="e.g., 09123456789"
-                                value={messageData.contactNumber}
-                                onChange={(e) => setMessageData({ ...messageData, contactNumber: e.target.value })}
-                                style={{
-                                    width: '100%',
+                            {/* Display selected numbers as chips */}
+                            {selectedResidents.length > 0 ? (
+                                <div style={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: '0.5rem',
                                     padding: '0.625rem 1rem',
-                                    fontSize: '0.875rem',
                                     border: '1px solid #d1d5db',
                                     borderRadius: '0.375rem',
-                                    outline: 'none',
-                                    transition: 'border-color 0.2s'
-                                }}
-                                onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
-                                onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
-                            />
+                                    minHeight: '42px',
+                                    backgroundColor: 'white'
+                                }}>
+                                    {residents
+                                        .filter(resident => selectedResidents.includes(resident.id))
+                                        .map(resident => (
+                                            <div
+                                                key={resident.id}
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.5rem',
+                                                    padding: '0.25rem 0.75rem',
+                                                    backgroundColor: '#e0e7ff',
+                                                    color: '#3730a3',
+                                                    borderRadius: '9999px',
+                                                    fontSize: '0.875rem',
+                                                    fontWeight: '500'
+                                                }}
+                                            >
+                                                <span>{resident.contactNumber}</span>
+                                                <button
+                                                    onClick={() => handleSelectResident(resident.id)}
+                                                    style={{
+                                                        background: 'none',
+                                                        border: 'none',
+                                                        color: '#4338ca',
+                                                        cursor: 'pointer',
+                                                        padding: 0,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        fontSize: '1rem',
+                                                        fontWeight: 'bold',
+                                                        lineHeight: 1
+                                                    }}
+                                                    title="Remove"
+                                                >
+                                                    ×
+                                                </button>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            ) : (
+                                <input
+                                    type="text"
+                                    placeholder="Select recipients from the list below"
+                                    value={messageData.contactNumber}
+                                    onChange={(e) => setMessageData({ ...messageData, contactNumber: e.target.value })}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.625rem 1rem',
+                                        fontSize: '0.875rem',
+                                        border: '1px solid #d1d5db',
+                                        borderRadius: '0.375rem',
+                                        outline: 'none',
+                                        transition: 'border-color 0.2s'
+                                    }}
+                                    onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+                                    onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
+                                />
+                            )}
                         </div>
 
                         {/* Message */}
