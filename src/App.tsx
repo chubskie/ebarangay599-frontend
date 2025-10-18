@@ -9,10 +9,12 @@ import CreateClearancePermits from './pages/Chairperson/CreateClearancePermits';
 import ComposeMessage from './pages/Chairperson/ComposeMessage';
 import CreateAnnouncementEvents from './pages/Chairperson/CreateAnnouncementEvents';
 import BarangayTransactions from './pages/Chairperson/BarangayTransactions';
+import ReportIncidentChairperson from './pages/Chairperson/ReportIncident';
+import MyBarangayIDChairperson from './pages/Chairperson/MyBarangayID';
 import RequestDocument from './pages/Resident/RequestDocument';
-import ReportIncident from './pages/Resident/ReportIncident';
+import ReportIncidentResident from './pages/Resident/ReportIncident';
+import MyBarangayIDResident from './pages/Resident/MyBarangayID';
 import ScheduleAnAppointment from './pages/Resident/ScheduleAnAppointment';
-import MyBarangayID from './pages/Resident/MyBarangayID';
 import Announcements from './pages/Announcements';
 import Events from './pages/Events';
 import About from './pages/About';
@@ -34,10 +36,17 @@ function App() {
       <Route path="/compose-message" element={<ComposeMessage />} />
       <Route path="/create-announcement-events" element={<CreateAnnouncementEvents />} />
       <Route path="/barangay-transactions" element={<BarangayTransactions />} />
+      
+      {/* Chairperson Routes */}
+      <Route path="/chairperson/report-incident" element={<ReportIncidentChairperson />} />
+      <Route path="/chairperson/my-barangay-id" element={<MyBarangayIDChairperson />} />
+      
+      {/* Resident Routes */}
+      <Route path="/resident/report-incident" element={<ReportIncidentResident />} />
+      <Route path="/resident/my-barangay-id" element={<MyBarangayIDResident />} />
       <Route path="/request-document" element={<RequestDocument />} />
-      <Route path="/report-incident" element={<ReportIncident />} />
       <Route path="/schedule-an-appointment" element={<ScheduleAnAppointment />} />
-      <Route path="/my-barangay-id" element={<MyBarangayID />} />
+      
       <Route path="/announcements" element={<Announcements />} />
       <Route path="/events" element={<Events />} />
       <Route path="/about" element={<About />} />

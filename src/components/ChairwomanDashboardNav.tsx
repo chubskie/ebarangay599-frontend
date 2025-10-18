@@ -1,11 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-    FaHome,
-    FaBullhorn,
-    FaCalendarAlt,
-    FaInfoCircle,
-    FaPhone,
     FaUsers,
     FaExclamationTriangle,
     FaFileAlt,
@@ -13,7 +8,6 @@ import {
     FaBullhorn as FaMegaphone,
     FaExchangeAlt,
     FaFlag,
-    FaCalendarPlus,
     FaIdCard,
     FaChartBar,
     FaKey,
@@ -42,11 +36,6 @@ const ChairwomanDashboardNav: React.FC<ChairwomanDashboardNavProps> = ({
 
     const sidebarItems = [
         { id: 'dashboard', icon: FaChartBar, label: 'Dashboard', route: '/chairwoman-dashboard' },
-        { id: 'home', icon: FaHome, label: 'Home', route: '/' },
-        { id: 'announcements', icon: FaBullhorn, label: 'Announcements', route: '/announcements' },
-        { id: 'events', icon: FaCalendarAlt, label: 'Events', route: '/events' },
-        { id: 'about', icon: FaInfoCircle, label: 'About Us', route: '/about' },
-        { id: 'contact', icon: FaPhone, label: 'Contact Us', route: '/contact' },
         { id: 'resident-management', icon: FaUsers, label: 'Resident Management', route: '/resident-management' },
         { id: 'access-management', icon: FaKey, label: 'Barangay Access Management', route: '/barangay-access-management' },
         { id: 'incident-reports', icon: FaExclamationTriangle, label: 'Incident Reports Management', route: '/incident-reports-management' },
@@ -54,9 +43,8 @@ const ChairwomanDashboardNav: React.FC<ChairwomanDashboardNavProps> = ({
         { id: 'compose-message', icon: FaEnvelope, label: 'Compose a Message', route: '/compose-message' },
         { id: 'create-announcement', icon: FaMegaphone, label: 'Announcements & Events', route: '/create-announcement-events' },
         { id: 'transactions', icon: FaExchangeAlt, label: 'Barangay Transactions', route: '/barangay-transactions' },
-        { id: 'report-incident', icon: FaFlag, label: 'Report an Incident', route: '/report-incident' },
-        { id: 'schedule-meeting', icon: FaCalendarPlus, label: 'Schedule a Meeting' },
-        { id: 'my-barangay-id', icon: FaIdCard, label: 'My Barangay ID', route: '/my-barangay-id' }
+        { id: 'report-incident', icon: FaFlag, label: 'Report an Incident', route: '/chairperson/report-incident' },
+        { id: 'my-barangay-id', icon: FaIdCard, label: 'My Barangay ID', route: '/chairperson/my-barangay-id' }
     ];
 
     return (
@@ -75,13 +63,24 @@ const ChairwomanDashboardNav: React.FC<ChairwomanDashboardNavProps> = ({
             overflowY: 'auto'
         }}>
             {/* Logo Section */}
-            <div style={{ 
-                padding: '1.5rem', 
-                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem'
-            }}>
+            <div 
+                onClick={() => navigate('/')}
+                style={{ 
+                    padding: '1.5rem', 
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                }}
+                onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                }}
+            >
                 <img 
                     src="/logo/barangay-599-logo.png" 
                     alt="Barangay 599 Logo" 
@@ -99,7 +98,7 @@ const ChairwomanDashboardNav: React.FC<ChairwomanDashboardNavProps> = ({
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em'
             }}>
-                Chairperson Portal
+                Barangay Admin
             </div>
 
             {/* Navigation Items */}

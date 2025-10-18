@@ -44,7 +44,7 @@ const BarangayTransactions: React.FC = () => {
     const [transactions] = useState<Transaction[]>([
         {
             id: 1,
-            transactionId: 'TXN-2025-001',
+            transactionId: 'a1b2c3d4-e5f6-47a8-b9c0-1d2e3f4a5b6c',
             residentName: 'Luc Elric Trevecedo',
             documentType: 'Barangay Clearance',
             purpose: 'Employment Requirements',
@@ -55,7 +55,7 @@ const BarangayTransactions: React.FC = () => {
         },
         {
             id: 2,
-            transactionId: 'TXN-2025-002',
+            transactionId: 'b2c3d4e5-f6a7-48b9-c0d1-2e3f4a5b6c7d',
             residentName: 'jewel nicole Maming',
             documentType: 'Certificate of Indigency',
             purpose: 'Financial Assistance',
@@ -66,7 +66,7 @@ const BarangayTransactions: React.FC = () => {
         },
         {
             id: 3,
-            transactionId: 'TXN-2025-003',
+            transactionId: 'c3d4e5f6-a7b8-49c0-d1e2-3f4a5b6c7d8e',
             residentName: 'Maria Santos',
             documentType: 'Business Clearance',
             purpose: 'New Business Registration',
@@ -77,7 +77,7 @@ const BarangayTransactions: React.FC = () => {
         },
         {
             id: 4,
-            transactionId: 'TXN-2025-004',
+            transactionId: 'd4e5f6a7-b8c9-40d1-e2f3-4a5b6c7d8e9f',
             residentName: 'Juan Dela Cruz',
             documentType: 'Certificate to File Action',
             purpose: 'Legal Proceedings',
@@ -88,7 +88,7 @@ const BarangayTransactions: React.FC = () => {
         },
         {
             id: 5,
-            transactionId: 'TXN-2025-005',
+            transactionId: 'e5f6a7b8-c9d0-41e2-f3a4-5b6c7d8e9f0a',
             residentName: 'Ana Reyes',
             documentType: 'Barangay ID',
             purpose: 'Personal Identification',
@@ -99,7 +99,7 @@ const BarangayTransactions: React.FC = () => {
         },
         {
             id: 6,
-            transactionId: 'TXN-2025-006',
+            transactionId: 'f6a7b8c9-d0e1-42f3-a4b5-6c7d8e9f0a1b',
             residentName: 'Pedro Garcia',
             documentType: 'Good Moral Certificate',
             purpose: 'School Requirements',
@@ -110,7 +110,7 @@ const BarangayTransactions: React.FC = () => {
         },
         {
             id: 7,
-            transactionId: 'TXN-2025-007',
+            transactionId: 'a7b8c9d0-e1f2-43a4-b5c6-7d8e9f0a1b2c',
             residentName: 'Rosa Martinez',
             documentType: 'Senior Citizen ID',
             purpose: 'Senior Benefits',
@@ -121,7 +121,7 @@ const BarangayTransactions: React.FC = () => {
         },
         {
             id: 8,
-            transactionId: 'TXN-2025-008',
+            transactionId: 'b8c9d0e1-f2a3-44b5-c6d7-8e9f0a1b2c3d',
             residentName: 'Carlos Ramos',
             documentType: 'Barangay Clearance',
             purpose: 'Travel Requirements',
@@ -132,7 +132,7 @@ const BarangayTransactions: React.FC = () => {
         },
         {
             id: 9,
-            transactionId: 'TXN-2025-009',
+            transactionId: 'c9d0e1f2-a3b4-45c6-d7e8-9f0a1b2c3d4e',
             residentName: 'Linda Cruz',
             documentType: 'Certificate of Indigency',
             purpose: 'Medical Assistance',
@@ -143,7 +143,7 @@ const BarangayTransactions: React.FC = () => {
         },
         {
             id: 10,
-            transactionId: 'TXN-2025-010',
+            transactionId: 'd0e1f2a3-b4c5-46d7-e8f9-0a1b2c3d4e5f',
             residentName: 'Roberto Santos',
             documentType: 'Business Clearance',
             purpose: 'Business Renewal',
@@ -154,7 +154,7 @@ const BarangayTransactions: React.FC = () => {
         },
         {
             id: 11,
-            transactionId: 'TXN-2025-011',
+            transactionId: 'e1f2a3b4-c5d6-47e8-f9a0-1b2c3d4e5f6a',
             residentName: 'Elena Flores',
             documentType: 'Barangay Clearance',
             purpose: 'Bank Requirements',
@@ -165,7 +165,7 @@ const BarangayTransactions: React.FC = () => {
         },
         {
             id: 12,
-            transactionId: 'TXN-2025-012',
+            transactionId: 'f2a3b4c5-d6e7-48f9-a0b1-2c3d4e5f6a7b',
             residentName: 'Miguel Torres',
             documentType: 'Good Moral Certificate',
             purpose: 'Employment',

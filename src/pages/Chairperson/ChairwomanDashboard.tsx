@@ -744,11 +744,11 @@ const ChairwomanDashboard: React.FC = () => {
                     <div class="profile-grid">
                         <div class="profile-item">
                             <label>Name</label>
-                            <value>Editha E. Alviso</value>
+                            <value>Luc Elric R. Trevecedo</value>
                         </div>
                         <div class="profile-item">
                             <label>Username</label>
-                            <value>chairwoman1234</value>
+                            <value>admin1234</value>
                         </div>
                         <div class="profile-item">
                             <label>Contact Number</label>
@@ -787,7 +787,7 @@ const ChairwomanDashboard: React.FC = () => {
                     color: '#1f2937',
                     margin: 0 
                 }}>
-                    Chairwoman Dashboard
+                    Barangay Admin Dashboard
                 </h1>
                 <p style={{ 
                     fontSize: '0.875rem', 
@@ -814,11 +814,11 @@ const ChairwomanDashboard: React.FC = () => {
                 </div>
                 <div>
                     <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.25rem' }}>Username</div>
-                    <div style={{ fontSize: '0.875rem', color: '#1f2937', fontWeight: '500' }}>chairwoman1234</div>
+                    <div style={{ fontSize: '0.875rem', color: '#1f2937', fontWeight: '500' }}>admin1234</div>
                 </div>
                 <div>
                     <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.25rem' }}>Name</div>
-                    <div style={{ fontSize: '0.875rem', color: '#1f2937', fontWeight: '500' }}>Editha E. Alviso</div>
+                    <div style={{ fontSize: '0.875rem', color: '#1f2937', fontWeight: '500' }}>Luc Elric R. Trevecedo</div>
                 </div>
                 <div>
                     <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: '500', marginBottom: '0.25rem' }}>Contact Number</div>

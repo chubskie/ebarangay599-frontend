@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChairwomanDashboardNav from '../../components/ChairwomanDashboardNav';
-import { FaSearch, FaRedo, FaEye, FaCheck, FaTimes, FaFileImage } from 'react-icons/fa';
+import { FaSearch, FaRedo, FaEye, FaCheck, FaTimes, FaFileImage, FaArchive, FaUndo } from 'react-icons/fa';
 
 // Sample resident data
 interface Resident {
@@ -37,6 +37,17 @@ interface Resident {
         birthCertificate?: string;
     };
     submittedDate: string;
+    isArchived?: boolean;
+    archivedDate?: string;
+    // Household Profile fields
+    householdProfile?: {
+        residencyStatus?: string;
+        mainAddress?: string;
+        periodOfResidency?: string;
+        householdId?: string;
+        householdRole?: string;
+        householdMemberCount?: number;
+    };
 }
 
 const ResidentManagement: React.FC = () => {
@@ -49,7 +60,9 @@ const ResidentManagement: React.FC = () => {
     const [showProofsModal, setShowProofsModal] = useState(false);
     const [residents, setResidents] = useState<Resident[]>([]);
     const [residentImage, setResidentImage] = useState<string | null>(null);
+    // @ts-ignore - imageFile will be used in future implementation
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [viewMode, setViewMode] = useState<'active' | 'archived'>('active');
 
     // Filters
     const [ageFilter, setAgeFilter] = useState('all');
@@ -57,6 +70,8 @@ const ResidentManagement: React.FC = () => {
     const [civilStatusFilter, setCivilStatusFilter] = useState('all');
     const [voterFilter, setVoterFilter] = useState('all');
     const [residentTagFilter, setResidentTagFilter] = useState('all');
+    const [householdRoleFilter, setHouseholdRoleFilter] = useState('all');
+    const [residencyStatusFilter, setResidencyStatusFilter] = useState('all');
 
     // Role protection
     useEffect(() => {
@@ -104,7 +119,15 @@ const ResidentManagement: React.FC = () => {
                     proofOfResidency: '/images/sample-residency-1.jpg',
                     birthCertificate: '/images/sample-birth-cert-1.jpg'
                 },
-                submittedDate: '2025-10-10'
+                submittedDate: '2025-10-10',
+                householdProfile: {
+                    residencyStatus: 'Renter',
+                    mainAddress: '0281 Narra Street Old Sta Mesa Manila Barangay 599',
+                    periodOfResidency: '23 years and 6 months',
+                    householdId: 'HH-2024-001',
+                    householdRole: 'Member',
+                    householdMemberCount: 4
+                }
             },
             {
                 id: 2,
@@ -137,7 +160,15 @@ const ResidentManagement: React.FC = () => {
                     validId: '/images/sample-id-2.jpg',
                     proofOfResidency: '/images/sample-residency-2.jpg'
                 },
-                submittedDate: '2025-10-08'
+                submittedDate: '2025-10-08',
+                householdProfile: {
+                    residencyStatus: 'Owner',
+                    mainAddress: 'AA106 El Pueblo',
+                    periodOfResidency: '5 years and 2 months',
+                    householdId: 'HH-2024-002',
+                    householdRole: 'Head',
+                    householdMemberCount: 2
+                }
             },
             {
                 id: 3,
@@ -162,7 +193,15 @@ const ResidentManagement: React.FC = () => {
                     validId: '/images/sample-id-3.jpg',
                     birthCertificate: '/images/sample-birth-cert-3.jpg'
                 },
-                submittedDate: '2025-10-12'
+                submittedDate: '2025-10-12',
+                householdProfile: {
+                    residencyStatus: 'Owner',
+                    mainAddress: 'AA106 El Pueblo',
+                    periodOfResidency: '15 years',
+                    householdId: 'HH-2024-002',
+                    householdRole: 'Member',
+                    householdMemberCount: 2
+                }
             },
             {
                 id: 4,
@@ -194,7 +233,15 @@ const ResidentManagement: React.FC = () => {
                     proofOfResidency: '/images/sample-residency-4.jpg',
                     birthCertificate: '/images/sample-birth-cert-4.jpg'
                 },
-                submittedDate: '2025-10-05'
+                submittedDate: '2025-10-05',
+                householdProfile: {
+                    residencyStatus: 'Renter',
+                    mainAddress: 'B201 San Vicente',
+                    periodOfResidency: '8 years and 3 months',
+                    householdId: 'HH-2024-003',
+                    householdRole: 'Head',
+                    householdMemberCount: 3
+                }
             },
             {
                 id: 5,
@@ -226,7 +273,15 @@ const ResidentManagement: React.FC = () => {
                     validId: '/images/sample-id-5.jpg',
                     proofOfResidency: '/images/sample-residency-5.jpg'
                 },
-                submittedDate: '2025-10-13'
+                submittedDate: '2025-10-13',
+                householdProfile: {
+                    residencyStatus: 'Owner',
+                    mainAddress: 'C305 Gordon Heights',
+                    periodOfResidency: '35 years',
+                    householdId: 'HH-2024-004',
+                    householdRole: 'Head',
+                    householdMemberCount: 2
+                }
             },
             {
                 id: 6,
@@ -257,7 +312,15 @@ const ResidentManagement: React.FC = () => {
                     proofOfResidency: '/images/sample-residency-6.jpg',
                     birthCertificate: '/images/sample-birth-cert-6.jpg'
                 },
-                submittedDate: '2025-10-07'
+                submittedDate: '2025-10-07',
+                householdProfile: {
+                    residencyStatus: 'Renter',
+                    mainAddress: 'D102 East Bajac-Bajac',
+                    periodOfResidency: '12 years',
+                    householdId: 'HH-2024-005',
+                    householdRole: 'Head',
+                    householdMemberCount: 3
+                }
             },
             {
                 id: 7,
@@ -282,7 +345,15 @@ const ResidentManagement: React.FC = () => {
                 proofs: {
                     validId: '/images/sample-id-7.jpg'
                 },
-                submittedDate: '2025-10-09'
+                submittedDate: '2025-10-09',
+                householdProfile: {
+                    residencyStatus: 'Boarder',
+                    mainAddress: 'E401 New Kababae',
+                    periodOfResidency: '3 years',
+                    householdId: 'HH-2024-006',
+                    householdRole: 'Member',
+                    householdMemberCount: 5
+                }
             },
             {
                 id: 8,
@@ -308,7 +379,15 @@ const ResidentManagement: React.FC = () => {
                     proofOfResidency: '/images/sample-residency-8.jpg',
                     birthCertificate: '/images/sample-birth-cert-8.jpg'
                 },
-                submittedDate: '2025-10-14'
+                submittedDate: '2025-10-14',
+                householdProfile: {
+                    residencyStatus: 'Renter',
+                    mainAddress: 'F205 Barretto',
+                    periodOfResidency: '13 years',
+                    householdId: 'HH-2024-007',
+                    householdRole: 'Member',
+                    householdMemberCount: 4
+                }
             },
             {
                 id: 9,
@@ -340,7 +419,15 @@ const ResidentManagement: React.FC = () => {
                     proofOfResidency: '/images/sample-residency-9.jpg',
                     birthCertificate: '/images/sample-birth-cert-9.jpg'
                 },
-                submittedDate: '2025-10-06'
+                submittedDate: '2025-10-06',
+                householdProfile: {
+                    residencyStatus: 'Owner',
+                    mainAddress: 'G301 Asinan',
+                    periodOfResidency: '10 years',
+                    householdId: 'HH-2024-008',
+                    householdRole: 'Head',
+                    householdMemberCount: 4
+                }
             },
             {
                 id: 10,
@@ -372,13 +459,22 @@ const ResidentManagement: React.FC = () => {
                     proofOfResidency: '/images/sample-residency-10.jpg',
                     birthCertificate: '/images/sample-birth-cert-10.jpg'
                 },
-                submittedDate: '2025-10-11'
+                submittedDate: '2025-10-11',
+                householdProfile: {
+                    residencyStatus: 'Caretaker',
+                    mainAddress: 'H104 Kalaklan',
+                    periodOfResidency: '2 years and 6 months',
+                    householdId: 'HH-2024-009',
+                    householdRole: 'Member',
+                    householdMemberCount: 2
+                }
             }
         ];
         setResidents(sampleData);
     }, []);
 
-    // Approval functions
+    // Approval functions - kept for future implementation
+    // @ts-ignore - handleApprove will be used in future implementation
     const handleApprove = (residentId: number) => {
         if (window.confirm('Are you sure you want to approve this resident profile?')) {
             setResidents(prev => prev.map(r => 
@@ -388,6 +484,7 @@ const ResidentManagement: React.FC = () => {
         }
     };
 
+    // @ts-ignore - handleReject will be used in future implementation
     const handleReject = (residentId: number) => {
         if (window.confirm('Are you sure you want to reject this resident profile?')) {
             setResidents(prev => prev.map(r => 
@@ -402,8 +499,31 @@ const ResidentManagement: React.FC = () => {
         setShowProofsModal(true);
     };
 
+    const handleArchive = (residentId: number) => {
+        const resident = residents.find(r => r.id === residentId);
+        if (window.confirm(`Are you sure you want to archive ${resident?.fullName}? They will be moved to the archived residents section.`)) {
+            setResidents(prev => prev.map(r => 
+                r.id === residentId ? { ...r, isArchived: true, archivedDate: new Date().toISOString() } : r
+            ));
+            alert('Resident archived successfully!');
+        }
+    };
+
+    const handleRestore = (residentId: number) => {
+        const resident = residents.find(r => r.id === residentId);
+        if (window.confirm(`Are you sure you want to restore ${resident?.fullName}? They will be moved back to the active residents.`)) {
+            setResidents(prev => prev.map(r => 
+                r.id === residentId ? { ...r, isArchived: false, archivedDate: undefined } : r
+            ));
+            alert('Resident restored successfully!');
+        }
+    };
+
     // Filter and search logic
     const filteredResidents = residents.filter(resident => {
+        // First filter by view mode (active or archived)
+        const matchesViewMode = viewMode === 'active' ? !resident.isArchived : resident.isArchived;
+        
         const matchesSearch = resident.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                             resident.homeAddress.toLowerCase().includes(searchTerm.toLowerCase());
         
@@ -420,8 +540,16 @@ const ResidentManagement: React.FC = () => {
                                    (residentTagFilter === 'none' && resident.residentTags.length === 0) ||
                                    resident.residentTags.includes(residentTagFilter);
 
-        return matchesSearch && matchesAge && matchesGender && matchesCivilStatus && 
-               matchesVoter && matchesResidentTag;
+        const matchesHouseholdRole = householdRoleFilter === 'all' ||
+                                     (householdRoleFilter === 'none' && (!resident.householdProfile || !resident.householdProfile.householdRole || resident.householdProfile.householdRole === 'None')) ||
+                                     (resident.householdProfile?.householdRole?.toLowerCase() === householdRoleFilter.toLowerCase());
+
+        const matchesResidencyStatus = residencyStatusFilter === 'all' ||
+                                       (residencyStatusFilter === 'none' && (!resident.householdProfile || !resident.householdProfile.residencyStatus)) ||
+                                       (resident.householdProfile?.residencyStatus?.toLowerCase() === residencyStatusFilter.toLowerCase());
+
+        return matchesViewMode && matchesSearch && matchesAge && matchesGender && matchesCivilStatus && 
+               matchesVoter && matchesResidentTag && matchesHouseholdRole && matchesResidencyStatus;
     });
 
     // Pagination
@@ -436,6 +564,8 @@ const ResidentManagement: React.FC = () => {
         setCivilStatusFilter('all');
         setVoterFilter('all');
         setResidentTagFilter('all');
+        setHouseholdRoleFilter('all');
+        setResidencyStatusFilter('all');
         setSearchTerm('');
         setCurrentPage(1);
     };
@@ -475,6 +605,69 @@ const ResidentManagement: React.FC = () => {
 
                 {/* Main Content */}
                 <main style={{ padding: '2rem', flex: 1 }}>
+                    {/* View Mode Toggle */}
+                    <div style={{
+                        backgroundColor: 'white',
+                        borderRadius: '0.75rem',
+                        padding: '1rem',
+                        marginBottom: '1.5rem',
+                        boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+                        display: 'flex',
+                        gap: '1rem',
+                        alignItems: 'center'
+                    }}>
+                        <button
+                            onClick={() => {
+                                setViewMode('active');
+                                setCurrentPage(1);
+                            }}
+                            style={{
+                                flex: 1,
+                                padding: '0.75rem 1.5rem',
+                                backgroundColor: viewMode === 'active' ? '#3b82f6' : 'white',
+                                color: viewMode === 'active' ? 'white' : '#374151',
+                                border: viewMode === 'active' ? 'none' : '1px solid #d1d5db',
+                                borderRadius: '0.5rem',
+                                fontSize: '0.875rem',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '0.5rem'
+                            }}
+                        >
+                            <FaEye />
+                            Active Residents ({residents.filter(r => !r.isArchived).length})
+                        </button>
+                        <button
+                            onClick={() => {
+                                setViewMode('archived');
+                                setCurrentPage(1);
+                            }}
+                            style={{
+                                flex: 1,
+                                padding: '0.75rem 1.5rem',
+                                backgroundColor: viewMode === 'archived' ? '#6b7280' : 'white',
+                                color: viewMode === 'archived' ? 'white' : '#374151',
+                                border: viewMode === 'archived' ? 'none' : '1px solid #d1d5db',
+                                borderRadius: '0.5rem',
+                                fontSize: '0.875rem',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '0.5rem'
+                            }}
+                        >
+                            <FaArchive />
+                            Archived Residents ({residents.filter(r => r.isArchived).length})
+                        </button>
+                    </div>
+
                     {/* Filters Section */}
                     <div style={{ 
                         backgroundColor: 'white', 
@@ -653,6 +846,68 @@ const ResidentManagement: React.FC = () => {
                                     <option value="Solo Parent">Solo Parent</option>
                                     <option value="First Job Seeker">First Job Seeker</option>
                                     <option value="Unemployed">Unemployed</option>
+                                </select>
+                            </div>
+
+                            {/* Household Role Filter */}
+                            <div>
+                                <label style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '500',
+                                    color: '#374151',
+                                    marginBottom: '0.5rem'
+                                }}>
+                                    🏠 Household Role
+                                </label>
+                                <select
+                                    value={householdRoleFilter}
+                                    onChange={(e) => setHouseholdRoleFilter(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.625rem',
+                                        border: '1px solid #d1d5db',
+                                        borderRadius: '0.5rem',
+                                        fontSize: '0.875rem',
+                                        backgroundColor: 'white',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    <option value="all">All Roles</option>
+                                    <option value="head">Head</option>
+                                    <option value="member">Member</option>
+                                </select>
+                            </div>
+
+                            {/* Residency Status Filter */}
+                            <div>
+                                <label style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '500',
+                                    color: '#374151',
+                                    marginBottom: '0.5rem'
+                                }}>
+                                    🏘️ Residency Status
+                                </label>
+                                <select
+                                    value={residencyStatusFilter}
+                                    onChange={(e) => setResidencyStatusFilter(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.625rem',
+                                        border: '1px solid #d1d5db',
+                                        borderRadius: '0.5rem',
+                                        fontSize: '0.875rem',
+                                        backgroundColor: 'white',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    <option value="all">All Status</option>
+                                    <option value="owner">Owner</option>
+                                    <option value="renter">Renter</option>
+                                    <option value="boarder">Boarder</option>
+                                    <option value="caretaker">Caretaker</option>
                                 </select>
                             </div>
                         </div>
@@ -869,7 +1124,7 @@ const ResidentManagement: React.FC = () => {
                                                     <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
                                                         <button
                                                             onClick={() => handleViewProofs(resident)}
-                                                            title="View Proofs"
+                                                            title="View Details"
                                                             style={{
                                                                 padding: '0.5rem',
                                                                 backgroundColor: '#3b82f6',
@@ -884,6 +1139,43 @@ const ResidentManagement: React.FC = () => {
                                                         >
                                                             <FaEye />
                                                         </button>
+                                                        {viewMode === 'active' ? (
+                                                            <button
+                                                                onClick={() => handleArchive(resident.id)}
+                                                                title="Archive Resident"
+                                                                style={{
+                                                                    padding: '0.5rem',
+                                                                    backgroundColor: '#f59e0b',
+                                                                    color: 'white',
+                                                                    border: 'none',
+                                                                    borderRadius: '0.375rem',
+                                                                    cursor: 'pointer',
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'center'
+                                                                }}
+                                                            >
+                                                                <FaArchive />
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                onClick={() => handleRestore(resident.id)}
+                                                                title="Restore Resident"
+                                                                style={{
+                                                                    padding: '0.5rem',
+                                                                    backgroundColor: '#22c55e',
+                                                                    color: 'white',
+                                                                    border: 'none',
+                                                                    borderRadius: '0.375rem',
+                                                                    cursor: 'pointer',
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'center'
+                                                                }}
+                                                            >
+                                                                <FaUndo />
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1214,40 +1506,6 @@ const ResidentManagement: React.FC = () => {
                                         <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Resident UUID</div>
                                         <div style={{ fontSize: '0.875rem', fontWeight: '500', color: '#1f2937' }}>{selectedResident.uuid}</div>
                                     </div>
-                                    {selectedResident.status === 'pending' && (
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                            <button
-                                                onClick={() => alert('Declined Resident UUID')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#ef4444',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaTimes />
-                                            </button>
-                                            <button
-                                                onClick={() => alert('Approved Resident UUID')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#22c55e',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaCheck />
-                                            </button>
-                                        </div>
-                                    )}
                                 </div>
 
                                 {/* Username */}
@@ -1256,40 +1514,6 @@ const ResidentManagement: React.FC = () => {
                                         <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Username</div>
                                         <div style={{ fontSize: '0.875rem', fontWeight: '500', color: '#1f2937' }}>{selectedResident.username}</div>
                                     </div>
-                                    {selectedResident.status === 'pending' && (
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                            <button
-                                                onClick={() => alert('Declined Username')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#ef4444',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaTimes />
-                                            </button>
-                                            <button
-                                                onClick={() => alert('Approved Username')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#22c55e',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaCheck />
-                                            </button>
-                                        </div>
-                                    )}
                                 </div>
 
                                 {/* Full Name */}
@@ -1298,40 +1522,6 @@ const ResidentManagement: React.FC = () => {
                                         <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Full Name</div>
                                         <div style={{ fontSize: '0.875rem', fontWeight: '500', color: '#1f2937' }}>{selectedResident.fullName}</div>
                                     </div>
-                                    {selectedResident.status === 'pending' && (
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                            <button
-                                                onClick={() => alert('Declined Full Name')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#ef4444',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaTimes />
-                                            </button>
-                                            <button
-                                                onClick={() => alert('Approved Full Name')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#22c55e',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaCheck />
-                                            </button>
-                                        </div>
-                                    )}
                                 </div>
 
                                 {/* Contact Number */}
@@ -1340,40 +1530,6 @@ const ResidentManagement: React.FC = () => {
                                         <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Contact Number</div>
                                         <div style={{ fontSize: '0.875rem', fontWeight: '500', color: '#1f2937' }}>{selectedResident.contactNumber}</div>
                                     </div>
-                                    {selectedResident.status === 'pending' && (
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                            <button
-                                                onClick={() => alert('Declined Contact Number')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#ef4444',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaTimes />
-                                            </button>
-                                            <button
-                                                onClick={() => alert('Approved Contact Number')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#22c55e',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaCheck />
-                                            </button>
-                                        </div>
-                                    )}
                                 </div>
 
                                 {/* Emergency Contact */}
@@ -1384,40 +1540,6 @@ const ResidentManagement: React.FC = () => {
                                             {selectedResident.emergencyContact || 'Not provided'}
                                         </div>
                                     </div>
-                                    {selectedResident.status === 'pending' && (
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                            <button
-                                                onClick={() => alert('Declined Emergency Contact')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#ef4444',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaTimes />
-                                            </button>
-                                            <button
-                                                onClick={() => alert('Approved Emergency Contact')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#22c55e',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaCheck />
-                                            </button>
-                                        </div>
-                                    )}
                                 </div>
 
                                 {/* Continue with remaining fields in similar pattern */}
@@ -1613,40 +1735,6 @@ const ResidentManagement: React.FC = () => {
                                             {selectedResident.weight || 'Not provided'}
                                         </div>
                                     </div>
-                                    {selectedResident.status === 'pending' && (
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                            <button
-                                                onClick={() => alert('Declined Weight')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#ef4444',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaTimes />
-                                            </button>
-                                            <button
-                                                onClick={() => alert('Approved Weight')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#22c55e',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaCheck />
-                                            </button>
-                                        </div>
-                                    )}
                                 </div>
 
                                 {/* Height */}
@@ -1657,40 +1745,6 @@ const ResidentManagement: React.FC = () => {
                                             {selectedResident.height || 'Not provided'}
                                         </div>
                                     </div>
-                                    {selectedResident.status === 'pending' && (
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                            <button
-                                                onClick={() => alert('Declined Height')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#ef4444',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaTimes />
-                                            </button>
-                                            <button
-                                                onClick={() => alert('Approved Height')}
-                                                style={{
-                                                    padding: '0.375rem 0.75rem',
-                                                    backgroundColor: '#22c55e',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: '0.375rem',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '500',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <FaCheck />
-                                            </button>
-                                        </div>
-                                    )}
                                 </div>
 
                                 {/* Voters Precinct No */}
@@ -2032,6 +2086,184 @@ const ResidentManagement: React.FC = () => {
                                             </button>
                                         </div>
                                     )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Household Profile Section */}
+                        <div style={{ marginBottom: '2rem' }}>
+                            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1f2937', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <FaSearch style={{ color: '#10b981' }} />
+                                Household Profile
+                            </h3>
+                            <div style={{ 
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '1rem',
+                                backgroundColor: '#f9fafb',
+                                padding: '1.5rem',
+                                borderRadius: '0.5rem'
+                            }}>
+                                {/* Residency Status - Approvable */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Residency Status</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.householdProfile?.residencyStatus ? '#1f2937' : '#9ca3af', fontStyle: selectedResident.householdProfile?.residencyStatus ? 'normal' : 'italic' }}>
+                                            {selectedResident.householdProfile?.residencyStatus || 'Not specified'}
+                                        </div>
+                                    </div>
+                                    {selectedResident.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => alert('Declined Residency Status')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#ef4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                            <button
+                                                onClick={() => alert('Approved Residency Status')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaCheck />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Main Address - Approvable */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Main Address</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.householdProfile?.mainAddress ? '#1f2937' : '#9ca3af' }}>
+                                            {selectedResident.householdProfile?.mainAddress || 'Not provided'}
+                                        </div>
+                                    </div>
+                                    {selectedResident.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => alert('Declined Main Address')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#ef4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                            <button
+                                                onClick={() => alert('Approved Main Address')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaCheck />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Period of Residency - Non-approvable (display only) */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Period of Residency</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.householdProfile?.periodOfResidency ? '#1f2937' : '#9ca3af' }}>
+                                            {selectedResident.householdProfile?.periodOfResidency || 'Not provided'}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Household ID - Non-approvable (display only) */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Household ID</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.householdProfile?.householdId ? '#1f2937' : '#9ca3af', fontStyle: selectedResident.householdProfile?.householdId ? 'normal' : 'italic' }}>
+                                            {selectedResident.householdProfile?.householdId || 'None'}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Household Role - Approvable */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Household Role</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.householdProfile?.householdRole ? '#1f2937' : '#9ca3af', fontStyle: selectedResident.householdProfile?.householdRole ? 'normal' : 'italic' }}>
+                                            {selectedResident.householdProfile?.householdRole || 'None'}
+                                        </div>
+                                    </div>
+                                    {selectedResident.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => alert('Declined Household Role')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#ef4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                            <button
+                                                onClick={() => alert('Approved Household Role')}
+                                                style={{
+                                                    padding: '0.375rem 0.75rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '0.375rem',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <FaCheck />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Household Member Count - Non-approvable (display only) */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280', marginBottom: '0.25rem' }}>Household Member Count</div>
+                                        <div style={{ fontSize: '0.875rem', fontWeight: '500', color: selectedResident.householdProfile?.householdMemberCount ? '#1f2937' : '#9ca3af', fontStyle: selectedResident.householdProfile?.householdMemberCount ? 'normal' : 'italic' }}>
+                                            {selectedResident.householdProfile?.householdMemberCount || 'None'}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

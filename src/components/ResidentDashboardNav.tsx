@@ -2,10 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
     FaUser,
-    FaHome,
-    FaBullhorn,
-    FaCalendarAlt,
-    FaInfoCircle,
     FaFileAlt,
     FaExclamationCircle,
     FaCalendar,
@@ -31,15 +27,10 @@ const ResidentDashboardNav: React.FC<ResidentDashboardNavProps> = ({ activeSecti
 
     const sidebarItems = [
         { id: 'dashboard', icon: FaUser, label: 'Dashboard', route: '/dashboard' },
-        { id: 'home', icon: FaHome, label: 'Home', route: '/' },
-        { id: 'announcements', icon: FaBullhorn, label: 'Announcements', route: '/announcements' },
-        { id: 'events', icon: FaCalendarAlt, label: 'Events', route: '/events' },
-        { id: 'about', icon: FaInfoCircle, label: 'About Us', route: '/about' },
-        { id: 'contact', icon: FaInfoCircle, label: 'Contact Us', route: '/contact' },
         { id: 'request', icon: FaFileAlt, label: 'Request New Document', route: '/request-document' },
-        { id: 'incident', icon: FaExclamationCircle, label: 'Report an Incident', route: '/report-incident' },
+        { id: 'incident', icon: FaExclamationCircle, label: 'Report an Incident', route: '/resident/report-incident' },
         { id: 'appointment', icon: FaCalendar, label: 'Schedule an Appointment', route: '/schedule-an-appointment' },
-        { id: 'barangay-id', icon: FaIdCard, label: 'My Barangay ID', route: '/my-barangay-id' }
+        { id: 'barangay-id', icon: FaIdCard, label: 'My Barangay ID', route: '/resident/my-barangay-id' }
     ];
 
     return (
@@ -57,13 +48,24 @@ const ResidentDashboardNav: React.FC<ResidentDashboardNavProps> = ({ activeSecti
             zIndex: 10
         }}>
             {/* Logo Section */}
-            <div style={{ 
-                padding: '1.5rem', 
-                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem'
-            }}>
+            <div 
+                onClick={() => navigate('/')}
+                style={{ 
+                    padding: '1.5rem', 
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                }}
+                onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                }}
+            >
                 <img 
                     src="/logo/barangay-599-logo.png" 
                     alt="Barangay 599 Logo" 
