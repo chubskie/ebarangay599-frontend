@@ -9,6 +9,7 @@ import CreateClearancePermits from './pages/Chairperson/CreateClearancePermits';
 import ComposeMessage from './pages/Chairperson/ComposeMessage';
 import CreateAnnouncementEvents from './pages/Chairperson/CreateAnnouncementEvents';
 import BarangayTransactions from './pages/Chairperson/BarangayTransactions';
+import ManageAppointments from './pages/Chairperson/ManageAppointments';
 import ReportIncidentChairperson from './pages/Chairperson/ReportIncident';
 import MyBarangayIDChairperson from './pages/Chairperson/MyBarangayID';
 import RequestDocument from './pages/Resident/RequestDocument';
@@ -36,6 +37,7 @@ function App() {
       <Route path="/compose-message" element={<ComposeMessage />} />
       <Route path="/create-announcement-events" element={<CreateAnnouncementEvents />} />
       <Route path="/barangay-transactions" element={<BarangayTransactions />} />
+      <Route path="/manage-appointments" element={<ManageAppointments />} />
       
       {/* Chairperson Routes */}
       <Route path="/chairperson/report-incident" element={<ReportIncidentChairperson />} />

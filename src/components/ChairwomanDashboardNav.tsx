@@ -11,6 +11,7 @@ import {
     FaIdCard,
     FaChartBar,
     FaKey,
+    FaCalendarAlt,
     FaSignOutAlt
 } from 'react-icons/fa';
 
@@ -43,6 +44,7 @@ const ChairwomanDashboardNav: React.FC<ChairwomanDashboardNavProps> = ({
         { id: 'compose-message', icon: FaEnvelope, label: 'Compose a Message', route: '/compose-message' },
         { id: 'create-announcement', icon: FaMegaphone, label: 'Announcements & Events', route: '/create-announcement-events' },
         { id: 'transactions', icon: FaExchangeAlt, label: 'Barangay Transactions', route: '/barangay-transactions' },
+        { id: 'manage-appointments', icon: FaCalendarAlt, label: 'Manage Appointments', route: '/manage-appointments' },
         { id: 'report-incident', icon: FaFlag, label: 'Report an Incident', route: '/chairperson/report-incident' },
         { id: 'my-barangay-id', icon: FaIdCard, label: 'My Barangay ID', route: '/chairperson/my-barangay-id' }
     ];

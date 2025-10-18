@@ -9,7 +9,6 @@ import {
   FaCheckCircle,
   FaInfoCircle,
   FaChevronRight,
-  FaUser,
 } from 'react-icons/fa';
 
 interface Meeting {
@@ -216,7 +215,7 @@ const ScheduleAnAppointment: React.FC = () => {
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ backgroundColor: '#f9fafb' }}>
-                    {['Appointment ID', 'Subject', 'Date & Time', 'Location', 'Status'].map((h) => (
+                    {['Appointment ID', 'Appointment With', 'Subject', 'Date & Time', 'Status'].map((h) => (
                       <th
                         key={h}
                         style={{
@@ -262,11 +261,6 @@ const ScheduleAnAppointment: React.FC = () => {
                           }
                         >
                           <td style={{ padding: '1rem', color: '#1f2937', fontFamily: 'monospace', fontWeight: 400 }}>
-                            {m.id}
-                          </td>
-
-                          {/* Subject with chevron */}
-                          <td style={{ padding: '1rem', fontWeight: 400, color: '#111827' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                               <FaChevronRight
                                 style={{
@@ -278,10 +272,20 @@ const ScheduleAnAppointment: React.FC = () => {
                                   flexShrink: 0,
                                 }}
                               />
-                              <div>
-                                <div>{m.subject}</div>
-                                <div style={{ color: '#6b7280', fontSize: '0.875rem' }}>{m.type}</div>
-                              </div>
+                              {m.id}
+                            </div>
+                          </td>
+
+                          {/* Appointment With */}
+                          <td style={{ padding: '1rem', fontWeight: 500, color: '#111827' }}>
+                            {m.attendees && m.attendees.length > 0 ? m.attendees[0] : 'N/A'}
+                          </td>
+
+                          {/* Subject */}
+                          <td style={{ padding: '1rem', fontWeight: 400, color: '#111827' }}>
+                            <div>
+                              <div>{m.subject}</div>
+                              <div style={{ color: '#6b7280', fontSize: '0.875rem' }}>{m.type}</div>
                             </div>
                           </td>
 
@@ -289,8 +293,6 @@ const ScheduleAnAppointment: React.FC = () => {
                             <div>{m.date}</div>
                             <div style={{ color: '#6b7280', fontSize: '0.875rem' }}>{m.time}</div>
                           </td>
-
-                          <td style={{ padding: '1rem', color: '#374151', fontWeight: 400 }}>{m.location}</td>
 
                           <td style={{ padding: '1rem' }}>
                             <span
@@ -333,39 +335,6 @@ const ScheduleAnAppointment: React.FC = () => {
                                   <span style={{ color: '#6b7280', fontSize: '0.85rem' }}>Appointment Details:</span>
                                   <div style={{ marginTop: '0.25rem' }}>{m.purpose}</div>
                                 </div>
-
-                                {!!m.attendees?.length && (
-                                  <div style={{ marginTop: '0.75rem', color: '#374151' }}>
-                                    <span style={{ color: '#6b7280', fontSize: '0.85rem' }}>Attendees:</span>
-                                    <div
-                                      style={{
-                                        display: 'flex',
-                                        gap: '0.5rem',
-                                        flexWrap: 'wrap',
-                                        marginTop: '0.35rem',
-                                      }}
-                                    >
-                                      {m.attendees.map((a) => (
-                                        <span
-                                          key={a}
-                                          style={{
-                                            display: 'inline-flex',
-                                            alignItems: 'center',
-                                            gap: '0.35rem',
-                                            padding: '0.25rem 0.5rem',
-                                            borderRadius: '999px',
-                                            backgroundColor: '#e5e7eb',
-                                            color: '#374151',
-                                            fontSize: '0.8rem',
-                                          }}
-                                        >
-                                          <FaUser style={{ width: '0.8rem' }} />
-                                          {a}
-                                        </span>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
                               </div>
                             </div>
                           </td>
